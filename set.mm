@@ -23548,19 +23548,12 @@ $)
 
 $(
 -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
-        Equality predicate for use by df-tru
+        Equality predicate - anticipation
 -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 
-  Even though it isn't ordinarily part of propositional calculus, the equality
-  predicate ` = ` is introduced here so that the soundness of definition
-  ~ df-tru can be checked by the same algorithm as is used for predicate
-  calculus.  Its first real use is in theorem ~ equs3 in the predicate calculus
-  section below.  For those who want propositional calculus to be
-  self-contained i.e. to use wff variables only, the alternate definition
-  ~ dftru2 may be adopted and this subsection moved down to just above ~ weq
-  below.  However, the use of ~ dftru2 as a definition requires a more
-  elaborate definition checking algorithm that we prefer to avoid.
-
+  This section only requires set equality. However, in order not to change the
+  proofs for the whole set.mm database, the order of the $f floating hypothesis
+  has to be conserved, and therefore this section is kept here.
 $)
 
   $c class $.
@@ -23631,6 +23624,38 @@ $)
 
 $(
 -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+        Equality predicate for use by df-tru
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
+
+  Even though it isn't ordinarily part of propositional calculus, the equality
+  predicate ` = ` is introduced here so that the soundness of definition
+  ~ df-tru can be checked by the same algorithm as is used for predicate
+  calculus.  Its first real use is in theorem ~ equs3 in the predicate calculus
+  section below.  For those who want propositional calculus to be
+  self-contained i.e. to use wff variables only, the alternate definition
+  ~ dftru2 may be adopted and this subsection moved down to just above ~ weq
+  below.  However, the use of ~ dftru2 as a definition requires a more
+  elaborate definition checking algorithm that we prefer to avoid.
+
+$)
+
+  $( Declare the symbol for equality predicate for set variables. $)
+  $c =s $.
+
+  ${
+    $v x y $.
+    $( Let ` x ` be an individual variable (temporary declaration). $)
+    vx.wequ $f setvar x $.
+
+    $( Let ` y ` be an individual variable (temporary declaration). $)
+    vy.wequ $f setvar y $.
+
+    $( ... $)
+    wequ $a wff x =s y $.
+  $}
+
+$(
+-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
                 Define the true and false constants
 -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-
 $)
@@ -23649,9 +23674,9 @@ $)
     vy.tru $f setvar y $.
     $( Soundness justification theorem for ~ df-tru .  (Contributed by Mario
        Carneiro, 17-Nov-2013.)  (Revised by NM, 11-Jul-2019.) $)
-    trujust $p |- ( ( A. x x = x -> A. x x = x )
-              <-> ( A. y y = y -> A. y y = y ) ) $=
-      ( cv wceq wal wi id 2th ) ACZIDAEZJFBCZKDBEZLFJGLGH $.
+    trujust $p |- ( ( A. x x =s x -> A. x x =s x )
+              <-> ( A. y y =s y -> A. y y =s y ) ) $=
+      ( wequ wal wi id 2th ) AACADZHEBBCBDZIEHFIFG $.
 
     $( Definition of the truth value "true", or "verum", denoted by ` T. ` .
        This is a tautology, as proved by ~ tru .  In this definition, an
@@ -23664,12 +23689,12 @@ $)
        many alternative ways to define ` T. ` .  (Contributed by Anthony Hart,
        13-Oct-2010.)  (Revised by NM, 11-Jul-2019.)
        (New usage is discouraged.) $)
-    df-tru $a |- ( T. <-> ( A. x x = x -> A. x x = x ) ) $.
+    df-tru $a |- ( T. <-> ( A. x x =s x -> A. x x =s x ) ) $.
 
     $( The truth value ` T. ` is provable.  (Contributed by Anthony Hart,
        13-Oct-2010.) $)
     tru $p |- T. $=
-      ( vx.tru wtru cv wceq wal wi id df-tru mpbir ) BACZJDAEZKFKGAHI $.
+      ( vx.tru wtru wequ wal wi id df-tru mpbir ) BAACADZIEIFAGH $.
   $}
 
   $c F. $.
@@ -27222,7 +27247,6 @@ $)
       ( wal wi wnfOLD alrimiv df-nfOLD sylibr ) ABBCEFZCEBCGAKCDHBCIJ $.
   $}
 
-
 $(
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
           Equality predicate (continued)
@@ -27251,49 +27275,49 @@ $)
 
   $( Lemma used in proofs of substitution properties.  (Contributed by NM,
      10-May-1993.) $)
-  equs3 $p |- ( E. x ( x = y /\ ph ) <-> -. A. x ( x = y -> -. ph ) ) $=
-    ( weq wn wi wal wa wex alinexa con2bii ) BCDZAEFBGLAHBILABJK $.
+  equs3 $p |- ( E. x ( x =s y /\ ph ) <-> -. A. x ( x =s y -> -. ph ) ) $=
+    ( wequ wn wi wal wa wex alinexa con2bii ) BCDZAEFBGLAHBILABJK $.
 
   ${
-    speimfw.2 $e |- ( x = y -> ( ph -> ps ) ) $.
+    speimfw.2 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Specialization, with additional weakening (compared to ~ 19.2 ) to allow
        bundling of ` x ` and ` y ` .  Uses only Tarski's FOL axiom schemes.
        (Contributed by NM, 23-Apr-2017.)  (Proof shortened by Wolf Lammen,
        5-Dec-2017.) $)
-    speimfw $p |- ( -. A. x -. x = y -> ( A. x ph -> E. x ps ) ) $=
-      ( weq wn wal wex df-ex biimpri com12 aleximi syl5com ) CDFZGCHGZOCIZACHBC
+    speimfw $p |- ( -. A. x -. x =s y -> ( A. x ph -> E. x ps ) ) $=
+      ( wequ wn wal wex df-ex biimpri com12 aleximi syl5com ) CDFZGCHGZOCIZACHBC
       IQPOCJKAOBCOABELMN $.
 
     $( Alternate proof of ~ speimfw (longer compressed proof, but fewer
        essential steps).  (Contributed by NM, 23-Apr-2017.)  (Proof shortened
        by Wolf Lammen, 5-Aug-2017.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    speimfwALT $p |- ( -. A. x -. x = y -> ( A. x ph -> E. x ps ) ) $=
-      ( weq wex wi wn wal eximi df-ex 19.35 3imtr3i ) CDFZCGABHZCGOICJIACJBCGHO
+    speimfwALT $p |- ( -. A. x -. x =s y -> ( A. x ph -> E. x ps ) ) $=
+      ( wequ wex wi wn wal eximi df-ex 19.35 3imtr3i ) CDFZCGABHZCGOICJIACJBCGHO
       PCEKOCLABCMN $.
   $}
 
   ${
     spimfw.1 $e |- ( -. ps -> A. x -. ps ) $.
-    spimfw.2 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimfw.2 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Specialization, with additional weakening (compared to ~ sp ) to allow
        bundling of ` x ` and ` y ` .  Uses only Tarski's FOL axiom schemes.
        (Contributed by NM, 23-Apr-2017.)  (Proof shortened by Wolf Lammen,
        7-Aug-2017.) $)
-    spimfw $p |- ( -. A. x -. x = y -> ( A. x ph -> ps ) ) $=
-      ( weq wn wal wex speimfw df-ex con1i sylbi syl6 ) CDGHCIHACIBCJZBABCDFKPB
+    spimfw $p |- ( -. A. x -. x =s y -> ( A. x ph -> ps ) ) $=
+      ( wequ wn wal wex speimfw df-ex con1i sylbi syl6 ) CDGHCIHACIBCJZBABCDFKPB
       HCIZHBBCLBQEMNO $.
   $}
 
   ${
-    ax12i.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    ax12i.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     ax12i.2 $e |- ( ps -> A. x ps ) $.
     $( Inference that has ~ ax-12 (without ` A. y ` ) as its conclusion.  Uses
        only Tarski's FOL axiom schemes.  The hypotheses may be eliminable
        without using ~ ax-12 in special cases.  Proof similar to Lemma 16 of
        [Tarski] p. 70.  (Contributed by NM, 20-May-2008.) $)
-    ax12i $p |- ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) $=
-      ( weq wi wal biimprcd alrimih syl6bi ) CDGZABMAHZCIEBNCFMABEJKL $.
+    ax12i $p |- ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) $=
+      ( wequ wi wal biimprcd alrimih syl6bi ) CDGZABMAHZCIEBNCFMABEJKL $.
   $}
 
 
@@ -27329,8 +27353,8 @@ $)
      lambda calculus and combinatory logic.  This notation improves the common
      but ambiguous notation, " ` ph ( y ) ` is the wff that results when ` y `
      is properly substituted for ` x ` in ` ph ( x ) ` ."  For example, if the
-     original ` ph ( x ) ` is ` x = y ` , then ` ph ( y ) ` is ` y = y ` , from
-     which we obtain that ` ph ( x ) ` is ` x = x ` .  So what exactly does
+     original ` ph ( x ) ` is ` x =s y ` , then ` ph ( y ) ` is ` y =s y ` , from
+     which we obtain that ` ph ( x ) ` is ` x =s x ` .  So what exactly does
      ` ph ( x ) ` mean?  Curry's notation solves this problem.
 
      In most books, proper substitution has a somewhat complicated recursive
@@ -27352,29 +27376,29 @@ $)
      There are no restrictions on any of the variables, including what
      variables may occur in wff ` ph ` .  (Contributed by NM, 10-May-1993.) $)
   df-sb $a |- ( [ y / x ] ph <->
-              ( ( x = y -> ph ) /\ E. x ( x = y /\ ph ) ) ) $.
+              ( ( x =s y -> ph ) /\ E. x ( x =s y /\ ph ) ) ) $.
 
   $( An equality theorem for substitution.  (Contributed by NM, 16-May-1993.)
      (Proof shortened by Wolf Lammen, 25-Feb-2018.) $)
-  sbequ2 $p |- ( x = y -> ( [ y / x ] ph -> ph ) ) $=
-    ( wsb weq wi wa wex df-sb simplbi com12 ) ABCDZBCEZALMAFMAGBHABCIJK $.
+  sbequ2 $p |- ( x =s y -> ( [ y / x ] ph -> ph ) ) $=
+    ( wsb wequ wi wa wex df-sb simplbi com12 ) ABCDZBCEZALMAFMAGBHABCIJK $.
 
   $( One direction of a simplified definition of substitution.  The converse
      requires either a dv condition ( ~ sb5 ) or a non-freeness hypothesis
      ( ~ sb5f ).  (Contributed by NM, 13-May-1993.) $)
-  sb1 $p |- ( [ y / x ] ph -> E. x ( x = y /\ ph ) ) $=
-    ( wsb weq wi wa wex df-sb simprbi ) ABCDBCEZAFKAGBHABCIJ $.
+  sb1 $p |- ( [ y / x ] ph -> E. x ( x =s y /\ ph ) ) $=
+    ( wsb wequ wi wa wex df-sb simprbi ) ABCDBCEZAFKAGBHABCIJ $.
 
   $( A specialization theorem.  (Contributed by NM, 29-Jun-1993.)  (Proof
      shortened by Wolf Lammen, 3-May-2018.) $)
   spsbe $p |- ( [ y / x ] ph -> E. x ph ) $=
-    ( wsb weq wa wex sb1 exsimpr syl ) ABCDBCEZAFBGABGABCHKABIJ $.
+    ( wsb wequ wa wex sb1 exsimpr syl ) ABCDBCEZAFBGABGABCHKABIJ $.
 
   $( Elimination of equality from antecedent after substitution.  (Contributed
      by NM, 5-Aug-1993.)  Reduce dependencies on axioms.  (Revised by Wolf
      Lammen, 28-Jul-2018.) $)
-  sbequ8 $p |- ( [ y / x ] ph <-> [ y / x ] ( x = y -> ph ) ) $=
-    ( weq wi wa wex wsb pm5.4 bicomi abai exbii anbi12i df-sb 3bitr4i ) BCDZAEZ
+  sbequ8 $p |- ( [ y / x ] ph <-> [ y / x ] ( x =s y -> ph ) ) $=
+    ( wequ wi wa wex wsb pm5.4 bicomi abai exbii anbi12i df-sb 3bitr4i ) BCDZAEZ
     PAFZBGZFPQEZPQFZBGZFABCHQBCHQTSUBTQPAIJRUABPAKLMABCNQBCNO $.
 
   ${
@@ -27382,7 +27406,7 @@ $)
     $( Infer substitution into antecedent and consequent of an implication.
        (Contributed by NM, 25-Jun-1998.) $)
     sbimi $p |- ( [ y / x ] ph -> [ y / x ] ps ) $=
-      ( weq wi wa wex wsb imim2i anim2i eximi anim12i df-sb 3imtr4i ) CDFZAGZQA
+      ( wequ wi wa wex wsb imim2i anim2i eximi anim12i df-sb 3imtr4i ) CDFZAGZQA
       HZCIZHQBGZQBHZCIZHACDJBCDJRUATUCABQEKSUBCABQELMNACDOBCDOP $.
   $}
 
@@ -27424,7 +27448,7 @@ $)
      Except by ~ ax6v , this axiom should not be referenced directly.  Instead,
      use theorem ~ ax6 .  (Contributed by NM, 10-Jan-1993.)
      (New usage is discouraged.) $)
-  ax-6 $a |- -. A. x -. x = y $.
+  ax-6 $a |- -. A. x -. x =s y $.
 
   ${
     $d x y $.
@@ -27447,7 +27471,7 @@ $)
        When possible, use of this theorem rather than ~ ax6 is preferred since
        its derivation is much shorter and requires fewer axioms.  (Contributed
        by NM, 7-Aug-2015.) $)
-    ax6v $p |- -. A. x -. x = y $=
+    ax6v $p |- -. A. x -. x =s y $=
       ( ax-6 ) ABC $.
   $}
 
@@ -27457,8 +27481,8 @@ $)
        possible, use of this theorem rather than ~ ax6e is preferred since its
        derivation is much shorter and requires fewer axioms.  (Contributed by
        NM, 3-Aug-2017.) $)
-    ax6ev $p |- E. x x = y $=
-      ( weq wex wn wal ax6v df-ex mpbir ) ABCZADJEAFEABGJAHI $.
+    ax6ev $p |- E. x x =s y $=
+      ( wequ wex wn wal ax6v df-ex mpbir ) ABCZADJEAFEABGJAHI $.
   $}
 
   ${
@@ -27472,7 +27496,7 @@ $)
        distinct variable conditions.  (Contributed by Wolf Lammen,
        12-Nov-2017.)  (Proof shortened by Wolf Lammen, 9-Dec-2017.) $)
     exiftru $p |- E. x ph $=
-      ( vy weq ax6ev a1i eximii ) BDEZABBDFAICGH $.
+      ( vy wequ ax6ev a1i eximii ) BDEZABBDFAICGH $.
   $}
 
   $( Theorem 19.2 of [Margaris] p. 89.  This corresponds to the axiom (D) of
@@ -27752,28 +27776,28 @@ $)
   ${
     $d x y $.
     spimeh.1 $e |- ( ph -> A. x ph ) $.
-    spimeh.2 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimeh.2 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Existential introduction, using implicit substitution.  Compare Lemma 14
        of [Tarski] p. 70.  (Contributed by NM, 7-Aug-1994.)  (Proof shortened
        by Wolf Lammen, 10-Dec-2017.) $)
     spimeh $p |- ( ph -> E. x ps ) $=
-      ( wal wex weq wi ax6ev eximii 19.35i syl ) AACGBCHEABCCDIABJCCDKFLMN $.
+      ( wal wex wequ wi ax6ev eximii 19.35i syl ) AACGBCHEABCCDIABJCCDKFLMN $.
   $}
 
   ${
     $d x y $.
     spimw.1 $e |- ( -. ps -> A. x -. ps ) $.
-    spimw.2 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimw.2 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Specialization.  Lemma 8 of [KalishMontague] p. 87.  Uses only Tarski's
        FOL axiom schemes.  (Contributed by NM, 19-Apr-2017.)  (Proof shortened
        by Wolf Lammen, 7-Aug-2017.) $)
     spimw $p |- ( A. x ph -> ps ) $=
-      ( weq wn wal wi ax6v spimfw ax-mp ) CDGHCIHACIBJCDKABCDEFLM $.
+      ( wequ wn wal wi ax6v spimfw ax-mp ) CDGHCIHACIBJCDKABCDEFLM $.
   $}
 
   ${
     $d x y $.  $d x ps $.
-    spimvw.1 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimvw.1 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Specialization.  Lemma 8 of [KalishMontague] p. 87.  Uses only Tarski's
        FOL axiom schemes.  (Contributed by NM, 9-Apr-2017.) $)
     spimvw $p |- ( A. x ph -> ps ) $=
@@ -27787,7 +27811,7 @@ $)
        (Contributed by NM, 1-Aug-2017.)  (Proof shortened by Wolf Lammen,
        13-Aug-2017.) $)
     spnfw $p |- ( A. x ph -> ph ) $=
-      ( vy weq idd spimw ) AABDCBDEAFG $.
+      ( vy wequ idd spimw ) AABDCBDEAFG $.
   $}
 
   ${
@@ -27803,23 +27827,23 @@ $)
     $d x y $.
     $( Version of ~ equs4 with a dv condition, which requires fewer axioms.
        (Contributed by BJ, 31-May-2019.) $)
-    equs4v $p |- ( A. x ( x = y -> ph ) -> E. x ( x = y /\ ph ) ) $=
-      ( weq wi wal wex wa ax6ev exintr mpi ) BCDZAEBFLBGLAHBGBCILABJK $.
+    equs4v $p |- ( A. x ( x =s y -> ph ) -> E. x ( x =s y /\ ph ) ) $=
+      ( wequ wi wal wex wa ax6ev exintr mpi ) BCDZAEBFLBGLAHBGBCILABJK $.
   $}
 
   ${
     $d x y $.  $d x ps $.
-    equsalvw.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsalvw.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Version of ~ equsal with two dv conditions, which requires fewer axioms.
        (Contributed by BJ, 31-May-2019.) $)
-    equsalvw $p |- ( A. x ( x = y -> ph ) <-> ps ) $=
-      ( weq wi wal wex 19.23v pm5.74i albii ax6ev a1bi 3bitr4i ) CDFZBGZCHPCIZB
+    equsalvw $p |- ( A. x ( x =s y -> ph ) <-> ps ) $=
+      ( wequ wi wal wex 19.23v pm5.74i albii ax6ev a1bi 3bitr4i ) CDFZBGZCHPCIZB
       GPAGZCHBPBCJSQCPABEKLRBCDMNO $.
 
     $( Version of ~ equsexv with a dv condition, which requires fewer axioms.
        See also ~ equsex .  (Contributed by BJ, 31-May-2019.) $)
-    equsexvw $p |- ( E. x ( x = y /\ ph ) <-> ps ) $=
-      ( weq wa wex pm5.32i exbii ax6ev 19.41v mpbiran bitri ) CDFZAGZCHOBGZCHZB
+    equsexvw $p |- ( E. x ( x =s y /\ ph ) <-> ps ) $=
+      ( wequ wa wex pm5.32i exbii ax6ev 19.41v mpbiran bitri ) CDFZAGZCHOBGZCHZB
       PQCOABEIJROCHBCDKOBCLMN $.
   $}
 
@@ -27827,7 +27851,7 @@ $)
     $d x y $.
     cbvaliw.1 $e |- ( A. x ph -> A. y A. x ph ) $.
     cbvaliw.2 $e |- ( -. ps -> A. x -. ps ) $.
-    cbvaliw.3 $e |- ( x = y -> ( ph -> ps ) ) $.
+    cbvaliw.3 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Change bound variable.  Uses only Tarski's FOL axiom schemes.  Part of
        Lemma 7 of [KalishMontague] p. 86.  (Contributed by NM, 19-Apr-2017.) $)
     cbvaliw $p |- ( A. x ph -> A. y ps ) $=
@@ -27836,7 +27860,7 @@ $)
 
   ${
     $d x y $.  $d x ps $.  $d y ph $.
-    cbvalivw.1 $e |- ( x = y -> ( ph -> ps ) ) $.
+    cbvalivw.1 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Change bound variable.  Uses only Tarski's FOL axiom schemes.  Part of
        Lemma 7 of [KalishMontague] p. 86.  (Contributed by NM, 9-Apr-2017.) $)
     cbvalivw $p |- ( A. x ph -> A. y ps ) $=
@@ -27869,7 +27893,7 @@ $)
      the comment of ~ ax7v for more details on these matters.  (Contributed by
      NM, 10-Jan-1993.)  (Revised by BJ, 7-Dec-2020.)  Use ~ ax7 instead.
      (New usage is discouraged.) $)
-  ax-7 $a |- ( x = y -> ( x = z -> y = z ) ) $.
+  ax-7 $a |- ( x =s y -> ( x =s z -> y =s z ) ) $.
 
   ${
     $d x y $.
@@ -27882,13 +27906,13 @@ $)
        In ~ ax7v , it is still allowed to substitute the same variable for
        ` x ` and ` z ` , or the same variable for ` y ` and ` z ` .  Therefore,
        ~ ax7v "bundles" (a term coined by Raph Levien) its "principal instance"
-       ` ( x = y -> ( x = z -> y = z ) ) ` with ` x , y , z ` distinct, and its
-       "degenerate instances" ` ( x = y -> ( x = x -> y = x ) ) ` and
-       ` ( x = y -> ( x = y -> y = y ) ) ` with ` x , y ` distinct.  These
+       ` ( x =s y -> ( x =s z -> y =s z ) ) ` with ` x , y , z ` distinct, and its
+       "degenerate instances" ` ( x =s y -> ( x =s x -> y =s x ) ) ` and
+       ` ( x =s y -> ( x =s y -> y =s y ) ) ` with ` x , y ` distinct.  These
        degenerate instances are for instance used in the proofs of ~ equcomiv
        and ~ equid respectively.  (Contributed by BJ, 7-Dec-2020.)  Use ~ ax7
        instead.  (New usage is discouraged.) $)
-    ax7v $p |- ( x = y -> ( x = z -> y = z ) ) $=
+    ax7v $p |- ( x =s y -> ( x =s z -> y =s z ) ) $=
       ( ax-7 ) ABCD $.
   $}
 
@@ -27896,7 +27920,7 @@ $)
     $d x y $.  $d x z $.
     $( First of two weakened versions of ~ ax7v , with an extra dv condition on
        ` x , z ` , see comments there.  (Contributed by BJ, 7-Dec-2020.) $)
-    ax7v1 $p |- ( x = y -> ( x = z -> y = z ) ) $=
+    ax7v1 $p |- ( x =s y -> ( x =s z -> y =s z ) ) $=
       ( ax7v ) ABCD $.
   $}
 
@@ -27904,7 +27928,7 @@ $)
     $d x y $.  $d y z $.
     $( Second of two weakened versions of ~ ax7v , with an extra dv condition
        on ` y , z ` , see comments there.  (Contributed by BJ, 7-Dec-2020.) $)
-    ax7v2 $p |- ( x = y -> ( x = z -> y = z ) ) $=
+    ax7v2 $p |- ( x =s y -> ( x =s z -> y =s z ) ) $=
       ( ax7v ) ABCD $.
   $}
 
@@ -27914,32 +27938,32 @@ $)
        Lemma 6 of [Tarski] p. 68.  (Contributed by NM, 1-Apr-2005.)  (Revised
        by NM, 9-Apr-2017.)  (Proof shortened by Wolf Lammen, 5-Feb-2018.)
        (Proof shortened by Wolf Lammen, 22-Aug-2020.) $)
-    equid $p |- x = x $=
-      ( vy weq ax7v1 pm2.43i ax6ev exlimiiv ) BACZAACZBHIBAADEBAFG $.
+    equid $p |- x =s x $=
+      ( vy wequ ax7v1 pm2.43i ax6ev exlimiiv ) BACZAACZBHIBAADEBAFG $.
   $}
 
-  $( Bound-variable hypothesis builder for ` x = x ` .  This theorem tells us
+  $( Bound-variable hypothesis builder for ` x =s x ` .  This theorem tells us
      that any variable, including ` x ` , is effectively not free in
-     ` x = x ` , even though ` x ` is technically free according to the
+     ` x =s x ` , even though ` x ` is technically free according to the
      traditional definition of free variable.  (Contributed by NM,
      13-Jan-2011.)  (Revised by NM, 21-Aug-2017.) $)
-  nfequid $p |- F/ y x = x $=
-    ( weq equid nfth ) AACBADE $.
+  nfequid $p |- F/ y x =s x $=
+    ( wequ equid nfth ) AACBADE $.
 
   ${
     $d x y $.
     $( Weaker form of ~ equcomi with a dv condition on ` x , y ` .  This is an
        intermediate step and ~ equcomi is fully recovered later.  (Contributed
        by BJ, 7-Dec-2020.) $)
-    equcomiv $p |- ( x = y -> y = x ) $=
-      ( weq equid ax7v2 mpi ) ABCAACBACADABAEF $.
+    equcomiv $p |- ( x =s y -> y =s x ) $=
+      ( wequ equid ax7v2 mpi ) ABCAACBACADABAEF $.
   $}
 
   ${
     $d x y $.
     $( A commuted form of ~ ax6ev .  (Contributed by BJ, 7-Dec-2020.) $)
-    ax6evr $p |- E. x y = x $=
-      ( weq ax6ev equcomiv eximii ) ABCBACAABDABEF $.
+    ax6evr $p |- E. x y =s x $=
+      ( wequ ax6ev equcomiv eximii ) ABCBACAABDABEF $.
   $}
 
   ${
@@ -27952,102 +27976,102 @@ $)
        condition on ` x , z ` (resp. on ` y , z ` ) does not permit, together
        with the other axioms, to prove reflexivity (resp. symmetry).
        (Contributed by BJ, 7-Dec-2020.) $)
-    ax7 $p |- ( x = y -> ( x = z -> y = z ) ) $=
-      ( vt weq wi ax7v2 wa ax7v1 imp a1i syl2and expd ax6evr exlimiiv ) ADEZABE
+    ax7 $p |- ( x =s y -> ( x =s z -> y =s z ) ) $=
+      ( vt wequ wi ax7v2 wa ax7v1 imp a1i syl2and expd ax6evr exlimiiv ) ADEZABE
       ZACEZBCEZFFDPQRSPQDBEZRDCEZSADBGADCGTUAHSFPTUASDBCIJKLMDANO $.
   $}
 
   $( Commutative law for equality.  Equality is a symmetric relation.  Lemma 3
      of [KalishMontague] p. 85.  See also Lemma 7 of [Tarski] p. 69.
      (Contributed by NM, 10-Jan-1993.)  (Revised by NM, 9-Apr-2017.) $)
-  equcomi $p |- ( x = y -> y = x ) $=
-    ( weq equid ax7 mpi ) ABCAACBACADABAEF $.
+  equcomi $p |- ( x =s y -> y =s x ) $=
+    ( wequ equid ax7 mpi ) ABCAACBACADABAEF $.
 
   $( Commutative law for equality.  Equality is a symmetric relation.
      (Contributed by NM, 20-Aug-1993.) $)
-  equcom $p |- ( x = y <-> y = x ) $=
-    ( weq equcomi impbii ) ABCBACABDBADE $.
+  equcom $p |- ( x =s y <-> y =s x ) $=
+    ( wequ equcomi impbii ) ABCBACABDBADE $.
 
   ${
-    equcomd.1 $e |- ( ph -> x = y ) $.
+    equcomd.1 $e |- ( ph -> x =s y ) $.
     $( Deduction form of ~ equcom , symmetry of equality.  For the versions for
        classes, see ~ eqcom and ~ eqcomd .  (Contributed by BJ, 6-Oct-2019.) $)
-    equcomd $p |- ( ph -> y = x ) $=
-      ( weq equcom sylib ) ABCECBEDBCFG $.
+    equcomd $p |- ( ph -> y =s x ) $=
+      ( wequ equcom sylib ) ABCECBEDBCFG $.
   $}
 
   ${
-    equcoms.1 $e |- ( x = y -> ph ) $.
+    equcoms.1 $e |- ( x =s y -> ph ) $.
     $( An inference commuting equality in antecedent.  Used to eliminate the
        need for a syllogism.  (Contributed by NM, 10-Jan-1993.) $)
-    equcoms $p |- ( y = x -> ph ) $=
-      ( weq equcomi syl ) CBEBCEACBFDG $.
+    equcoms $p |- ( y =s x -> ph ) $=
+      ( wequ equcomi syl ) CBEBCEACBFDG $.
   $}
 
   $( A transitive law for equality.  (Contributed by NM, 23-Aug-1993.) $)
-  equtr $p |- ( x = y -> ( y = z -> x = z ) ) $=
-    ( weq wi ax7 equcoms ) BCDACDEBABACFG $.
+  equtr $p |- ( x =s y -> ( y =s z -> x =s z ) ) $=
+    ( wequ wi ax7 equcoms ) BCDACDEBABACFG $.
 
   $( A transitive law for equality.  Lemma L17 in [Megill] p. 446 (p. 14 of the
      preprint).  (Contributed by NM, 23-Aug-1993.) $)
-  equtrr $p |- ( x = y -> ( z = x -> z = y ) ) $=
-    ( weq equtr com12 ) CADABDCBDCABEF $.
+  equtrr $p |- ( x =s y -> ( z =s x -> z =s y ) ) $=
+    ( wequ equtr com12 ) CADABDCBDCABEF $.
 
   $( Commuted version of ~ equeucl (equality is left-Euclidean).  (Contributed
      by BJ, 12-Apr-2021.) $)
-  equeuclr $p |- ( x = z -> ( y = z -> y = x ) ) $=
-    ( weq wi equtrr equcoms ) BCDBADECACABFG $.
+  equeuclr $p |- ( x =s z -> ( y =s z -> y =s x ) ) $=
+    ( wequ wi equtrr equcoms ) BCDBADECACABFG $.
 
   $( Equality is a left-Euclidean binary relation.  (Right-Euclideanness is
      stated in ~ ax-7 .)  Exported (curried) form of ~ equtr2 .  (Contributed
      by BJ, 11-Apr-2021.) $)
-  equeucl $p |- ( x = z -> ( y = z -> x = y ) ) $=
-    ( weq equeuclr com12 ) BCDACDABDBACEF $.
+  equeucl $p |- ( x =s z -> ( y =s z -> x =s y ) ) $=
+    ( wequ equeuclr com12 ) BCDACDABDBACEF $.
 
   $( An equivalence law for equality.  (Contributed by NM, 1-Aug-1993.)  (Proof
      shortened by Wolf Lammen, 10-Dec-2017.) $)
-  equequ1 $p |- ( x = y -> ( x = z <-> y = z ) ) $=
-    ( weq ax7 equtr impbid ) ABDACDBCDABCEABCFG $.
+  equequ1 $p |- ( x =s y -> ( x =s z <-> y =s z ) ) $=
+    ( wequ ax7 equtr impbid ) ABDACDBCDABCEABCFG $.
 
   $( An equivalence law for equality.  (Contributed by NM, 21-Jun-1993.)
      (Proof shortened by Wolf Lammen, 4-Aug-2017.)  (Proof shortened by BJ,
      12-Apr-2021.) $)
-  equequ2 $p |- ( x = y -> ( z = x <-> z = y ) ) $=
-    ( weq equtrr equeuclr impbid ) ABDCADCBDABCEACBFG $.
+  equequ2 $p |- ( x =s y -> ( z =s x <-> z =s y ) ) $=
+    ( wequ equtrr equeuclr impbid ) ABDCADCBDABCEACBFG $.
 
   $( Equality is a left-Euclidean binary relation.  Imported (uncurried) form
      of ~ equeucl .  (Contributed by NM, 12-Aug-1993.)  (Proof shortened by
      Andrew Salmon, 25-May-2011.)  (Proof shortened by BJ, 11-Apr-2021.) $)
-  equtr2 $p |- ( ( x = z /\ y = z ) -> x = y ) $=
-    ( weq equeucl imp ) ACDBCDABDABCEF $.
+  equtr2 $p |- ( ( x =s z /\ y =s z ) -> x =s y ) $=
+    ( wequ equeucl imp ) ACDBCDABDABCEF $.
 
   $( Obsolete proof of ~ equequ2 as of 12-Apr-2021.  (Contributed by NM,
      21-Jun-1993.)  (Proof shortened by Wolf Lammen, 4-Aug-2017.)
      (Proof modification is discouraged.)  (New usage is discouraged.) $)
-  equequ2OLD $p |- ( x = y -> ( z = x <-> z = y ) ) $=
-    ( weq equequ1 equcom 3bitr3g ) ABDACDBCDCADCBDABCEACFBCFG $.
+  equequ2OLD $p |- ( x =s y -> ( z =s x <-> z =s y ) ) $=
+    ( wequ equequ1 equcom 3bitr3g ) ABDACDBCDCADCBDABCEACFBCFG $.
 
   $( Obsolete proof of ~ equtr2 as of 11-Apr-2021.  (Contributed by NM,
      12-Aug-1993.)  (Proof shortened by Andrew Salmon, 25-May-2011.)
      (Proof modification is discouraged.)  (New usage is discouraged.) $)
-  equtr2OLD $p |- ( ( x = z /\ y = z ) -> x = y ) $=
-    ( weq wi equtrr equcoms impcom ) BCDACDZABDZIJECBCBAFGH $.
+  equtr2OLD $p |- ( ( x =s z /\ y =s z ) -> x =s y ) $=
+    ( wequ wi equtrr equcoms impcom ) BCDACDZABDZIJECBCBAFGH $.
 
   $( One of the two equality axioms of standard predicate calculus, called
      reflexivity of equality.  (The other one is ~ stdpc7 .)  Axiom 6 of
      [Mendelson] p. 95.  Mendelson doesn't say why he prepended the redundant
      quantifier, but it was probably to be compatible with free logic (which is
      valid in the empty domain).  (Contributed by NM, 16-Feb-2005.) $)
-  stdpc6 $p |- A. x x = x $=
-    ( weq equid ax-gen ) AABAACD $.
+  stdpc6 $p |- A. x x =s x $=
+    ( wequ equid ax-gen ) AABAACD $.
 
   $( One of the two equality axioms of standard predicate calculus, called
      substitutivity of equality.  (The other one is ~ stdpc6 .)  Translated to
      traditional notation, it can be read:
-      " ` x = y -> ( ph ( x , x ) -> ph ( x , y ) ) ` , provided that ` y ` is
+      " ` x =s y -> ( ph ( x , x ) -> ph ( x , y ) ) ` , provided that ` y ` is
      free for ` x ` in ` ph ( x , x ) ` ."  Axiom 7 of [Mendelson] p. 95.
      (Contributed by NM, 15-Feb-2005.) $)
-  stdpc7 $p |- ( x = y -> ( [ x / y ] ph -> ph ) ) $=
+  stdpc7 $p |- ( x =s y -> ( [ x / y ] ph -> ph ) ) $=
     ( wsb wi sbequ2 equcoms ) ACBDAECBACBFG $.
 
   ${
@@ -28057,44 +28081,44 @@ $)
        ~ ax-13 .  (Revised by Wolf Lammen, 10-Jun-2019.)  Move the quantified
        variable ( ` z ` ) to the left of the equality signs.  (Revised by Wolf
        Lammen, 11-Apr-2021.) $)
-    equvinv $p |- ( x = y <-> E. z ( z = x /\ z = y ) ) $=
-      ( weq wa wex ax6ev equtrr ancld eximdv mpi ax7 imp exlimiv impbii ) ABDZC
+    equvinv $p |- ( x =s y <-> E. z ( z =s x /\ z =s y ) ) $=
+      ( wequ wa wex ax6ev equtrr ancld eximdv mpi ax7 imp exlimiv impbii ) ABDZC
       ADZCBDZEZCFZPQCFTCAGPQSCPQRABCHIJKSPCQRPCABLMNO $.
 
     $( A modified version of the forward implication of ~ equvinv adapted to
        common usage.  (Contributed by Wolf Lammen, 8-Sep-2018.) $)
-    equviniva $p |- ( x = y -> E. z ( x = z /\ y = z ) ) $=
-      ( weq wex wa ax6evr equtr ancrd eximdv mpi ) ABDZBCDZCEACDZMFZCECBGLMOCLM
+    equviniva $p |- ( x =s y -> E. z ( x =s z /\ y =s z ) ) $=
+      ( wequ wex wa ax6evr equtr ancrd eximdv mpi ) ABDZBCDZCEACDZMFZCECBGLMOCLM
       NABCHIJK $.
 
     $( The forward implication of ~ equvinv .  Obsolete as of 11-Apr-2021.  Use
        ~ equvinv instead.  (Contributed by Wolf Lammen, 11-Apr-2021.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
-    equvinivOLD $p |- ( x = y -> E. z ( z = x /\ z = y ) ) $=
-      ( weq wex wa ax6ev equtrr ancld eximdv mpi ) ABDZCADZCEMCBDZFZCECAGLMOCLM
+    equvinivOLD $p |- ( x =s y -> E. z ( z =s x /\ z =s y ) ) $=
+      ( wequ wex wa ax6ev equtrr ancld eximdv mpi ) ABDZCADZCEMCBDZFZCECAGLMOCLM
       NABCHIJK $.
 
     $( Obsolete version of ~ equvinv as of 11-Apr-2021.  (Contributed by NM,
        9-Jan-1993.)  Remove dependencies on ~ ax-10 , ~ ax-13 .  (Revised by
        Wolf Lammen, 10-Jun-2019.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    equvinvOLD $p |- ( x = y <-> E. z ( x = z /\ y = z ) ) $=
-      ( weq wa wex equviniva wi equtrr equcoms impcom exlimiv impbii ) ABDZACDZ
+    equvinvOLD $p |- ( x =s y <-> E. z ( x =s z /\ y =s z ) ) $=
+      ( wequ wa wex equviniva wi equtrr equcoms impcom exlimiv impbii ) ABDZACDZ
       BCDZEZCFABCGQNCPONONHCBCBAIJKLM $.
 
     $( A specialized version of ~ equvel with distinct variable restrictions
        and fewer axiom usage.  (Contributed by Wolf Lammen, 10-Apr-2021.) $)
-    equvelv $p |- ( x = y <-> A. z ( z = x -> z = y ) ) $=
-      ( weq wi wal equtrr alrimiv wa wex equs4v equvinv sylibr impbii ) ABDZCAD
+    equvelv $p |- ( x =s y <-> A. z ( z =s x -> z =s y ) ) $=
+      ( wequ wi wal equtrr alrimiv wa wex equs4v equvinv sylibr impbii ) ABDZCAD
       ZCBDZEZCFZORCABCGHSPQICJOQCAKABCLMN $.
   $}
 
   $( An equivalence between two ways of expressing ~ ax-13 .  See the comment
      for ~ ax-13 .  (Contributed by NM, 2-May-2017.)  (Proof shortened by Wolf
      Lammen, 26-Feb-2018.)  (Revised by BJ, 15-Sep-2020.) $)
-  ax13b $p |- ( ( -. x = y -> ( y = z -> ph ) )
-                       <-> ( -. x = y -> ( -. x = z -> ( y = z -> ph ) ) ) ) $=
-    ( weq wn wi ax-1 equeuclr con3rr3 imim1d pm2.43 syl6 impbid2 pm5.74i ) BCEZ
+  ax13b $p |- ( ( -. x =s y -> ( y =s z -> ph ) )
+                       <-> ( -. x =s y -> ( -. x =s z -> ( y =s z -> ph ) ) ) ) $=
+    ( wequ wn wi ax-1 equeuclr con3rr3 imim1d pm2.43 syl6 impbid2 pm5.74i ) BCEZ
     FZCDEZAGZBDEZFZSGZQSUBSUAHQUBRSGSQRUASRTPCBDIJKRALMNO $.
 
   ${
@@ -28102,26 +28126,26 @@ $)
     spfw.1 $e |- ( -. ps -> A. x -. ps ) $.
     spfw.2 $e |- ( A. x ph -> A. y A. x ph ) $.
     spfw.3 $e |- ( -. ph -> A. y -. ph ) $.
-    spfw.4 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    spfw.4 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Weak version of ~ sp .  Uses only Tarski's FOL axiom schemes.  Lemma 9
        of [KalishMontague] p. 87.  This may be the best we can do with minimal
        distinct variable conditions.  (Contributed by NM, 19-Apr-2017.)  (Proof
        shortened by Wolf Lammen, 10-Oct-2021.) $)
     spfw $p |- ( A. x ph -> ph ) $=
-      ( wal weq biimpd cbvaliw wi biimprd equcoms spimw syl ) ACIBDIAABCDFECDJZ
+      ( wal wequ biimpd cbvaliw wi biimprd equcoms spimw syl ) ACIBDIAABCDFECDJZ
       ABHKLBADCGBAMCDRABHNOPQ $.
 
     $( Obsolete proof of ~ spfw as of 10-Oct-2021.  (Contributed by NM,
        19-Apr-2017.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
     spfwOLD $p |- ( A. x ph -> ph ) $=
-      ( wal wi alim weq biimprd equcoms spimw syl56 biimpd mpg ) ACIZBJZSAJDSSD
+      ( wal wi alim wequ biimprd equcoms spimw syl56 biimpd mpg ) ACIZBJZSAJDSSD
       ITDIBDIAFSBDKBADCGBAJCDCDLZABHMNOPABCDEUAABHQOR $.
   $}
 
   ${
     $d x y $.  $d x ps $.  $d y ph $.
-    spw.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    spw.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Weak version of the specialization scheme ~ sp .  Lemma 9 of
        [KalishMontague] p. 87.  While it appears that ~ sp in its general form
        does not follow from Tarski's FOL axiom schemes, from this theorem we
@@ -28143,17 +28167,17 @@ $)
     cbvalw.2 $e |- ( -. ps -> A. x -. ps ) $.
     cbvalw.3 $e |- ( A. y ps -> A. x A. y ps ) $.
     cbvalw.4 $e |- ( -. ph -> A. y -. ph ) $.
-    cbvalw.5 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    cbvalw.5 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Change bound variable.  Uses only Tarski's FOL axiom schemes.
        (Contributed by NM, 9-Apr-2017.) $)
     cbvalw $p |- ( A. x ph <-> A. y ps ) $=
-      ( wal weq biimpd cbvaliw wi biimprd equcoms impbii ) ACJBDJABCDEFCDKZABIL
+      ( wal wequ biimpd cbvaliw wi biimprd equcoms impbii ) ACJBDJABCDEFCDKZABIL
       MBADCGHBANCDRABIOPMQ $.
   $}
 
   ${
     $d x y $.  $d x ps $.  $d y ph $.
-    cbvalvw.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    cbvalvw.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Change bound variable.  Uses only Tarski's FOL axiom schemes.
        (Contributed by NM, 9-Apr-2017.)  (Proof shortened by Wolf Lammen,
        28-Feb-2018.) $)
@@ -28163,17 +28187,17 @@ $)
     $( Change bound variable.  Uses only Tarski's FOL axiom schemes.
        (Contributed by NM, 19-Apr-2017.) $)
     cbvexvw $p |- ( E. x ph <-> E. y ps ) $=
-      ( wn wal wex weq notbid cbvalvw notbii df-ex 3bitr4i ) AFZCGZFBFZDGZFACHB
+      ( wn wal wex wequ notbid cbvalvw notbii df-ex 3bitr4i ) AFZCGZFBFZDGZFACHB
       DHPROQCDCDIABEJKLACMBDMN $.
   $}
 
   ${
     $d y z $.  $d x y $.  $d z ph $.  $d y ps $.
-    alcomiw.1 $e |- ( y = z -> ( ph <-> ps ) ) $.
+    alcomiw.1 $e |- ( y =s z -> ( ph <-> ps ) ) $.
     $( Weak version of ~ alcom .  Uses only Tarski's FOL axiom schemes.
        (Contributed by NM, 10-Apr-2017.) $)
     alcomiw $p |- ( A. x A. y ph -> A. y A. x ph ) $=
-      ( wal weq biimpd cbvalivw alimi ax-5 wi biimprd equcoms spimvw 3syl ) ADG
+      ( wal wequ biimpd cbvalivw alimi ax-5 wi biimprd equcoms spimvw 3syl ) ADG
       ZCGBEGZCGZTDGACGZDGRSCABDEDEHZABFIJKTDLTUADSACBAEDBAMDEUBABFNOPKKQ $.
   $}
 
@@ -28184,7 +28208,7 @@ $)
     hbn1fw.3 $e |- ( A. y ps -> A. x A. y ps ) $.
     hbn1fw.4 $e |- ( -. ph -> A. y -. ph ) $.
     hbn1fw.5 $e |- ( -. A. y ps -> A. x -. A. y ps ) $.
-    hbn1fw.6 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    hbn1fw.6 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Weak version of ~ ax-10 from which we can prove any ~ ax-10 instance not
        involving wff variables or bundling.  Uses only Tarski's FOL axiom
        schemes.  (Contributed by NM, 19-Apr-2017.)  (Proof shortened by Wolf
@@ -28195,7 +28219,7 @@ $)
 
   ${
     $d y ph $.  $d x ps $.  $d x y $.
-    hbn1w.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    hbn1w.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Weak version of ~ hbn1 .  Uses only Tarski's FOL axiom schemes.
        (Contributed by NM, 9-Apr-2017.) $)
     hbn1w $p |- ( -. A. x ph -> A. x -. A. x ph ) $=
@@ -28205,7 +28229,7 @@ $)
        FOL axiom schemes.  (Contributed by NM, 9-Apr-2017.)  (Proof shortened
        by Wolf Lammen, 10-Oct-2021.) $)
     hba1w $p |- ( A. x ph -> A. x A. x ph ) $=
-      ( wal wn wb weq cbvalvw notbii a1i spw con2i hbn1w con1i alimi 3syl ) ACF
+      ( wal wn wb wequ cbvalvw notbii a1i spw con2i hbn1w con1i alimi 3syl ) ACF
       ZSGZCFZGZUBCFSCFUASTBDFZGZCDTUDHCDISUCABCDEJKLZMNTUDCDUEOUBSCSUAABCDEOPQR
       $.
 
@@ -28213,20 +28237,20 @@ $)
        9-Apr-2017.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
     hba1wOLD $p |- ( A. x ph -> A. x A. x ph ) $=
-      ( wal wn weq wb cbvalvw a1i notbid spw con2i hbn1w con1i alimi 3syl ) ACF
+      ( wal wn wequ wb cbvalvw a1i notbid spw con2i hbn1w con1i alimi 3syl ) ACF
       ZSGZCFZGZUBCFSCFUASTBDFZGZCDCDHZSUCSUCIUEABCDEJKLZMNTUDCDUFOUBSCSUAABCDEO
       PQR $.
 
     $( Weak version of ~ hbe1 .  See comments for ~ ax10w .  Uses only Tarski's
        FOL axiom schemes.  (Contributed by NM, 19-Apr-2017.) $)
     hbe1w $p |- ( E. x ph -> A. x E. x ph ) $=
-      ( wex wn wal df-ex weq notbid hbn1w hbxfrbi ) ACFAGZCHGCACINBGCDCDJABEKLM
+      ( wex wn wal df-ex wequ notbid hbn1w hbxfrbi ) ACFAGZCHGCACINBGCDCDJABEKLM
       $.
   $}
 
   ${
     $d x z $.  $d x y $.  $d z ph $.  $d x ps $.
-    hbalw.1 $e |- ( x = z -> ( ph <-> ps ) ) $.
+    hbalw.1 $e |- ( x =s z -> ( ph <-> ps ) ) $.
     hbalw.2 $e |- ( ph -> A. x ph ) $.
     $( Weak version of ~ hbal .  Uses only Tarski's FOL axiom schemes.  Unlike
        ~ hbal , this theorem requires that ` x ` and ` y ` be distinct, i.e.
@@ -28241,18 +28265,18 @@ $)
        Unlike the more general ~ sp , we can prove this without ~ ax-12 .
        Instance of ~ aeveq .
 
-       The antecedent ` A. x x = y ` with distinct ` x ` and ` y ` is a
+       The antecedent ` A. x x =s y ` with distinct ` x ` and ` y ` is a
        characteristic of a degenerate universe, in which just one object
        exists.  Actually more than one object may still exist, but if so, we
        give up on equality as a discriminating term.
 
        Separating this degenerate case from a richer universe, where inequality
        is possible, is a common proof idea.  The name of this theorem follows a
-       convention, where the condition ` A. x x = y ` is denoted by 'aev', a
+       convention, where the condition ` A. x x =s y ` is denoted by 'aev', a
        shorthand for 'all equal, with a distinct variable condition'.
        (Contributed by Wolf Lammen, 14-Mar-2021.) $)
-    spaev $p |- ( A. x x = y -> x = y ) $=
-      ( vz weq equequ1 spw ) ABDCBDACACBEF $.
+    spaev $p |- ( A. x x =s y -> x =s y ) $=
+      ( vz wequ equequ1 spw ) ABDCBDACACBEF $.
   $}
 
   ${
@@ -28260,8 +28284,8 @@ $)
     $( Change bound variable in an equality with a dv condition.  Instance of
        ~ aev .  (Contributed by NM, 22-Jul-2015.)  (Revised by BJ,
        18-Jun-2019.) $)
-    cbvaev $p |- ( A. x x = y -> A. z z = y ) $=
-      ( vt weq wal ax7 cbvalivw syl ) ABEZAFDBEZDFCBEZCFJKADADBGHKLDCDCBGHI $.
+    cbvaev $p |- ( A. x x =s y -> A. z z =s y ) $=
+      ( vt wequ wal ax7 cbvalivw syl ) ABEZAFDBEZDFCBEZCFJKADADBGHKLDCDCBGHI $.
   $}
 
   ${
@@ -28271,8 +28295,8 @@ $)
        dependency on ~ ax-12 .  (Revised by Wolf Lammen, 14-Mar-2021.)
        (Revised by BJ, 29-Mar-2021.)  (Proof shortened by Wolf Lammen,
        30-Mar-2021.) $)
-    aevlem0 $p |- ( A. x x = y -> A. z z = x ) $=
-      ( weq wal spaev alrimiv cbvaev equeuclr al2imi sylc ) ABDZAEZLCECBDZCECAD
+    aevlem0 $p |- ( A. x x =s y -> A. z z =s x ) $=
+      ( wequ wal spaev alrimiv cbvaev equeuclr al2imi sylc ) ABDZAEZLCECBDZCECAD
       ZCEMLCABFGABCHLNOCACBIJK $.
   $}
 
@@ -28283,18 +28307,18 @@ $)
        by Wolf Lammen, 17-Feb-2018.)  Remove dependency on ~ ax-13 , along an
        idea of BJ. (Revised by Wolf Lammen, 30-Nov-2019.)  (Revised by BJ,
        29-Mar-2021.) $)
-    aevlem $p |- ( A. x x = y -> A. z z = t ) $=
-      ( vu weq wal cbvaev aevlem0 4syl ) ABFAGEBFEGAEFAGDEFDGCDFCGABEHEBAIAEDHD
+    aevlem $p |- ( A. x x =s y -> A. z z =s t ) $=
+      ( vu wequ wal cbvaev aevlem0 4syl ) ABFAGEBFEGAEFAGDEFDGCDFCGABEHEBAIAEDHD
       ECIJ $.
   $}
 
   ${
     $d x y $.  $d u z $.  $d u t $.
-    $( The antecedent ` A. x x = y ` with a dv condition (typical of a
+    $( The antecedent ` A. x x =s y ` with a dv condition (typical of a
        one-object universe) forces equality of everything.  (Contributed by
        Wolf Lammen, 19-Mar-2021.) $)
-    aeveq $p |- ( A. x x = y -> z = t ) $=
-      ( vu weq wal wex aevlem ax6ev ax7 aleximi mpi ax5e 3syl ) ABFAGECFZEGZCDF
+    aeveq $p |- ( A. x x =s y -> z =s t ) $=
+      ( vu wequ wal wex aevlem ax6ev ax7 aleximi mpi ax5e 3syl ) ABFAGECFZEGZCDF
       ZEHZRABECIQEDFZEHSEDJPTREECDKLMRENO $.
   $}
 
@@ -28306,8 +28330,8 @@ $)
        ~ ax-13 , inspired by an idea of BJ. (Revised by Wolf Lammen,
        30-Nov-2019.)  Remove dependency on ~ ax-12 .  (Revised by Wolf Lammen,
        19-Mar-2021.) $)
-    aev $p |- ( A. x x = y -> A. z t = u ) $=
-      ( vv vw weq wal aevlem aeveq alrimiv syl ) ABHAIFGHFIZEDHZCIABFGJNOCFGEDK
+    aev $p |- ( A. x x =s y -> A. z t =s u ) $=
+      ( vv vw wequ wal aevlem aeveq alrimiv syl ) ABHAIFGHFIZEDHZCIABFGJNOCFGEDK
       LM $.
   $}
 
@@ -28316,8 +28340,8 @@ $)
     $( Generalization of ~ hbaev , proved at no extra cost.  Instance of
        ~ aev2 .  (Contributed by Wolf Lammen, 22-Mar-2021.)  (Revised by BJ,
        29-Mar-2021.) $)
-    hbaevg $p |- ( A. x x = y -> A. z A. t t = u ) $=
-      ( vv vw weq wal aevlem alrimiv syl ) ABHAIFGHFIZEDHEIZCIABFGJMNCFGEDJKL
+    hbaevg $p |- ( A. x x =s y -> A. z A. t t =s u ) $=
+      ( vv vw wequ wal aevlem alrimiv syl ) ABHAIFGHFIZEDHEIZCIABFGJMNCFGEDJKL
       $.
   $}
 
@@ -28325,7 +28349,7 @@ $)
     $d x y $.
     $( Version of ~ hbae with a DV condition, requiring fewer axioms.  Instance
        of ~ hbaevg and ~ aev2 .  (Contributed by Wolf Lammen, 22-Mar-2021.) $)
-    hbaev $p |- ( A. x x = y -> A. z A. x x = y ) $=
+    hbaev $p |- ( A. x x =s y -> A. z A. x x =s y ) $=
       ( hbaevg ) ABCBAD $.
   $}
 
@@ -28333,37 +28357,37 @@ $)
     $v s $.
     $( Define temporary individual variable s. $)
     v.vs $f setvar s $.
-    $d x y $.  $d w s $.
+    $d x y $.  $d s w $.
     $( A version of ~ aev with two universal quantifiers in the consequent, and
        a generalization of ~ hbaevg .  One can prove similar statements with
        arbitrary numbers of universal quantifiers in the consequent (the series
        begins with ~ aeveq , ~ aev , ~ aev2 ).
 
        Using ~ aev and ~ alrimiv (as in ~ aev2ALT ), one can actually prove
-       (with no more axioms) any scheme of the form ` ( A. x x = y -> ` PHI) ,
+       (with no more axioms) any scheme of the form ` ( A. x x =s y -> ` PHI) ,
        DV ` ( x , y ) ` where PHI involves only setvar variables and the
-       connectors ` -> ` , ` <-> ` , ` /\ ` , ` \/ ` , ` T. ` , ` = ` ,
+       connectors ` -> ` , ` <-> ` , ` /\ ` , ` \/ ` , ` T. ` , ` =s ` ,
        ` A. ` , ` E. ` , ` E* ` , ` E! ` , ` F/ ` .  An example is given by
        ~ aevdemo .  This list cannot be extended to ` -. ` or ` F. ` since the
-       scheme ` A. x x = y ` is consistent with ~ ax-mp , ~ ax-gen , ~ ax-1 --
+       scheme ` A. x x =s y ` is consistent with ~ ax-mp , ~ ax-gen , ~ ax-1 --
        ~ ax-13 (as the one-element universe shows).
 
        (Contributed by BJ, 29-Mar-2021.) $)
-    aev2 $p |- ( A. x x = y -> A. z A. t u = v ) $=
-      ( vw v.vs weq wal hbaevg aev sylg ) ABIAJGHIGJEDIFJCABCHGKGHFDELM $.
+    aev2 $p |- ( A. x x =s y -> A. z A. t u =s v ) $=
+      ( vw v.vs wequ wal hbaevg aev sylg ) ABIAJGHIGJEDIFJCABCHGKGHFDELM $.
 
     $d w s z $.
     $( Alternate proof of ~ aev2 , bypassing ~ hbaevg .  (Contributed by BJ,
        23-Mar-2021.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    aev2ALT $p |- ( A. x x = y -> A. z A. t u = v ) $=
-      ( vw v.vs weq wal aev alrimiv syl ) ABIAJGHIGJZEDIFJZCJABGHGKNOCGHFDEKLM
+    aev2ALT $p |- ( A. x x =s y -> A. z A. t u =s v ) $=
+      ( vw v.vs wequ wal aev alrimiv syl ) ABIAJGHIGJZEDIFJZCJABGHGKNOCGHFDEKLM
       $.
   $}
 
   ${
     $d x z $.  $d y z $.
-    axc11nlemOLD2.1 $e |- ( -. A. y y = x -> ( x = z -> A. y x = z ) ) $.
+    axc11nlemOLD2.1 $e |- ( -. A. y y =s x -> ( x =s z -> A. y x =s z ) ) $.
     $( Lemma for ~ axc11n .  Change bound variable in an equality.  Obsolete as
        of 29-Mar-2021.  Use ~ aev instead.  (Contributed by NM, 8-Jul-2016.)
        (Proof shortened by Wolf Lammen, 17-Feb-2018.)  Restructure to ease
@@ -28371,8 +28395,8 @@ $)
        Lammen, 30-Nov-2019.)  Remove dependency on ~ ax-12 .  (Revised by Wolf
        Lammen, 14-Mar-2021.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc11nlemOLD2 $p |- ( A. x x = z -> A. y y = x ) $=
-      ( weq wal cbvaev equequ2 biimprd al2imi syl5com wn spaev con1d pm2.61d )
+    axc11nlemOLD2 $p |- ( A. x x =s z -> A. y y =s x ) $=
+      ( wequ wal cbvaev equequ2 biimprd al2imi syl5com wn spaev con1d pm2.61d )
       ACEZAFZPBFZBAEZBFZQBCEZBFRTACBGPUASBPSUAACBHIJKQTRQPTLRACMDKNO $.
   $}
 
@@ -28383,8 +28407,8 @@ $)
        Remove dependency on ~ ax-13 , along an idea of BJ. (Revised by Wolf
        Lammen, 30-Nov-2019.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    aevlemOLD $p |- ( A. z z = w -> A. y y = x ) $=
-      ( vv weq wal cbvaev wn ax5d axc11nlemOLD2 4syl ) CDFCGEDFZEGCEFCGZAEFZAGB
+    aevlemOLD $p |- ( A. z z =s w -> A. y y =s x ) $=
+      ( vv wequ wal cbvaev wn ax5d axc11nlemOLD2 4syl ) CDFCGEDFZEGCEFCGZAEFZAGB
       AFBGZCDEHECDNIMCJKCEAHABEPIOBJKL $.
   $}
 
@@ -28395,68 +28419,12 @@ $(
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 $)
 
-  $( Declare the membership predicate symbol. $)
-  $c e. $. $( Stylized epsilon $)
+  $( Declare the membership predicate symbol for sets. $)
+  $c e.s $. $( Stylized epsilon $)
 
-  ${
-    $v A $.
-    $v B $.
-    wcel.cA $f class A $.
-    wcel.cB $f class B $.
-    $( Extend wff definition to include the membership connective between
-       classes.
-
-       For a general discussion of the theory of classes, see
-       ~ mmset.html#class .
-
-       (The purpose of introducing ` wff A e. B ` here is to allow us to
-       express i.e.  "prove" the ~ wel of predicate calculus in terms of the
-       ~ wcel of set theory, so that we don't "overload" the ` e. ` connective
-       with two syntax definitions.  This is done to prevent ambiguity that
-       would complicate some Metamath parsers.  The class variables ` A ` and
-       ` B ` are introduced temporarily for the purpose of this definition but
-       otherwise not used in predicate calculus.  See ~ df-clab for more
-       information on the set theory usage of ~ wcel .) $)
-    wcel $a wff A e. B $.
-  $}
-
-  $( Extend wff definition to include atomic formulas with the epsilon
-     (membership) predicate.  This is read " ` x ` is an element of
-     ` y ` ," " ` x ` is a member of ` y ` ," " ` x ` belongs to ` y ` ,"
-     or " ` y ` contains ` x ` ."  Note:  The phrase " ` y ` includes
-     ` x ` " means " ` x ` is a subset of ` y ` ;" to use it also for
-     ` x e. y ` , as some authors occasionally do, is poor form and causes
-     confusion, according to George Boolos (1992 lecture at MIT).
-
-     This syntactic construction introduces a binary non-logical predicate
-     symbol ` e. ` (epsilon) into our predicate calculus.  We will eventually
-     use it for the membership predicate of set theory, but that is irrelevant
-     at this point: the predicate calculus axioms for ` e. ` apply to any
-     arbitrary binary predicate symbol.  "Non-logical" means that the predicate
-     is presumed to have additional properties beyond the realm of predicate
-     calculus, although these additional properties are not specified by
-     predicate calculus itself but rather by the axioms of a theory (in our
-     case set theory) added to predicate calculus.  "Binary" means that the
-     predicate has two arguments.
-
-     (Instead of introducing ~ wel as an axiomatic statement, as was done in an
-     older version of this database, we introduce it by "proving" a special
-     case of set theory's more general ~ wcel .  This lets us avoid overloading
-     the ` e. ` connective, thus preventing ambiguity that would complicate
-     certain Metamath parsers.  However, logically ~ wel is considered to be a
-     primitive syntax, even though here it is artificially "derived" from
-     ~ wcel .  Note:  To see the proof steps of this syntax proof, type "show
-     proof wel /all" in the Metamath program.)  (Contributed by NM,
-     24-Jan-2006.) $)
-  wel $p wff x e. y $=
-    ( cv wcel ) ACBCD $.
-
-  $( Register class-to-set promotion and class equality and membership as
-     primitive expressions. Although these are actually definitions, the above
-     ambiguity prevention necessitates our taking class equality as the
-     primitive, instead of set equality. $)
-  $( $j primitive 'weq' 'wel'; $)
-
+  $( This is where ~wcel used to be $)
+  
+  wsel $a wff x e.s y $.
 
 $(
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -28467,7 +28435,7 @@ $)
   $( Axiom of Left Equality for Binary Predicate.  One of the equality and
      substitution axioms for a non-logical predicate in our predicate calculus
      with equality.  It substitutes equal variables into the left-hand side of
-     an arbitrary binary predicate ` e. ` , which we will use for the set
+     an arbitrary binary predicate ` e.s ` , which we will use for the set
      membership relation when set theory is introduced.  This axiom scheme is a
      sub-scheme of Axiom Scheme B8 of system S2 of [Tarski], p. 75, whose
      general form cannot be represented with our notation.  Also appears as
@@ -28485,7 +28453,7 @@ $)
      the comment of ~ ax8v for more details on these matters.  (Contributed by
      NM, 30-Jun-1993.)  (Revised by BJ, 7-Dec-2020.)  Use ~ ax8 instead.
      (New usage is discouraged.) $)
-  ax-8 $a |- ( x = y -> ( x e. z -> y e. z ) ) $.
+  ax-8 $a |- ( x =s y -> ( x e.s z -> y e.s z ) ) $.
 
   ${
     $d x y $.
@@ -28495,7 +28463,7 @@ $)
        which ~ ax-8 is then rederived as ~ ax8 , which shows that either ~ ax8v
        or the conjunction of ~ ax8v1 and ~ ax8v2 is sufficient.  (Contributed
        by BJ, 7-Dec-2020.)  Use ~ ax8 instead.  (New usage is discouraged.) $)
-    ax8v $p |- ( x = y -> ( x e. z -> y e. z ) ) $=
+    ax8v $p |- ( x =s y -> ( x e.s z -> y e.s z ) ) $=
       ( ax-8 ) ABCD $.
   $}
 
@@ -28503,7 +28471,7 @@ $)
     $d x y $.  $d x z $.
     $( First of two weakened versions of ~ ax8v , with an extra dv condition on
        ` x , z ` , see comments there.  (Contributed by BJ, 7-Dec-2020.) $)
-    ax8v1 $p |- ( x = y -> ( x e. z -> y e. z ) ) $=
+    ax8v1 $p |- ( x =s y -> ( x e.s z -> y e.s z ) ) $=
       ( ax8v ) ABCD $.
   $}
 
@@ -28511,7 +28479,7 @@ $)
     $d x y $.  $d y z $.
     $( Second of two weakened versions of ~ ax8v , with an extra dv condition
        on ` y , z ` see comments there.  (Contributed by BJ, 7-Dec-2020.) $)
-    ax8v2 $p |- ( x = y -> ( x e. z -> y e. z ) ) $=
+    ax8v2 $p |- ( x =s y -> ( x e.s z -> y e.s z ) ) $=
       ( ax8v ) ABCD $.
   $}
 
@@ -28521,15 +28489,15 @@ $)
        conjunction of the latter two weakened versions of ~ ax8v , which is
        itself a weakened version of ~ ax-8 .  (Contributed by BJ, 7-Dec-2020.)
        (Proof shortened by Wolf Lammen, 11-Apr-2021.) $)
-    ax8 $p |- ( x = y -> ( x e. z -> y e. z ) ) $=
-      ( vt weq wa wex wel wi equvinv ax8v2 equcoms ax8v1 sylan9 exlimiv sylbi )
-      ABEDAEZDBEZFZDGACHZBCHZIZABDJSUBDQTDCHZRUATUCIADADCKLDBCMNOP $.
+    ax8 $p |- ( x =s y -> ( x e.s z -> y e.s z ) ) $=
+      ( vt wequ wa wex wsel wi equvinv ax-8 equcoms sylan9 exlimiv sylbi ) ABED
+      AEZDBEZFZDGACHZBCHZIZABDJRUADPSDCHZQTSUBIADADCKLDBCKMNO $.
   $}
 
   $( An identity law for the non-logical predicate.  (Contributed by NM,
      30-Jun-1993.) $)
-  elequ1 $p |- ( x = y -> ( x e. z <-> y e. z ) ) $=
-    ( weq wel ax8 wi equcoms impbid ) ABDACEZBCEZABCFKJGBABACFHI $.
+  elequ1 $p |- ( x =s y -> ( x e.s z <-> y e.s z ) ) $=
+    ( wequ wsel ax8 wi equcoms impbid ) ABDACEZBCEZABCFKJGBABACFHI $.
 
   ${
     $d x z $.  $d y z $.
@@ -28542,8 +28510,8 @@ $)
        ~ ax-12 , ~ ax-13 .  Note that there is no DV condition on ` x , y ` ,
        that is, on the variables of the left-hand side.  (Revised by BJ,
        29-Dec-2020.) $)
-    cleljust $p |- ( x e. y <-> E. z ( z = x /\ z e. y ) ) $=
-      ( weq wel wa wex elequ1 equsexvw bicomi ) CADCBEZFCGABEZKLCACABHIJ $.
+    cleljust $p |- ( x e.s y <-> E. z ( z =s x /\ z e.s y ) ) $=
+      ( wequ wsel wa wex elequ1 equsexvw bicomi ) CADCBEZFCGABEZKLCACABHIJ $.
   $}
 
 
@@ -28556,7 +28524,7 @@ $)
   $( Axiom of Right Equality for Binary Predicate.  One of the equality and
      substitution axioms for a non-logical predicate in our predicate calculus
      with equality.  It substitutes equal variables into the right-hand side of
-     an arbitrary binary predicate ` e. ` , which we will use for the set
+     an arbitrary binary predicate ` e.s ` , which we will use for the set
      membership relation when set theory is introduced.  This axiom scheme is a
      sub-scheme of Axiom Scheme B8 of system S2 of [Tarski], p. 75, whose
      general form cannot be represented with our notation.  Also appears as
@@ -28568,7 +28536,7 @@ $)
      the comment of ~ ax9v for more details on these matters.  (Contributed by
      NM, 21-Jun-1993.)  (Revised by BJ, 7-Dec-2020.)  Use ~ ax9 instead.
      (New usage is discouraged.) $)
-  ax-9 $a |- ( x = y -> ( z e. x -> z e. y ) ) $.
+  ax-9 $a |- ( x =s y -> ( z e.s x -> z e.s y ) ) $.
 
   ${
     $d x y $.
@@ -28578,7 +28546,7 @@ $)
        which ~ ax-9 is then rederived as ~ ax9 , which shows that either ~ ax9v
        or the conjunction of ~ ax9v1 and ~ ax9v2 is sufficient.  (Contributed
        by BJ, 7-Dec-2020.)  Use ~ ax9 instead.  (New usage is discouraged.) $)
-    ax9v $p |- ( x = y -> ( z e. x -> z e. y ) ) $=
+    ax9v $p |- ( x =s y -> ( z e.s x -> z e.s y ) ) $=
       ( ax-9 ) ABCD $.
   $}
 
@@ -28586,7 +28554,7 @@ $)
     $d x y $.  $d x z $.
     $( First of two weakened versions of ~ ax9v , with an extra dv condition on
        ` x , z ` , see comments there.  (Contributed by BJ, 7-Dec-2020.) $)
-    ax9v1 $p |- ( x = y -> ( z e. x -> z e. y ) ) $=
+    ax9v1 $p |- ( x =s y -> ( z e.s x -> z e.s y ) ) $=
       ( ax9v ) ABCD $.
   $}
 
@@ -28594,7 +28562,7 @@ $)
     $d x y $.  $d y z $.
     $( Second of two weakened versions of ~ ax9v , with an extra dv condition
        on ` y , z ` see comments there.  (Contributed by BJ, 7-Dec-2020.) $)
-    ax9v2 $p |- ( x = y -> ( z e. x -> z e. y ) ) $=
+    ax9v2 $p |- ( x =s y -> ( z e.s x -> z e.s y ) ) $=
       ( ax9v ) ABCD $.
   $}
 
@@ -28604,15 +28572,15 @@ $)
        conjunction of the latter two weakened versions of ~ ax9v , which is
        itself a weakened version of ~ ax-9 .  (Contributed by BJ, 7-Dec-2020.)
        (Proof shortened by Wolf Lammen, 11-Apr-2021.) $)
-    ax9 $p |- ( x = y -> ( z e. x -> z e. y ) ) $=
-      ( vt weq wa wex wel wi equvinv ax9v2 equcoms ax9v1 sylan9 exlimiv sylbi )
+    ax9 $p |- ( x =s y -> ( z e.s x -> z e.s y ) ) $=
+      ( vt wequ wa wex wsel wi equvinv ax9v2 equcoms ax9v1 sylan9 exlimiv sylbi )
       ABEDAEZDBEZFZDGCAHZCBHZIZABDJSUBDQTCDHZRUATUCIADADCKLDBCMNOP $.
   $}
 
   $( An identity law for the non-logical predicate.  (Contributed by NM,
      21-Jun-1993.) $)
-  elequ2 $p |- ( x = y -> ( z e. x <-> z e. y ) ) $=
-    ( weq wel ax9 wi equcoms impbid ) ABDCAEZCBEZABCFKJGBABACFHI $.
+  elequ2 $p |- ( x =s y -> ( z e.s x <-> z e.s y ) ) $=
+    ( wequ wsel ax9 wi equcoms impbid ) ABDCAEZCBEZABCFKJGBABACFHI $.
 
 
 $(
@@ -28726,13 +28694,13 @@ $)
        only statement referencing ~ ax-6 is ~ ax6v .  We later rederive from
        ~ ax6v the bundled form as ~ ax6 with the help of the auxiliary axiom
        schemes.  (Contributed by NM, 23-Apr-2017.) $)
-    ax6dgen $p |- -. A. x -. x = x $=
-      ( weq wn wal equid notnoti spfalw mt2 ) AABZCZADIAEZJAIKFGH $.
+    ax6dgen $p |- -. A. x -. x =s x $=
+      ( wequ wn wal equid notnoti spfalw mt2 ) AABZCZADIAEZJAIKFGH $.
   $}
 
   ${
     $d y ph $.  $d x ps $.  $d x y $.
-    ax10w.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    ax10w.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Weak version of ~ ax-10 from which we can prove any ~ ax-10 instance not
        involving wff variables or bundling.  Uses only Tarski's FOL axiom
        schemes.  (Contributed by NM, 9-Apr-2017.) $)
@@ -28742,7 +28710,7 @@ $)
 
   ${
     $d y z $.  $d x y $.  $d z ph $.  $d y ps $.
-    ax11w.1 $e |- ( y = z -> ( ph <-> ps ) ) $.
+    ax11w.1 $e |- ( y =s z -> ( ph <-> ps ) ) $.
     $( Weak version of ~ ax-11 from which we can prove any ~ ax-11 instance not
        involving wff variables or bundling.  Uses only Tarski's FOL axiom
        schemes.  Unlike ~ ax-11 , this theorem requires that ` x ` and ` y ` be
@@ -28759,18 +28727,18 @@ $)
 
   ${
     $d x ps $.
-    ax12wlemw.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    ax12wlemw.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Lemma for weak version of ~ ax-12 .  Uses only Tarski's FOL axiom
        schemes.  In some cases, this lemma may lead to shorter proofs than
        ~ ax12w .  (Contributed by NM, 10-Apr-2017.) $)
-    ax12wlem $p |- ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) $=
+    ax12wlem $p |- ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) $=
       ( ax-5 ax12i ) ABCDEBCFG $.
   $}
 
   ${
     $d y z $.  $d x ps $.  $d z ph $.  $d y ch $.
-    ax12w.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
-    ax12w.2 $e |- ( y = z -> ( ph <-> ch ) ) $.
+    ax12w.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
+    ax12w.2 $e |- ( y =s z -> ( ph <-> ch ) ) $.
     $( Weak version of ~ ax-12 from which we can prove any ~ ax-12 instance not
        involving wff variables or bundling.  Uses only Tarski's FOL axiom
        schemes.  An instance of the first hypothesis will normally require that
@@ -28778,15 +28746,15 @@ $)
        For an example of how the hypotheses can be eliminated when we
        substitute an expression without wff variables for ` ph ` , see
        ~ ax12wdemo .  (Contributed by NM, 10-Apr-2017.) $)
-    ax12w $p |- ( x = y -> ( A. y ph -> A. x ( x = y -> ph ) ) ) $=
-      ( wal weq wi spw ax12wlem syl5 ) AEIADEJZOAKDIACEFHLABDEGMN $.
+    ax12w $p |- ( x =s y -> ( A. y ph -> A. x ( x =s y -> ph ) ) ) $=
+      ( wal wequ wi spw ax12wlem syl5 ) AEIADEJZOAKDIACEFHLABDEGMN $.
   $}
 
   $( Degenerate instance of ~ ax-12 where bundled variables ` x ` and ` y `
      have a common substitution.  Uses only Tarski's FOL axiom schemes.
      (Contributed by NM, 13-Apr-2017.) $)
-  ax12dgen $p |- ( x = x -> ( A. x ph -> A. x ( x = x -> ph ) ) ) $=
-    ( wal weq wi ala1 a1i ) ABCBBDZAEBCEHAHBFG $.
+  ax12dgen $p |- ( x =s x -> ( A. x ph -> A. x ( x =s x -> ph ) ) ) $=
+    ( wal wequ wi ala1 a1i ) ABCBBDZAEBCEHAHBFG $.
 
   ${
     $d x y z w v $.
@@ -28796,13 +28764,14 @@ $)
        The proof illustrates bound variable renaming with ~ cbvalvw to obtain
        fresh variables to avoid distinct variable clashes.  Uses only Tarski's
        FOL axiom schemes.  (Contributed by NM, 14-Apr-2017.) $)
-    ax12wdemo $p |- ( x = y
-              -> ( A. y ( x e. y /\ A. x z e. x /\ A. y A. z y e. x )
-     -> A. x ( x = y -> ( x e. y /\ A. x z e. x /\ A. y A. z y e. x ) ) ) ) $=
-      ( vw vv wel wal w3a weq elequ1 elequ2 cbvalvw a1i albidv syl5bb 3anbi123d
-      wb 3anbi13d ax12w ) ABFZCAFZAGZBAFZCGZBGZHBBFZCDFZDGZEBFZCGZEGZHAEFZUBEAF
-      ZCGZEGZHABEABIZTUFUBUHUEUKABBJUBUHQUPUAUGADADCKLMUEUOUPUKUDUNBEBEIZUCUMCB
-      EAJNLZUPUNUJEUPUMUICABEKNNOPUQTULUEUOUBBEAKUEUOQUQURMRS $.
+    ax12wdemo $p |- ( x =s y
+              -> ( A. y ( x e.s y /\ A. x z e.s x /\ A. y A. z y e.s x )
+     -> A. x ( x =s y -> ( x e.s y /\ A. x z e.s x /\ A. y A. z y e.s x ) ) ) )
+      $=
+      ( vw vv wsel wal w3a elequ1 wb elequ2 cbvalvw a1i albidv syl5bb 3anbi123d
+      wequ 3anbi13d ax12w ) ABFZCAFZAGZBAFZCGZBGZHBBFZCDFZDGZEBFZCGZEGZHAEFZUBE
+      AFZCGZEGZHABEABQZTUFUBUHUEUKABBIUBUHJUPUAUGADADCKLMUEUOUPUKUDUNBEBEQZUCUM
+      CBEAINLZUPUNUJEUPUMUICABEKNNOPUQTULUEUOUBBEAKUEUOJUQURMRS $.
   $}
 
   ${
@@ -28810,42 +28779,42 @@ $)
     $( Weak version (principal instance) of ~ ax-13 .  (Because ` y ` and ` z `
        don't need to be distinct, this actually bundles the principal instance
        and the degenerate instance
-       ` ( -. x = y -> ( y = y -> A. x y = y ) ) ` .)  Uses only Tarski's FOL
+       ` ( -. x =s y -> ( y =s y -> A. x y =s y ) ) ` .)  Uses only Tarski's FOL
        axiom schemes.  The proof is trivial but is included to complete the set
        ~ ax10w , ~ ax11w , and ~ ax12w .  (Contributed by NM, 10-Apr-2017.) $)
-    ax13w $p |- ( -. x = y -> ( y = z -> A. x y = z ) ) $=
-      ( weq wn ax5d ) ABDEBCDAF $.
+    ax13w $p |- ( -. x =s y -> ( y =s z -> A. x y =s z ) ) $=
+      ( wequ wn ax5d ) ABDEBCDAF $.
   $}
 
   $( Degenerate instance of ~ ax-13 where bundled variables ` x ` and ` y `
      have a common substitution.  Uses only Tarski's FOL axiom schemes.
      (Contributed by NM, 13-Apr-2017.) $)
-  ax13dgen1 $p |- ( -. x = x -> ( x = z -> A. x x = z ) ) $=
-    ( weq wal wi equid pm2.24i ) AACABCZHADEAFG $.
+  ax13dgen1 $p |- ( -. x =s x -> ( x =s z -> A. x x =s z ) ) $=
+    ( wequ wal wi equid pm2.24i ) AACABCZHADEAFG $.
 
   $( Degenerate instance of ~ ax-13 where bundled variables ` x ` and ` z `
      have a common substitution.  Uses only Tarski's FOL axiom schemes.
      (Contributed by NM, 13-Apr-2017.) $)
-  ax13dgen2 $p |- ( -. x = y -> ( y = x -> A. x y = x ) ) $=
-    ( weq wn wal equcomi pm2.21 syl5 ) BACZABCZJDIAEZBAFJKGH $.
+  ax13dgen2 $p |- ( -. x =s y -> ( y =s x -> A. x y =s x ) ) $=
+    ( wequ wn wal equcomi pm2.21 syl5 ) BACZABCZJDIAEZBAFJKGH $.
 
   $( Degenerate instance of ~ ax-13 where bundled variables ` y ` and ` z `
      have a common substitution.  Uses only Tarski's FOL axiom schemes.
      (Contributed by NM, 13-Apr-2017.) $)
-  ax13dgen3 $p |- ( -. x = y -> ( y = y -> A. x y = y ) ) $=
-    ( weq wal wn equid ax-gen 2a1i ) BBCZADABCEIIABFGH $.
+  ax13dgen3 $p |- ( -. x =s y -> ( y =s y -> A. x y =s y ) ) $=
+    ( wequ wal wn equid ax-gen 2a1i ) BBCZADABCEIIABFGH $.
 
   $( Degenerate instance of ~ ax-13 where bundled variables ` x ` , ` y ` , and
      ` z ` have a common substitution.  Uses only Tarski's FOL axiom schemes.
      (Contributed by NM, 13-Apr-2017.)  Reduce axiom usage.  (Revised by Wolf
      Lammen, 10-Oct-2021.) $)
-  ax13dgen4 $p |- ( -. x = x -> ( x = x -> A. x x = x ) ) $=
-    ( weq wal pm2.21 ) AABZEACD $.
+  ax13dgen4 $p |- ( -. x =s x -> ( x =s x -> A. x x =s x ) ) $=
+    ( wequ wal pm2.21 ) AABZEACD $.
 
   $( Obsolete proof of ~ ax13dgen4 as of 10-Oct-2021.  (Contributed by NM,
      13-Apr-2017.)  (Proof modification is discouraged.)
      (New usage is discouraged.) $)
-  ax13dgen4OLD $p |- ( -. x = x -> ( x = x -> A. x x = x ) ) $=
+  ax13dgen4OLD $p |- ( -. x =s x -> ( x =s x -> A. x x =s x ) ) $=
     ( ax13dgen1 ) AAB $.
 
 
@@ -29099,7 +29068,7 @@ $)
      This axiom scheme is logically redundant (see ~ ax12w ) but is used as an
      auxiliary axiom scheme to achieve scheme completeness.  (Contributed by
      NM, 22-Jan-2007.)  (New usage is discouraged.) $)
-  ax-12 $a |- ( x = y -> ( A. y ph -> A. x ( x = y -> ph ) ) ) $.
+  ax-12 $a |- ( x =s y -> ( A. y ph -> A. x ( x =s y -> ph ) ) ) $.
 
   ${
     $d x y $.  $d y ph $.
@@ -29131,8 +29100,8 @@ $)
        to see, and it is less clear that this extra freedom introduces effects
        not covered by other axioms.  (Contributed by Wolf Lammen,
        8-Aug-2020.) $)
-    ax12v $p |- ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) $=
-      ( wal weq wi ax-5 ax-12 syl5 ) AACDBCEZJAFBDACGABCHI $.
+    ax12v $p |- ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) $=
+      ( wal wequ wi ax-5 ax-12 syl5 ) AACDBCEZJAFBDACGABCHI $.
   $}
 
   ${
@@ -29141,8 +29110,8 @@ $)
        Axiom C8 of [Monk2] p. 105.  (Contributed by NM, 5-Aug-1993.)  Removed
        dependencies on ~ ax-10 and ~ ax-13 .  (Revised by Jim Kingdon,
        15-Dec-2017.)  (Proof shortened by Wolf Lammen, 8-Dec-2019.) $)
-    ax12v2 $p |- ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) $=
-      ( vz weq wi wal equtrr ax12v imim1d alimdv syl9r syld ax6evr exlimiiv ) C
+    ax12v2 $p |- ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) $=
+      ( vz wequ wi wal equtrr ax12v imim1d alimdv syl9r syld ax6evr exlimiiv ) C
       DEZBCEZAQAFZBGZFZFDPQBDEZTCDBHZUAAUAAFZBGPSABDIPUCRBPQUAAUBJKLMDCNO $.
   $}
 
@@ -29153,8 +29122,8 @@ $)
        Jim Kingdon, 15-Dec-2017.)  (Proof shortened by Wolf Lammen,
        8-Dec-2019.)  (Proof shortened by Wolf Lammen, 7-Mar-2021.)
        (New usage is discouraged.)  (Proof modification is discouraged.) $)
-    ax12vOLD $p |- ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) $=
-      ( vz weq wi wal equtrr ax-5 ax-12 syl5 imim1d alimdv syld ax6evr exlimiiv
+    ax12vOLD $p |- ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) $=
+      ( vz wequ wi wal equtrr ax-5 ax-12 syl5 imim1d alimdv syld ax6evr exlimiiv
       syl9r ) CDEZBCEZASAFZBGZFZFDRSBDEZUBCDBHZUCAUCAFZBGZRUAAADGUCUFADIABDJKRU
       ETBRSUCAUDLMQNDCOP $.
 
@@ -29163,8 +29132,8 @@ $)
        Jim Kingdon, 15-Dec-2017.)  (Proof shortened by Wolf Lammen,
        8-Dec-2019.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    ax12vOLDOLD $p |- ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) $=
-      ( vz weq wi wal equequ2 biimprd ax-5 ax-12 syl5 imim1d alimdv syl9r ax6ev
+    ax12vOLDOLD $p |- ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) $=
+      ( vz wequ wi wal equequ2 biimprd ax-5 ax-12 syl5 imim1d alimdv syl9r ax6ev
       syld exlimiiv ) DCEZBCEZATAFZBGZFZFDSTBDEZUCSUDTDCBHIZUDAUDAFZBGZSUBAADGU
       DUGADJABDKLSUFUABSTUDAUEMNOQDCPR $.
   $}
@@ -29177,7 +29146,7 @@ $)
        Allow a shortening of ~ sp .  (Revised by Wolf Lammen, 13-Jan-2018.)
        (Proof shortened by Wolf Lammen, 8-Dec-2019.) $)
     19.8a $p |- ( ph -> E. x ph ) $=
-      ( vy weq wex wi wal ax12v ax6ev exim syl6mpi ax6evr exlimiiv ) BCDZAABEZF
+      ( vy wequ wex wi wal ax12v ax6ev exim syl6mpi ax6evr exlimiiv ) BCDZAABEZF
       CNANAFBGNBEOABCHBCINABJKCBLM $.
 
     $( Obsolete proof of ~ 19.8a .  Obsolete as of 21-Dec-2020.  Can be deleted
@@ -29187,7 +29156,7 @@ $)
        shortened by Wolf Lammen, 8-Dec-2019.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
     19.8aOLD $p |- ( ph -> E. x ph ) $=
-      ( vy weq wex wi ax6ev wal ax12v exim syl6mpi equcoms exlimiv ax-mp ) CBDZ
+      ( vy wequ wex wi ax6ev wal ax12v exim syl6mpi equcoms exlimiv ax-mp ) CBDZ
       CEAABEZFZCBGOQCQBCBCDZARAFBHRBEPABCIBCGRABJKLMN $.
   $}
 
@@ -29669,51 +29638,51 @@ $)
   ${
     $d x y $.
     equsexv.nf $e |- F/ x ps $.
-    equsexv.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsexv.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Version of ~ equsex with a dv condition, which does not require
        ~ ax-13 .  (Contributed by BJ, 31-May-2019.) $)
-    equsexv $p |- ( E. x ( x = y /\ ph ) <-> ps ) $=
-      ( weq wa wex pm5.32i exbii ax6ev 19.41 mpbiran bitri ) CDGZAHZCIPBHZCIZBQ
+    equsexv $p |- ( E. x ( x =s y /\ ph ) <-> ps ) $=
+      ( wequ wa wex pm5.32i exbii ax6ev 19.41 mpbiran bitri ) CDGZAHZCIPBHZCIZBQ
       RCPABFJKSPCIBCDLPBCEMNO $.
   $}
 
   $( An equality theorem for substitution.  (Contributed by NM,
      16-May-1993.) $)
-  sbequ1 $p |- ( x = y -> ( ph -> [ y / x ] ph ) ) $=
-    ( weq wsb wa wi wex pm3.4 19.8a df-sb sylanbrc ex ) BCDZAABCEZNAFZNAGPBHONA
+  sbequ1 $p |- ( x =s y -> ( ph -> [ y / x ] ph ) ) $=
+    ( wequ wsb wa wi wex pm3.4 19.8a df-sb sylanbrc ex ) BCDZAABCEZNAFZNAGPBHONA
     IPBJABCKLM $.
 
   $( An equality theorem for substitution.  (Contributed by NM,
      14-May-1993.) $)
-  sbequ12 $p |- ( x = y -> ( ph <-> [ y / x ] ph ) ) $=
-    ( weq wsb sbequ1 sbequ2 impbid ) BCDAABCEABCFABCGH $.
+  sbequ12 $p |- ( x =s y -> ( ph <-> [ y / x ] ph ) ) $=
+    ( wequ wsb sbequ1 sbequ2 impbid ) BCDAABCEABCFABCGH $.
 
   $( An equality theorem for substitution.  (Contributed by NM, 6-Oct-2004.)
      (Proof shortened by Andrew Salmon, 21-Jun-2011.) $)
-  sbequ12r $p |- ( x = y -> ( [ x / y ] ph <-> ph ) ) $=
-    ( wsb wb weq sbequ12 bicomd equcoms ) ACBDZAECBCBFAJACBGHI $.
+  sbequ12r $p |- ( x =s y -> ( [ x / y ] ph <-> ph ) ) $=
+    ( wsb wb wequ sbequ12 bicomd equcoms ) ACBDZAECBCBFAJACBGHI $.
 
   $( An equality theorem for substitution.  (Contributed by NM, 2-Jun-1993.)
      (Proof shortened by Wolf Lammen, 23-Jun-2019.) $)
-  sbequ12a $p |- ( x = y -> ( [ y / x ] ph <-> [ x / y ] ph ) ) $=
-    ( weq wsb sbequ12r sbequ12 bitr2d ) BCDACBEAABCEABCFABCGH $.
+  sbequ12a $p |- ( x =s y -> ( [ y / x ] ph <-> [ x / y ] ph ) ) $=
+    ( wequ wsb sbequ12r sbequ12 bitr2d ) BCDACBEAABCEABCFABCGH $.
 
   $( An identity theorem for substitution.  Remark 9.1 in [Megill] p. 447 (p.
      15 of the preprint).  (Contributed by NM, 26-May-1993.)  (Proof shortened
      by Wolf Lammen, 30-Sep-2018.) $)
   sbid $p |- ( [ x / x ] ph <-> ph ) $=
-    ( weq wsb wb equid sbequ12r ax-mp ) BBCABBDAEBFABBGH $.
+    ( wequ wsb wb equid sbequ12r ax-mp ) BBCABBDAEBFABBGH $.
 
   ${
     $d x y $.
     spimv1.nf $e |- F/ x ps $.
-    spimv1.1 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimv1.1 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Version of ~ spim with a dv condition, which does not require ~ ax-13 .
        See ~ spimvw for a version with two dv conditions, requiring fewer
        axioms, and ~ spimv for another variant.  (Contributed by BJ,
        31-May-2019.) $)
     spimv1 $p |- ( A. x ph -> ps ) $=
-      ( weq wi ax6ev eximii 19.36i ) ABCECDGABHCCDIFJK $.
+      ( wequ wi ax6ev eximii 19.36i ) ABCECDGABHCCDIFJK $.
   $}
 
   $( Alternate definition of ~ df-nf .  (Contributed by Mario Carneiro,
@@ -29777,12 +29746,12 @@ $)
   ${
     $d x y $.
     equsalhw.1 $e |- ( ps -> A. x ps ) $.
-    equsalhw.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsalhw.2 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Weaker version of ~ equsalh (requiring distinct variables) without using
        ~ ax-13 .  (Contributed by NM, 29-Nov-2015.)  (Proof shortened by Wolf
        Lammen, 28-Dec-2017.) $)
-    equsalhw $p |- ( A. x ( x = y -> ph ) <-> ps ) $=
-      ( weq wi wal wex 19.23h pm5.74i albii ax6ev a1bi 3bitr4i ) CDGZBHZCIQCJZB
+    equsalhw $p |- ( A. x ( x =s y -> ph ) <-> ps ) $=
+      ( wequ wi wal wex 19.23h pm5.74i albii ax6ev a1bi 3bitr4i ) CDGZBHZCIQCJZB
       HQAHZCIBQBCEKTRCQABFLMSBCDNOP $.
   $}
 
@@ -29873,8 +29842,8 @@ $)
        dependency on ~ ax-13 , along an idea of BJ. (Revised by Wolf Lammen,
        30-Nov-2019.)  (Revised by BJ, 7-Jul-2021.)  Shorten ~ axc11rv .
        (Revised by Wolf Lammen, 11-Oct-2021.) $)
-    axc16g $p |- ( A. x x = y -> ( ph -> A. z ph ) ) $=
-      ( vw weq wal wi aevlem ax12v2 sps pm2.27 al2imi syld syl ) BCFBGDEFZDGZAA
+    axc16g $p |- ( A. x x =s y -> ( ph -> A. z ph ) ) $=
+      ( vw wequ wal wi aevlem ax12v2 sps pm2.27 al2imi syld syl ) BCFBGDEFZDGZAA
       DGZHBCDEIQAPAHZDGZRPATHDADEJKPSADPALMNO $.
   $}
 
@@ -29882,7 +29851,7 @@ $)
     $d x y $.
     $( Proof of older axiom ~ ax-c16 .  (Contributed by NM, 8-Nov-2006.)
        (Revised by NM, 22-Sep-2017.) $)
-    axc16 $p |- ( A. x x = y -> ( ph -> A. x ph ) ) $=
+    axc16 $p |- ( A. x x =s y -> ( ph -> A. x ph ) ) $=
       ( axc16g ) ABCBD $.
   $}
 
@@ -29890,8 +29859,8 @@ $)
     $d x y $.
     $( Biconditional strengthening of ~ axc16g .  (Contributed by NM,
        15-May-1993.) $)
-    axc16gb $p |- ( A. x x = y -> ( ph <-> A. z ph ) ) $=
-      ( weq wal axc16g sp impbid1 ) BCEBFAADFABCDGADHI $.
+    axc16gb $p |- ( A. x x =s y -> ( ph <-> A. z ph ) ) $=
+      ( wequ wal axc16g sp impbid1 ) BCEBFAADFABCDGADHI $.
   $}
 
   ${
@@ -29901,8 +29870,8 @@ $)
        7-Oct-2016.)  Remove dependency on ~ ax-11 .  (Revised by Wolf Lammen,
        9-Sep-2018.)  (Proof shortened by BJ, 14-Jun-2019.)  Remove dependency
        on ~ ax-10 .  (Revised by Wolf lammen, 12-Oct-2021.) $)
-    axc16nf $p |- ( A. x x = y -> F/ z ph ) $=
-      ( weq wal wex wn df-ex axc16g con1d syl5bi syld nfd ) BCEBFZADOADGZAADFPA
+    axc16nf $p |- ( A. x x =s y -> F/ z ph ) $=
+      ( wequ wal wex wn df-ex axc16g con1d syl5bi syld nfd ) BCEBFZADOADGZAADFPA
       HZDFZHOAADIOARQBCDJKLABCDJMN $.
   $}
 
@@ -29913,29 +29882,29 @@ $)
        (contrary to ~ axc11 which seems to require the full ~ ax-12 and
        ~ ax-13 ).  (Contributed by BJ, 6-Jul-2021.)  (Proof shortened by Wolf
        Lammen, 11-Oct-2021.) $)
-    axc11v $p |- ( A. x x = y -> ( A. x ph -> A. y ph ) ) $=
-      ( weq wal axc16g spsd ) BCDBEAACEBABCCFG $.
+    axc11v $p |- ( A. x x =s y -> ( A. x ph -> A. y ph ) ) $=
+      ( wequ wal axc16g spsd ) BCDBEAACEBABCCFG $.
 
     $( Version of ~ axc11r with a disjoint variable condition on ` x ` and
        ` y ` , which is provable, on top of { ~ ax-1 -- ~ ax-7 }, from ~ ax12v
        (contrary to ~ axc11 which seems to require the full ~ ax-12 ).
        (Contributed by BJ, 6-Jul-2021.)  (Proof shortened by Wolf Lammen,
        11-Oct-2021.) $)
-    axc11rv $p |- ( A. x x = y -> ( A. y ph -> A. x ph ) ) $=
-      ( weq wal axc16g spsd ) BCDBEAABECABCBFG $.
+    axc11rv $p |- ( A. x x =s y -> ( A. y ph -> A. x ph ) ) $=
+      ( wequ wal axc16g spsd ) BCDBEAABECABCBFG $.
 
     $( Obsolete proof of ~ axc11rv as of 11-Oct-2011.  (Contributed by BJ,
        6-Jul-2021.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc11rvOLD $p |- ( A. x x = y -> ( A. y ph -> A. x ph ) ) $=
-      ( weq wal wi ax12v2 sps pm2.27 al2imi syld spsd ) BCDZBEZAABEZCNAMAFZBEZO
+    axc11rvOLD $p |- ( A. x x =s y -> ( A. y ph -> A. x ph ) ) $=
+      ( wequ wal wi ax12v2 sps pm2.27 al2imi syld spsd ) BCDZBEZAABEZCNAMAFZBEZO
       MAQFBABCGHMPABMAIJKL $.
 
     $( Obsolete proof of ~ axc11v as of 11-Oct-2021.  (Contributed by BJ,
        6-Jul-2021.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc11vOLD $p |- ( A. x x = y -> ( A. x ph -> A. y ph ) ) $=
-      ( weq wal wi aevlem axc11rv syl ) BCDBECBDCEABEACEFBCCBGACBHI $.
+    axc11vOLD $p |- ( A. x x =s y -> ( A. x ph -> A. y ph ) ) $=
+      ( wequ wal wi aevlem axc11rv syl ) BCDBECBDCEABEACEFBCCBGACBHI $.
   $}
 
   $( The analogue in our predicate calculus of the Brouwer axiom (B) of modal
@@ -30003,10 +29972,10 @@ $)
   ${
     $d x y $.
     equsexhv.nf $e |- ( ps -> A. x ps ) $.
-    equsexhv.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsexhv.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Version of ~ equsexh with a dv condition, which does not require
        ~ ax-13 .  (Contributed by BJ, 31-May-2019.) $)
-    equsexhv $p |- ( E. x ( x = y /\ ph ) <-> ps ) $=
+    equsexhv $p |- ( E. x ( x =s y /\ ph ) <-> ps ) $=
       ( nf5i equsexv ) ABCDBCEGFH $.
   $}
 
@@ -30022,8 +29991,8 @@ $)
        NM, 14-Apr-2008.)  Revised to use ~ equsexv in place of ~ equsex in
        order to remove dependency on ~ ax-13 .  (Revised by BJ,
        20-Dec-2020.) $)
-    sb56 $p |- ( E. x ( x = y /\ ph ) <-> A. x ( x = y -> ph ) ) $=
-      ( weq wi wal nfa1 ax12v2 sp com12 impbid equsexv ) ABCDZAEZBFZBCNBGMAOABC
+    sb56 $p |- ( E. x ( x =s y /\ ph ) <-> A. x ( x =s y -> ph ) ) $=
+      ( wequ wi wal nfa1 ax12v2 sp com12 impbid equsexv ) ABCDZAEZBFZBCNBGMAOABC
       HOMANBIJKL $.
   $}
 
@@ -30105,14 +30074,14 @@ $)
 
   ${
     $d x z $.  $d y z $.
-    axc11nlemOLD.1 $e |- ( -. A. y y = x -> ( x = z -> A. y x = z ) ) $.
+    axc11nlemOLD.1 $e |- ( -. A. y y =s x -> ( x =s z -> A. y x =s z ) ) $.
     $( Obsolete proof of ~ axc11nlemOLD2 as of 14-Mar-2021.  (Contributed by
        NM, 8-Jul-2016.)  (Proof shortened by Wolf Lammen, 17-Feb-2018.)
        Restructure to ease either bundling, or reducing dependencies on axioms.
        (Revised by Wolf Lammen, 30-Nov-2019.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    axc11nlemOLD $p |- ( A. x x = z -> A. y y = x ) $=
-      ( weq wal cbvaev equequ2 biimprd al2imi syl5com spsd com12 con1d pm2.61d
+    axc11nlemOLD $p |- ( A. x x =s z -> A. y y =s x ) $=
+      ( wequ wal cbvaev equequ2 biimprd al2imi syl5com spsd com12 con1d pm2.61d
       wn ) ACEZAFZQBFZBAEZBFZRBCEZBFSUAACBGQUBTBQTUBACBHIJKRUASUAPZRSUCQSADLMNO
       $.
   $}
@@ -30126,8 +30095,8 @@ $)
        BJ, 7-Jul-2021.)  Shorten ~ axc11rv .  (Revised by Wolf Lammen,
        11-Oct-2021.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    axc16gOLD $p |- ( A. x x = y -> ( ph -> A. z ph ) ) $=
-      ( vw weq wal aevlem ax-5 axc11rvOLD syl2im ) BCFBGDEFDGAAEGADGBCDEHAEIADE
+    axc16gOLD $p |- ( A. x x =s y -> ( ph -> A. z ph ) ) $=
+      ( vw wequ wal aevlem ax-5 axc11rvOLD syl2im ) BCFBGDEFDGAAEGADGBCDEHAEIADE
       JK $.
   $}
 
@@ -30138,8 +30107,8 @@ $)
        7-Sep-2018.)  Remove dependency on ~ ax-13 , inspired by an idea of BJ.
        (Revised by Wolf Lammen, 30-Nov-2019.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    aevOLD $p |- ( A. x x = y -> A. z w = v ) $=
-      ( vu weq wal wex aevlem ax6ev ax7 aleximi mpi ax5e 3syl axc16g mpd ) ABGA
+    aevOLD $p |- ( A. x x =s y -> A. z w =s v ) $=
+      ( vu wequ wal wex aevlem ax6ev ax7 aleximi mpi ax5e 3syl axc16g mpd ) ABGA
       HZDEGZTCHSFDGZFHZTFIZTABFDJUBFEGZFIUCFEKUAUDTFFDELMNTFOPTABCQR $.
   $}
 
@@ -30149,8 +30118,8 @@ $)
        Carneiro, 7-Oct-2016.)  Remove dependency on ~ ax-11 .  (Revised by Wolf
        Lammen, 9-Sep-2018.)  (Proof shortened by BJ, 14-Jun-2019.)
        (New usage is discouraged.)  (Proof modification is discouraged.) $)
-    axc16nfOLD $p |- ( A. x x = y -> F/ z ph ) $=
-      ( vw weq wal wnf aev nfa1 axc16 nf5d syl ) BCFBGDEFZDGZADHBCDEDIOADNDJADE
+    axc16nfOLD $p |- ( A. x x =s y -> F/ z ph ) $=
+      ( vw wequ wal wnf aev nfa1 axc16 nf5d syl ) BCFBGDEFZDGZADHBCDEDIOADNDJADE
       KLM $.
   $}
 
@@ -30222,7 +30191,7 @@ $)
     $d x y $.
     cbv3v.nf1 $e |- F/ y ph $.
     cbv3v.nf2 $e |- F/ x ps $.
-    cbv3v.1 $e |- ( x = y -> ( ph -> ps ) ) $.
+    cbv3v.1 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Version of ~ cbv3 with a dv condition, which does not require ~ ax-13 .
        (Contributed by BJ, 31-May-2019.) $)
     cbv3v $p |- ( A. x ph -> A. y ps ) $=
@@ -30233,15 +30202,15 @@ $)
     $d x z $.  $d y z $.
     dvelimhw.1 $e |- ( ph -> A. x ph ) $.
     dvelimhw.2 $e |- ( ps -> A. z ps ) $.
-    dvelimhw.3 $e |- ( z = y -> ( ph <-> ps ) ) $.
-    $( dvelimhw.4 $e |- ( -. A. x x = y -> ( z = y -> A. x z = y ) ) $. $)
-    dvelimhw.4 $e |- ( -. A. x x = y -> ( y = z -> A. x y = z ) ) $.
+    dvelimhw.3 $e |- ( z =s y -> ( ph <-> ps ) ) $.
+    $( dvelimhw.4 $e |- ( -. A. x x =s y -> ( z =s y -> A. x z =s y ) ) $. $)
+    dvelimhw.4 $e |- ( -. A. x x =s y -> ( y =s z -> A. x y =s z ) ) $.
     $( Proof of ~ dvelimh without using ~ ax-13 but with additional distinct
        variable conditions.  (Contributed by Andrew Salmon, 21-Jul-2011.)
        (Revised by NM, 1-Aug-2017.)  (Proof shortened by Wolf Lammen,
        23-Dec-2018.) $)
-    dvelimhw $p |- ( -. A. x x = y -> ( ps -> A. x ps ) ) $=
-      ( weq wal wn wi wnf nfv equcom nfna1 nf5d nfxfrd nf5i a1i nfimd equsalhw
+    dvelimhw $p |- ( -. A. x x =s y -> ( ps -> A. x ps ) ) $=
+      ( wequ wal wn wi wnf nfv equcom nfna1 nf5d nfxfrd nf5i a1i nfimd equsalhw
       nfald nfbii sylib nf5rd ) CDJZCKLZBCUIEDJZAMZEKZCNBCNUIUKCEUIEOUIUJACUJDE
       JZUICEDPUIUMCUHCQIRSACNUIACFTUAUBUDULBCABEDGHUCUEUFUG $.
   $}
@@ -30250,7 +30219,7 @@ $)
     $d x y $.
     cbv3hv.nf1 $e |- ( ph -> A. y ph ) $.
     cbv3hv.nf2 $e |- ( ps -> A. x ps ) $.
-    cbv3hv.1 $e |- ( x = y -> ( ph -> ps ) ) $.
+    cbv3hv.1 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Version of ~ cbv3h with a dv condition on ` x , y ` , which does not
        require ~ ax-13 .  Was used in a proof of ~ axc11n (but of independent
        interest).  (Contributed by NM, 25-Jul-2015.)  (Proof shortened by Wolf
@@ -30263,51 +30232,51 @@ $)
        shortened by Wolf Lammen, 29-Nov-2020.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
     cbv3hvOLD $p |- ( A. x ph -> A. y ps ) $=
-      ( wal hbal wex weq wi ax6ev eximii 19.35i 19.9h sylib alrimih ) ACHZBDADC
+      ( wal hbal wex wequ wi ax6ev eximii 19.35i 19.9h sylib alrimih ) ACHZBDADC
       EISBCJBABCCDKABLCCDMGNOBCFPQR $.
 
     $( Obsolete proof of ~ cbv3hv as of 29-Nov-2020.  (Contributed by NM,
        25-Jul-2015.)  (Proof shortened by Wolf Lammen, 29-Dec-2017.)
        (New usage is discouraged.)  (Proof modification is discouraged.) $)
     cbv3hvOLDOLD $p |- ( A. x ph -> A. y ps ) $=
-      ( wal alimi wex weq wi ax6ev eximii 19.35i 19.9h sylib alcoms syl ) ACHZA
+      ( wal alimi wex wequ wi ax6ev eximii 19.35i 19.9h sylib alcoms syl ) ACHZA
       DHZCHBDHZAUACEIAUBDCTBDTBCJBABCCDKABLCCDMGNOBCFPQIRS $.
   $}
 
   ${
     $d x y $.
-    cbvalv1.nf1 $e |- F/ y ph $.
-    cbvalv1.nf2 $e |- F/ x ps $.
-    cbvalv1.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    cbvalv1s.nf1 $e |- F/ y ph $.
+    cbvalv1s.nf2 $e |- F/ x ps $.
+    cbvalv1s.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Version of ~ cbval with a dv condition, which does not require ~ ax-13 .
        See ~ cbvalvw for a version with two dv conditions, requiring fewer
        axioms, and ~ cbvalv for another variant.  (Contributed by BJ,
        31-May-2019.) $)
-    cbvalv1 $p |- ( A. x ph <-> A. y ps ) $=
-      ( wal weq biimpd cbv3v wi biimprd equcoms impbii ) ACHBDHABCDEFCDIZABGJKB
+    cbvalv1s $p |- ( A. x ph <-> A. y ps ) $=
+      ( wal wequ biimpd cbv3v wi biimprd equcoms impbii ) ACHBDHABCDEFCDIZABGJKB
       ADCFEBALCDPABGMNKO $.
 
     $( Version of ~ cbvex with a dv condition, which does not require ~ ax-13 .
        See ~ cbvexvw for a version with two dv conditions, requiring fewer
        axioms, and ~ cbvexv for another variant.  (Contributed by BJ,
        31-May-2019.) $)
-    cbvexv1 $p |- ( E. x ph <-> E. y ps ) $=
-      ( wn wal wex nfn weq notbid cbvalv1 notbii df-ex 3bitr4i ) AHZCIZHBHZDIZH
+    cbvexv1s $p |- ( E. x ph <-> E. y ps ) $=
+      ( wn wal wex nfn wequ notbid cbvalv1s notbii df-ex 3bitr4i ) AHZCIZHBHZDIZH
       ACJBDJSUARTCDADEKBCFKCDLABGMNOACPBDPQ $.
   $}
 
   $( Alternate proof of ~ equs5a .  Uses ~ ax-12 but not ~ ax-13 .
      (Contributed by NM, 2-Feb-2007.)  (Proof modification is discouraged.)
      (New usage is discouraged.) $)
-  equs5aALT $p |- ( E. x ( x = y /\ A. y ph ) -> A. x ( x = y -> ph ) ) $=
-    ( weq wal wa wi nfa1 ax-12 imp exlimi ) BCDZACEZFLAGZBEZBNBHLMOABCIJK $.
+  equs5aALT $p |- ( E. x ( x =s y /\ A. y ph ) -> A. x ( x =s y -> ph ) ) $=
+    ( wequ wal wa wi nfa1 ax-12 imp exlimi ) BCDZACEZFLAGZBEZBNBHLMOABCIJK $.
 
   $( Alternate proof of ~ equs5e .  Uses ~ ax-12 but not ~ ax-13 .
      (Contributed by NM, 2-Feb-2007.)  (Proof shortened by Wolf Lammen,
      15-Jan-2018.)  (Proof modification is discouraged.)
      (New usage is discouraged.) $)
-  equs5eALT $p |- ( E. x ( x = y /\ ph ) -> A. x ( x = y -> E. y ph ) ) $=
-    ( weq wa wex wi wal nfa1 hbe1 19.23bi ax-12 syl5 imp exlimi ) BCDZAEPACFZGZ
+  equs5eALT $p |- ( E. x ( x =s y /\ ph ) -> A. x ( x =s y -> E. y ph ) ) $=
+    ( wequ wa wex wi wal nfa1 hbe1 19.23bi ax-12 syl5 imp exlimi ) BCDZAEPACFZGZ
     BHZBRBIPASAQCHZPSATCACJKQBCLMNO $.
 
   ${
@@ -30378,8 +30347,8 @@ $)
        substitutions.  (Contributed by NM, 28-Jan-2004.)  (Revised by BJ,
        29-Dec-2020.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    cleljustALT $p |- ( x e. y <-> E. z ( z = x /\ z e. y ) ) $=
-      ( weq wel wa wex ax-5 elequ1 equsexhv bicomi ) CADCBEZFCGABEZLMCAMCHCABIJ
+    cleljustALT $p |- ( x e.s y <-> E. z ( z =s x /\ z e.s y ) ) $=
+      ( wequ wsel wa wex ax-5 elequ1 equsexhv bicomi ) CADCBEZFCGABEZLMCAMCHCABIJ
       K $.
 
     $( Alternate proof of ~ cleljust .  Compared with ~ cleljustALT , it uses
@@ -30389,15 +30358,15 @@ $)
        (Contributed by NM, 28-Jan-2004.)  (Revised by Mario Carneiro,
        21-Dec-2016.)  (Revised by BJ, 29-Dec-2020.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
-    cleljustALT2 $p |- ( x e. y <-> E. z ( z = x /\ z e. y ) ) $=
-      ( weq wel wa wex nfv elequ1 equsexv bicomi ) CADCBEZFCGABEZLMCAMCHCABIJK
+    cleljustALT2 $p |- ( x e.s y <-> E. z ( z =s x /\ z e.s y ) ) $=
+      ( wequ wsel wa wex nfv elequ1 equsexv bicomi ) CADCBEZFCGABEZLMCAMCHCABIJK
       $.
   $}
 
   $( Same as ~ axc11 but with reversed antecedent.  Note the use of ~ ax-12
      (and not merely ~ ax12v ).  (Contributed by NM, 25-Jul-2015.) $)
-  axc11r $p |- ( A. y y = x -> ( A. x ph -> A. y ph ) ) $=
-    ( weq wal wi ax-12 sps pm2.27 al2imi syld ) CBDZCEABEZLAFZCEZACELMOFCACBGHL
+  axc11r $p |- ( A. y y =s x -> ( A. x ph -> A. y ph ) ) $=
+    ( wequ wal wi ax-12 sps pm2.27 al2imi syld ) CBDZCEABEZLAFZCEZACELMOFCACBGHL
     NACLAIJK $.
 
   $( Obsolete proof of ~ nf5r as of 6-Oct-2021.  (Contributed by Mario
@@ -31002,7 +30971,7 @@ $)
      ~ mmtheorems.html#ax6dgen ).  It is not known whether this axiom can be
      derived from the others.  (Contributed by NM, 21-Dec-2015.)
      (New usage is discouraged.) $)
-  ax-13 $a |- ( -. x = y -> ( y = z -> A. x y = z ) ) $.
+  ax-13 $a |- ( -. x =s y -> ( y =s z -> A. x y =s z ) ) $.
 
   ${
     $d x z $.  $d y z $.
@@ -31016,7 +30985,7 @@ $)
        this theorem states, that a distinct variable condition can be replaced
        with an inequality between set variables.  (Contributed by NM,
        30-Jun-2016.) $)
-    ax13v $p |- ( -. x = y -> ( y = z -> A. x y = z ) ) $=
+    ax13v $p |- ( -. x =s y -> ( y =s z -> A. x y =s z ) ) $=
       ( ax-13 ) ABCD $.
   $}
 
@@ -31026,8 +30995,8 @@ $)
        For convenience, ` y ` is kept on the right side of equations.  The
        proof of ~ ax13 bases on ideas from NM, 24-Dec-2015.  (Contributed by
        Wolf Lammen, 8-Sep-2018.)  (New usage is discouraged.) $)
-    ax13lem1 $p |- ( -. x = y -> ( z = y -> A. x z = y ) ) $=
-      ( vw weq wa wex wal equviniva ax13v equeucl alimdv syl9 impd exlimdv syl5
+    ax13lem1 $p |- ( -. x =s y -> ( z =s y -> A. x z =s y ) ) $=
+      ( vw wequ wa wex wal equviniva ax13v equeucl alimdv syl9 impd exlimdv syl5
       wn ) CBEZCDEZBDEZFZDGABEQZRAHZCBDIUBUAUCDUBSTUCUBTTAHSUCABDJSTRACBDKLMNOP
       $.
   $}
@@ -31039,8 +31008,8 @@ $)
        (Contributed by NM, 21-Dec-2015.)  (Proof shortened by Wolf Lammen,
        31-Jan-2018.)  Reduce axiom usage (Revised by Wolf Lammen,
        2-Jun-2021.) $)
-    ax13 $p |- ( -. x = y -> ( y = z -> A. x y = z ) ) $=
-      ( vw weq wn wal wi wa wex equvinv ax13lem1 imp ax7v1 alanimi an4s exlimdv
+    ax13 $p |- ( -. x =s y -> ( y =s z -> A. x y =s z ) ) $=
+      ( vw wequ wn wal wi wa wex equvinv ax13lem1 imp ax7v1 alanimi an4s exlimdv
       syl2an ex syl5bi ax13b mpbir ) ABEFZBCEZUDAGZHZHUCACEFZUFHHUCUGUFUDDBEZDC
       EZIZDJUCUGIZUEBCDKUKUJUEDUKUJUEUCUHUGUIUEUCUHIUHAGZUIAGZUEUGUIIUCUHULABDL
       MUGUIUMACDLMUHUIUDAUHUIUDDBCNMORPSQTSUEABCUAUB $.
@@ -31058,8 +31027,8 @@ $)
        It is preferred to use ~ ax6ev when it is sufficient.  (Contributed by
        NM, 14-May-1993.)  Shortened after ~ ax13lem1 became available.
        (Revised by Wolf Lammen, 8-Sep-2018.) $)
-    ax6e $p |- E. x x = y $=
-      ( vw weq wex 19.8a wn wi wal ax13lem1 ax6ev equtr eximii syl6com exlimiiv
+    ax6e $p |- E. x x =s y $=
+      ( vw wequ wex 19.8a wn wi wal ax13lem1 ax6ev equtr eximii syl6com exlimiiv
       19.35i pm2.61i ) ABDZRAEZRAFCBDZRGZSHCUATTAISABCJTRAACDTRHAACKACBLMPNCBKO
       Q $.
   $}
@@ -31074,8 +31043,8 @@ $)
      rather than ~ ax6 since the ~ ax6v derivation is much shorter and requires
      fewer axioms.  (Contributed by NM, 12-Nov-2013.)  (Revised by NM,
      25-Jul-2015.)  (Proof shortened by Wolf Lammen, 4-Feb-2018.) $)
-  ax6 $p |- -. A. x -. x = y $=
-    ( weq wex wn wal ax6e df-ex mpbi ) ABCZADJEAFEABGJAHI $.
+  ax6 $p |- -. A. x -. x =s y $=
+    ( wequ wex wn wal ax6e df-ex mpbi ) ABCZADJEAFEABGJAHI $.
 
   $( Show that the original axiom ~ ax-c10 can be derived from ~ ax6 and
      others.  See ~ ax6fromc10 for the rederivation of ~ ax6 from ~ ax-c10 .
@@ -31083,44 +31052,44 @@ $)
      Normally, ~ axc10 should be used rather than ~ ax-c10 , except by theorems
      specifically studying the latter's properties.  (Contributed by NM,
      5-Aug-1993.)  (Proof modification is discouraged.) $)
-  axc10 $p |- ( A. x ( x = y -> A. x ph ) -> ph ) $=
-    ( weq wal wi wn ax6 con3 al2imi mtoi axc7 syl ) BCDZABEZFZBEZOGZBEZGAQSNGZB
+  axc10 $p |- ( A. x ( x =s y -> A. x ph ) -> ph ) $=
+    ( wequ wal wi wn ax6 con3 al2imi mtoi axc7 syl ) BCDZABEZFZBEZOGZBEZGAQSNGZB
     EBCHPRTBNOIJKABLM $.
 
   $( Closed theorem form of ~ spim .  (Contributed by NM, 15-Jan-2008.)
      (Revised by Mario Carneiro, 17-Oct-2016.)  (Proof shortened by Wolf
      Lammen, 24-Feb-2018.) $)
-  spimt $p |- ( ( F/ x ps /\ A. x ( x = y -> ( ph -> ps ) ) ) ->
+  spimt $p |- ( ( F/ x ps /\ A. x ( x =s y -> ( ph -> ps ) ) ) ->
                                                          ( A. x ph -> ps ) ) $=
-    ( weq wi wal wex wnf ax6e exim mpi 19.35 sylib 19.9t biimpd sylan9r ) CDEZA
+    ( wequ wi wal wex wnf ax6e exim mpi 19.35 sylib 19.9t biimpd sylan9r ) CDEZA
     BFZFCGZACGZBCHZBCIZBTSCHZUAUBFTRCHUDCDJRSCKLABCMNUCUBBBCOPQ $.
 
   ${
     spim.1 $e |- F/ x ps $.
-    spim.2 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spim.2 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Specialization, using implicit substitution.  Compare Lemma 14 of
        [Tarski] p. 70.  The ~ spim series of theorems requires that only one
        direction of the substitution hypothesis hold.  (Contributed by NM,
        10-Jan-1993.)  (Revised by Mario Carneiro, 3-Oct-2016.)  (Proof
        shortened by Wolf Lammen, 18-Feb-2018.) $)
     spim $p |- ( A. x ph -> ps ) $=
-      ( weq wi ax6e eximii 19.36i ) ABCECDGABHCCDIFJK $.
+      ( wequ wi ax6e eximii 19.36i ) ABCECDGABHCCDIFJK $.
   $}
 
   ${
     spimed.1 $e |- ( ch -> F/ x ph ) $.
-    spimed.2 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimed.2 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Deduction version of ~ spime .  (Contributed by NM, 14-May-1993.)
        (Revised by Mario Carneiro, 3-Oct-2016.)  (Proof shortened by Wolf
        Lammen, 19-Feb-2018.) $)
     spimed $p |- ( ch -> ( ph -> E. x ps ) ) $=
-      ( wal wex nf5rd weq wi ax6e eximii 19.35i syl6 ) CAADHBDICADFJABDDEKABLDD
+      ( wal wex nf5rd wequ wi ax6e eximii 19.35i syl6 ) CAADHBDICADFJABDDEKABLDD
       EMGNOP $.
   $}
 
   ${
     spime.1 $e |- F/ x ph $.
-    spime.2 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spime.2 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Existential introduction, using implicit substitution.  Compare Lemma 14
        of [Tarski] p. 70.  (Contributed by NM, 7-Aug-1994.)  (Revised by Mario
        Carneiro, 3-Oct-2016.)  (Proof shortened by Wolf Lammen, 6-Mar-2018.) $)
@@ -31130,13 +31099,13 @@ $)
 
   ${
     $d x ps $.
-    spimv.1 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimv.1 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( A version of ~ spim with a distinct variable requirement instead of a
        bound variable hypothesis.  See also ~ spimv1 and ~ spimvw .  See also
        ~ spimvALT .  (Contributed by NM, 31-Jul-1993.)  Removed dependency on
        ~ ax-10 .  (Revised by BJ, 29-Nov-2020.) $)
     spimv $p |- ( A. x ph -> ps ) $=
-      ( weq wi ax6e eximii 19.36iv ) ABCCDFABGCCDHEIJ $.
+      ( wequ wi ax6e eximii 19.36iv ) ABCCDFABGCCDHEIJ $.
 
     $( Alternate proof of ~ spimv .  Shorter but requires more axioms.
        (Contributed by NM, 31-Jul-1993.)  (Proof modification is discouraged.)
@@ -31147,7 +31116,7 @@ $)
 
   ${
     $d x ph $.
-    spimev.1 $e |- ( x = y -> ( ph -> ps ) ) $.
+    spimev.1 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Distinct-variable version of ~ spime .  (Contributed by NM,
        10-Jan-1993.) $)
     spimev $p |- ( ph -> E. x ps ) $=
@@ -31156,37 +31125,37 @@ $)
 
   ${
     $d x ps $.
-    spv.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    spv.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Specialization, using implicit substitution.  (Contributed by NM,
        30-Aug-1993.) $)
     spv $p |- ( A. x ph -> ps ) $=
-      ( weq biimpd spimv ) ABCDCDFABEGH $.
+      ( wequ biimpd spimv ) ABCDCDFABEGH $.
   $}
 
   ${
-    spei.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    spei.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     spei.2 $e |- ps $.
     $( Inference from existential specialization, using implicit substitution.
        Remove a distinct variable constraint.  (Contributed by NM,
        19-Aug-1993.)  (Proof shortened by Wolf Lammen, 12-May-2018.) $)
     spei $p |- E. x ph $=
-      ( weq ax6e mpbiri eximii ) CDGZACCDHKABFEIJ $.
+      ( wequ ax6e mpbiri eximii ) CDGZACCDHKABFEIJ $.
   $}
 
   ${
     chvar.1 $e |- F/ x ps $.
-    chvar.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    chvar.2 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     chvar.3 $e |- ph $.
     $( Implicit substitution of ` y ` for ` x ` into a theorem.  (Contributed
        by Raph Levien, 9-Jul-2003.)  (Revised by Mario Carneiro,
        3-Oct-2016.) $)
     chvar $p |- ps $=
-      ( weq biimpd spim mpg ) ABCABCDECDHABFIJGK $.
+      ( wequ biimpd spim mpg ) ABCABCDECDHABFIJGK $.
   $}
 
   ${
     $d x ps $.
-    chvarv.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    chvarv.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     chvarv.2 $e |- ph $.
     $( Implicit substitution of ` y ` for ` x ` into a theorem.  (Contributed
        by NM, 20-Apr-1994.)  (Proof shortened by Wolf Lammen, 22-Apr-2018.)
@@ -31205,7 +31174,7 @@ $)
   ${
     cbv3.1 $e |- F/ y ph $.
     cbv3.2 $e |- F/ x ps $.
-    cbv3.3 $e |- ( x = y -> ( ph -> ps ) ) $.
+    cbv3.3 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution, that
        does not use ~ ax-c9 .  (Contributed by NM, 5-Aug-1993.)  (Proof
        shortened by Wolf Lammen, 12-May-2018.) $)
@@ -31216,7 +31185,7 @@ $)
   ${
     cbv3h.1 $e |- ( ph -> A. y ph ) $.
     cbv3h.2 $e |- ( ps -> A. x ps ) $.
-    cbv3h.3 $e |- ( x = y -> ( ph -> ps ) ) $.
+    cbv3h.3 $e |- ( x =s y -> ( ph -> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 8-Jun-1993.)  (Proof shortened by Andrew Salmon,
        25-May-2011.)  (Proof shortened by Wolf Lammen, 12-May-2018.) $)
@@ -31229,36 +31198,36 @@ $)
     cbv1.2 $e |- F/ y ph $.
     cbv1.3 $e |- ( ph -> F/ y ps ) $.
     cbv1.4 $e |- ( ph -> F/ x ch ) $.
-    cbv1.5 $e |- ( ph -> ( x = y -> ( ps -> ch ) ) ) $.
+    cbv1.5 $e |- ( ph -> ( x =s y -> ( ps -> ch ) ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 5-Aug-1993.)  (Revised by Mario Carneiro,
        3-Oct-2016.)  Format hypotheses to common style.  (Revised by Wolf
        Lammen, 13-May-2018.) $)
     cbv1 $p |- ( ph -> ( A. x ps -> A. y ch ) ) $=
-      ( wal wi nfim1 weq com12 a2d cbv3 19.21 3imtr3i pm2.86i ) ABDKZCEKZABLZDK
+      ( wal wi nfim1 wequ com12 a2d cbv3 19.21 3imtr3i pm2.86i ) ABDKZCEKZABLZDK
       ACLZEKAUALAUBLUCUDDEABEGHMACDFIMDENZABCAUEBCLJOPQABDFRACEGRST $.
   $}
 
   ${
     cbv1h.1 $e |- ( ph -> ( ps -> A. y ps ) ) $.
     cbv1h.2 $e |- ( ph -> ( ch -> A. x ch ) ) $.
-    cbv1h.3 $e |- ( ph -> ( x = y -> ( ps -> ch ) ) ) $.
+    cbv1h.3 $e |- ( ph -> ( x =s y -> ( ps -> ch ) ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 11-May-1993.)  (Proof shortened by Wolf Lammen,
        13-May-2018.) $)
     cbv1h $p |- ( A. x A. y ph -> ( A. x ps -> A. y ch ) ) $=
-      ( wal nfa1 nfa2 wi 2sp syl nf5d weq cbv1 ) AEIZDIZBCDERDJZAEDKZSBEUASABBE
+      ( wal nfa1 nfa2 wi 2sp syl nf5d wequ cbv1 ) AEIZDIZBCDERDJZAEDKZSBEUASABBE
       ILADEMZFNOSCDTSACCDILUBGNOSADEPBCLLUBHNQ $.
   $}
 
   ${
     cbv2h.1 $e |- ( ph -> ( ps -> A. y ps ) ) $.
     cbv2h.2 $e |- ( ph -> ( ch -> A. x ch ) ) $.
-    cbv2h.3 $e |- ( ph -> ( x = y -> ( ps <-> ch ) ) ) $.
+    cbv2h.3 $e |- ( ph -> ( x =s y -> ( ps <-> ch ) ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 11-May-1993.) $)
     cbv2h $p |- ( A. x A. y ph -> ( A. x ps <-> A. y ch ) ) $=
-      ( wal weq wb wi biimp syl6 cbv1h equcomi biimpr syl56 alcoms impbid ) AEI
+      ( wal wequ wb wi biimp syl6 cbv1h equcomi biimpr syl56 alcoms impbid ) AEI
       DIBDIZCEIZABCDEFGADEJZBCKZBCLHBCMNOAUBUALEDACBEDGFEDJUCAUDCBLEDPHBCQROST
       $.
   $}
@@ -31268,7 +31237,7 @@ $)
     cbv2.2 $e |- F/ y ph $.
     cbv2.3 $e |- ( ph -> F/ y ps ) $.
     cbv2.4 $e |- ( ph -> F/ x ch ) $.
-    cbv2.5 $e |- ( ph -> ( x = y -> ( ps <-> ch ) ) ) $.
+    cbv2.5 $e |- ( ph -> ( x =s y -> ( ps <-> ch ) ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 5-Aug-1993.)  (Revised by Mario Carneiro,
        3-Oct-2016.)  Format hypotheses to common style.  (Revised by Wolf
@@ -31279,58 +31248,58 @@ $)
   $}
 
   ${
-    cbval.1 $e |- F/ y ph $.
-    cbval.2 $e |- F/ x ps $.
-    cbval.3 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    cbvals.1 $e |- F/ y ph $.
+    cbvals.2 $e |- F/ x ps $.
+    cbvals.3 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 13-May-1993.)  (Revised by Mario Carneiro,
        3-Oct-2016.) $)
-    cbval $p |- ( A. x ph <-> A. y ps ) $=
-      ( wal weq biimpd cbv3 wi biimprd equcoms impbii ) ACHBDHABCDEFCDIZABGJKBA
+    cbvals $p |- ( A. x ph <-> A. y ps ) $=
+      ( wal wequ biimpd cbv3 wi biimprd equcoms impbii ) ACHBDHABCDEFCDIZABGJKBA
       DCFEBALCDPABGMNKO $.
 
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 21-Jun-1993.) $)
-    cbvex $p |- ( E. x ph <-> E. y ps ) $=
-      ( wn wal wex nfn weq notbid cbval notbii df-ex 3bitr4i ) AHZCIZHBHZDIZHAC
+    cbvexs $p |- ( E. x ph <-> E. y ps ) $=
+      ( wn wal wex nfn wequ notbid cbvals notbii df-ex 3bitr4i ) AHZCIZHBHZDIZHAC
       JBDJSUARTCDADEKBCFKCDLABGMNOACPBDPQ $.
   $}
 
   ${
     $d y ph $.  $d x ps $.
-    cbvalv.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    cbvalvs.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 5-Aug-1993.)  Remove dependency on ~ ax-10 .
        (Revised by Wolf Lammen, 17-Jul-2021.) $)
-    cbvalv $p |- ( A. x ph <-> A. y ps ) $=
-      ( wal nfv nfal spv alrimi weq wb equcoms bicomd impbii ) ACFZBDFZPBDADCAD
+    cbvalvs $p |- ( A. x ph <-> A. y ps ) $=
+      ( wal nfv nfal spv alrimi wequ wb equcoms bicomd impbii ) ACFZBDFZPBDADCAD
       GHABCDEIJQACBCDBCGHBADCDCKABABLCDEMNIJO $.
 
     $( Obsolete proof of ~ cbvalv as of 17-Jul-2021.  (Contributed by NM,
        5-Aug-1993.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
     cbvalvOLD $p |- ( A. x ph <-> A. y ps ) $=
-      ( nfv cbval ) ABCDADFBCFEG $.
+      ( nfv cbvals ) ABCDADFBCFEG $.
 
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 21-Jun-1993.)  Remove dependency on ~ ax-10 .
        (Revised by Wolf Lammen, 17-Jul-2021.) $)
-    cbvexv $p |- ( E. x ph <-> E. y ps ) $=
-      ( wn wal wex weq notbid cbvalv notbii df-ex 3bitr4i ) AFZCGZFBFZDGZFACHBD
+    cbvexvs $p |- ( E. x ph <-> E. y ps ) $=
+      ( wn wal wex wequ notbid cbvalvs notbii df-ex 3bitr4i ) AFZCGZFBFZDGZFACHBD
       HPROQCDCDIABEJKLACMBDMN $.
 
     $( Obsolete proof of ~ cbvexv as of 17-Jul-2021.  (Contributed by NM,
        21-Jun-1993.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
     cbvexvOLD $p |- ( E. x ph <-> E. y ps ) $=
-      ( nfv cbvex ) ABCDADFBCFEG $.
+      ( nfv cbvexs ) ABCDADFBCFEG $.
   $}
 
   ${
     $d x ph $.  $d x ch $.
     cbvald.1 $e |- F/ y ph $.
     cbvald.2 $e |- ( ph -> F/ y ps ) $.
-    cbvald.3 $e |- ( ph -> ( x = y -> ( ps <-> ch ) ) ) $.
+    cbvald.3 $e |- ( ph -> ( x =s y -> ( ps <-> ch ) ) ) $.
     $( Deduction used to change bound variables, using implicit substitution,
        particularly useful in conjunction with ~ dvelim .  (Contributed by NM,
        2-Jan-2002.)  (Revised by Mario Carneiro, 6-Oct-2016.)  (Revised by Wolf
@@ -31342,7 +31311,7 @@ $)
        particularly useful in conjunction with ~ dvelim .  (Contributed by NM,
        2-Jan-2002.)  (Revised by Mario Carneiro, 6-Oct-2016.) $)
     cbvexd $p |- ( ph -> ( E. x ps <-> E. y ch ) ) $=
-      ( wn wal wex nfnd weq wb notbi syl6ib cbvald notbid df-ex 3bitr4g ) ABIZD
+      ( wn wal wex nfnd wequ wb notbi syl6ib cbvald notbid df-ex 3bitr4g ) ABIZD
       JZICIZEJZIBDKCEKAUBUDAUAUCDEFABEGLADEMBCNUAUCNHBCOPQRBDSCEST $.
   $}
 
@@ -31352,12 +31321,12 @@ $)
     cbval2.2 $e |- F/ w ph $.
     cbval2.3 $e |- F/ x ps $.
     cbval2.4 $e |- F/ y ps $.
-    cbval2.5 $e |- ( ( x = z /\ y = w ) -> ( ph <-> ps ) ) $.
+    cbval2.5 $e |- ( ( x =s z /\ y =s w ) -> ( ph <-> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 22-Dec-2003.)  (Revised by Mario Carneiro,
        6-Oct-2016.)  (Proof shortened by Wolf Lammen, 22-Apr-2018.) $)
     cbval2 $p |- ( A. x A. y ph <-> A. z A. w ps ) $=
-      ( wal nfal weq wi nfv nfim wb cbval 19.21v pm5.74d 3bitr3i pm5.74ri
+      ( wal nfal wequ wi nfv nfim wb cbvals 19.21v pm5.74d 3bitr3i pm5.74ri
       expcom ) ADLZBFLZCEAEDGMBCFIMCENZUEUFUGAOZDLUGBOZFLUGUEOUGUFOUHUIDFUGAFUG
       FPHQUGBDUGDPJQDFNZUGABUGUJABRKUDUASUGADTUGBFTUBUCS $.
 
@@ -31365,50 +31334,50 @@ $)
        (Contributed by NM, 14-Sep-2003.)  (Revised by Mario Carneiro,
        6-Oct-2016.)  (Proof shortened by Wolf Lammen, 16-Jun-2019.) $)
     cbvex2 $p |- ( E. x E. y ph <-> E. z E. w ps ) $=
-      ( wn wal wex nfn weq wa notbid cbval2 2exnaln notbii 3bitr4i ) ALZDMCMZLB
+      ( wn wal wex nfn wequ wa notbid cbval2 2exnaln notbii 3bitr4i ) ALZDMCMZLB
       LZFMEMZLADNCNBFNENUDUFUCUECDEFAEGOAFHOBCIOBDJOCEPDFPQABKRSUAACDTBEFTUB $.
   $}
 
   ${
     $d ps y $.  $d ch x $.  $d ph x $.  $d ph y $.
-    cbvaldva.1 $e |- ( ( ph /\ x = y ) -> ( ps <-> ch ) ) $.
+    cbvaldva.1 $e |- ( ( ph /\ x =s y ) -> ( ps <-> ch ) ) $.
     $( Rule used to change the bound variable in a universal quantifier with
        implicit substitution.  Deduction form.  (Contributed by David Moews,
        1-May-2017.)  Remove dependency on ~ ax-10 .  (Revised by Wolf Lammen,
        18-Jul-2021.) $)
     cbvaldva $p |- ( ph -> ( A. x ps <-> A. y ch ) ) $=
-      ( wal wi weq wb expcom pm5.74d cbvalv 19.21v 3bitr3i pm5.74ri ) ABDGZCEGZ
+      ( wal wi wequ wb expcom pm5.74d cbvalvs 19.21v 3bitr3i pm5.74ri ) ABDGZCEGZ
       ABHZDGACHZEGAQHARHSTDEDEIZABCAUABCJFKLMABDNACENOP $.
 
     $( Obsolete proof of ~ cbvaldva as of 18-Jul-2021.  (Contributed by David
        Moews, 1-May-2017.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
     cbvaldvaOLD $p |- ( ph -> ( A. x ps <-> A. y ch ) ) $=
-      ( nfv nfvd weq wb ex cbvald ) ABCDEAEGABEHADEIBCJFKL $.
+      ( nfv nfvd wequ wb ex cbvald ) ABCDEAEGABEHADEIBCJFKL $.
 
     $( Rule used to change the bound variable in an existential quantifier with
        implicit substitution.  Deduction form.  (Contributed by David Moews,
        1-May-2017.)  Remove dependency on ~ ax-10 .  (Revised by Wolf Lammen,
        18-Jul-2021.) $)
     cbvexdva $p |- ( ph -> ( E. x ps <-> E. y ch ) ) $=
-      ( wex wn wal weq wa notbid cbvaldva alnex 3bitr3g con4bid ) ABDGZCEGZABHZ
+      ( wex wn wal wequ wa notbid cbvaldva alnex 3bitr3g con4bid ) ABDGZCEGZABHZ
       DICHZEIQHRHASTDEADEJKBCFLMBDNCENOP $.
 
     $( Obsolete proof of ~ cbvexdva as of 18-Jul-2021.  (Contributed by David
        Moews, 1-May-2017.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
     cbvexdvaOLD $p |- ( ph -> ( E. x ps <-> E. y ch ) ) $=
-      ( nfv nfvd weq wb ex cbvexd ) ABCDEAEGABEHADEIBCJFKL $.
+      ( nfv nfvd wequ wb ex cbvexd ) ABCDEAEGABEHADEIBCJFKL $.
   $}
 
   ${
     $d z w ph $.  $d x y ps $.  $d x w $.  $d z y $.
-    cbval2v.1 $e |- ( ( x = z /\ y = w ) -> ( ph <-> ps ) ) $.
+    cbval2v.1 $e |- ( ( x =s z /\ y =s w ) -> ( ph <-> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 4-Feb-2005.)  Remove dependency on ~ ax-10 .
        (Revised by Wolf Lammen, 18-Jul-2021.) $)
     cbval2v $p |- ( A. x A. y ph <-> A. z A. w ps ) $=
-      ( wal weq cbvaldva cbvalv ) ADHBFHCECEIABDFGJK $.
+      ( wal wequ cbvaldva cbvalvs ) ADHBFHCECEIABDFGJK $.
 
     $( Obsolete proof of ~ cbval2v as of 18-Jul-2021.  (Contributed by NM,
        4-Feb-2005.)  (Proof modification is discouraged.)
@@ -31420,7 +31389,7 @@ $)
        (Contributed by NM, 26-Jul-1995.)  Remove dependency on ~ ax-10 .
        (Revised by Wolf Lammen, 18-Jul-2021.) $)
     cbvex2v $p |- ( E. x E. y ph <-> E. z E. w ps ) $=
-      ( wex weq cbvexdva cbvexv ) ADHBFHCECEIABDFGJK $.
+      ( wex wequ cbvexdva cbvexvs ) ADHBFHCECEIABDFGJK $.
 
     $( Obsolete proof of ~ cbvex2v as of 18-Jul-2021.  (Contributed by NM,
        26-Jul-1995.)  (Proof modification is discouraged.)
@@ -31437,12 +31406,12 @@ $)
     cbvex4v.vg $f setvar g $.
     $d w z ch $.  $d u v ph $.  $d x y ps $.  $d f g ps $.  $d f w $.
     $d g z $.  $d u v w x y z $.
-    cbvex4v.1 $e |- ( ( x = v /\ y = u ) -> ( ph <-> ps ) ) $.
-    cbvex4v.2 $e |- ( ( z = f /\ w = g ) -> ( ps <-> ch ) ) $.
+    cbvex4v.1 $e |- ( ( x =s v /\ y =s u ) -> ( ph <-> ps ) ) $.
+    cbvex4v.2 $e |- ( ( z =s f /\ w =s g ) -> ( ps <-> ch ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 26-Jul-1995.) $)
     cbvex4v $p |- ( E. x E. y E. z E. w ph <-> E. v E. u E. f E. g ch ) $=
-      ( wex weq wa 2exbidv cbvex2v 2exbii bitri ) AGNFNZENDNBGNFNZINHNCKNJNZINH
+      ( wex wequ wa 2exbidv cbvex2v 2exbii bitri ) AGNFNZENDNBGNFNZINHNCKNJNZINH
       NUAUBDEHIDHOEIOPABFGLQRUBUCHIBCFGJKMRST $.
   $}
 
@@ -31451,40 +31420,40 @@ $)
      ( ~ equs45f ).  See ~ equs4v for a version requiring fewer axioms.
      (Contributed by NM, 10-May-1993.)  (Proof shortened by Mario Carneiro,
      20-May-2014.)  (Proof shortened by Wolf Lammen, 5-Feb-2018.) $)
-  equs4 $p |- ( A. x ( x = y -> ph ) -> E. x ( x = y /\ ph ) ) $=
-    ( weq wi wal wex wa ax6e exintr mpi ) BCDZAEBFLBGLAHBGBCILABJK $.
+  equs4 $p |- ( A. x ( x =s y -> ph ) -> E. x ( x =s y /\ ph ) ) $=
+    ( wequ wi wal wex wa ax6e exintr mpi ) BCDZAEBFLBGLAHBGBCILABJK $.
 
   ${
     equsal.1 $e |- F/ x ps $.
-    equsal.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsal.2 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( An equivalence related to implicit substitution.  (Contributed by NM,
        2-Jun-1993.)  (Proof shortened by Andrew Salmon, 12-Aug-2011.)  (Revised
        by Mario Carneiro, 3-Oct-2016.)  (Proof shortened by Wolf Lammen,
        5-Feb-2018.) $)
-    equsal $p |- ( A. x ( x = y -> ph ) <-> ps ) $=
-      ( weq wi wal wex 19.23 pm5.74i albii ax6e a1bi 3bitr4i ) CDGZBHZCIQCJZBHQ
+    equsal $p |- ( A. x ( x =s y -> ph ) <-> ps ) $=
+      ( wequ wi wal wex 19.23 pm5.74i albii ax6e a1bi 3bitr4i ) CDGZBHZCIQCJZBHQ
       AHZCIBQBCEKTRCQABFLMSBCDNOP $.
   $}
 
   ${
     equsalh.1 $e |- ( ps -> A. x ps ) $.
-    equsalh.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsalh.2 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( An equivalence related to implicit substitution.  (Contributed by NM,
        2-Jun-1993.) $)
-    equsalh $p |- ( A. x ( x = y -> ph ) <-> ps ) $=
+    equsalh $p |- ( A. x ( x =s y -> ph ) <-> ps ) $=
       ( nf5i equsal ) ABCDBCEGFH $.
   $}
 
   ${
     equsex.nf $e |- F/ x ps $.
-    equsex.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsex.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( An equivalence related to implicit substitution.  See ~ equsexv for a
        version with a dv condition which does not require ~ ax-13 .  See
        ~ equsexALT for an alternate proof.  (Contributed by NM, 5-Aug-1993.)
        (Revised by Mario Carneiro, 3-Oct-2016.)  (Proof shortened by Wolf
        Lammen, 6-Feb-2018.) $)
-    equsex $p |- ( E. x ( x = y /\ ph ) <-> ps ) $=
-      ( weq wa wex biimpa exlimi wi wal equsal equs4 sylbir impbii ) CDGZAHZCIZ
+    equsex $p |- ( E. x ( x =s y /\ ph ) <-> ps ) $=
+      ( wequ wa wex biimpa exlimi wi wal equsal equs4 sylbir impbii ) CDGZAHZCIZ
       BSBCERABFJKBRALCMTABCDEFNACDOPQ $.
 
     $( Alternate proof of ~ equsex .  This proves the result directly, instead
@@ -31495,18 +31464,18 @@ $)
        respectively to ~ pm5.74i , ~ albii , ~ 19.23 , ~ a1bi ).  (Contributed
        by BJ, 20-Aug-2020.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    equsexALT $p |- ( E. x ( x = y /\ ph ) <-> ps ) $=
-      ( weq wa wex pm5.32i exbii ax6e 19.41 mpbiran bitri ) CDGZAHZCIPBHZCIZBQR
+    equsexALT $p |- ( E. x ( x =s y /\ ph ) <-> ps ) $=
+      ( wequ wa wex pm5.32i exbii ax6e 19.41 mpbiran bitri ) CDGZAHZCIPBHZCIZBQR
       CPABFJKSPCIBCDLPBCEMNO $.
   $}
 
   ${
     equsexh.1 $e |- ( ps -> A. x ps ) $.
-    equsexh.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    equsexh.2 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( An equivalence related to implicit substitution.  See ~ equsexhv for a
        version with a dv condition which does not require ~ ax-13 .
        (Contributed by NM, 5-Aug-1993.) $)
-    equsexh $p |- ( E. x ( x = y /\ ph ) <-> ps ) $=
+    equsexh $p |- ( E. x ( x =s y /\ ph ) <-> ps ) $=
       ( nf5i equsex ) ABCDBCEGFH $.
   $}
 
@@ -31516,8 +31485,8 @@ $)
        distinct variable constraint removed.  (Contributed by Wolf Lammen,
        8-Sep-2018.)  Reduce axiom usage.  (Revised by Wolf Lammen,
        18-Oct-2020.)  (New usage is discouraged.) $)
-    ax13lem2 $p |- ( -. x = y -> ( E. x z = y -> z = y ) ) $=
-      ( vw weq wn wex wi wal ax13lem1 equeucl eximi 19.36v syl9 alrimdv equequ2
+    ax13lem2 $p |- ( -. x =s y -> ( E. x z =s y -> z =s y ) ) $=
+      ( vw wequ wn wex wi wal ax13lem1 equeucl eximi 19.36v syl9 alrimdv equequ2
       sylib equsalvw syl6ib ) ABEFZCBEZAGZDBEZCDEZHZDIUATUBUEDTUCUCAIZUBUDABDJU
       BUEAGUFUDHUAUEACDBKLUCUDAMQNOUDUADBDBCPRS $.
   $}
@@ -31526,8 +31495,8 @@ $)
     $d x z $.
     $( An equation between setvar is free of any other setvar.  (Contributed by
        Wolf Lammen, 9-Jun-2019.) $)
-    nfeqf2 $p |- ( -. A. x x = y -> F/ x z = y ) $=
-      ( weq wal wn wex wnf exnal nfnf1 wi ax13lem2 ax13lem1 df-nf sylibr exlimi
+    nfeqf2 $p |- ( -. A. x x =s y -> F/ x z =s y ) $=
+      ( wequ wal wn wex wnf exnal nfnf1 wi ax13lem2 ax13lem1 df-nf sylibr exlimi
       syld sylbir ) ABDZAEFSFZAGCBDZAHZSAITUBAUAAJTUAAGZUAAEZKUBTUCUAUDABCLABCM
       QUAANOPR $.
   $}
@@ -31537,16 +31506,16 @@ $)
     $( Quantifier introduction when one pair of variables is distinct.
        (Contributed by NM, 2-Jan-2002.)  (Revised by NM, 20-Jul-2015.)  Remove
        dependency on ~ ax-11 .  (Revised by Wolf Lammen, 8-Sep-2018.) $)
-    dveeq2 $p |- ( -. A. x x = y -> ( z = y -> A. x z = y ) ) $=
-      ( weq wal wn nfeqf2 nf5rd ) ABDAEFCBDAABCGH $.
+    dveeq2 $p |- ( -. A. x x =s y -> ( z =s y -> A. x z =s y ) ) $=
+      ( wequ wal wn nfeqf2 nf5rd ) ABDAEFCBDAABCGH $.
   $}
 
   ${
     $d x z $.
     $( An equation between setvar is free of any other setvar.  (Contributed by
        Wolf Lammen, 10-Jun-2019.) $)
-    nfeqf1 $p |- ( -. A. x x = y -> F/ x y = z ) $=
-      ( weq wal wn wnf nfeqf2 equcom nfbii sylib ) ABDAEFCBDZAGBCDZAGABCHLMACBI
+    nfeqf1 $p |- ( -. A. x x =s y -> F/ x y =s z ) $=
+      ( wequ wal wn wnf nfeqf2 equcom nfbii sylib ) ABDAEFCBDZAGBCDZAGABCHLMACBI
       JK $.
   $}
 
@@ -31555,8 +31524,8 @@ $)
     $( Quantifier introduction when one pair of variables is distinct.
        (Contributed by NM, 2-Jan-2002.)  Remove dependency on ~ ax-11 .
        (Revised by Wolf Lammen, 8-Sep-2018.) $)
-    dveeq1 $p |- ( -. A. x x = y -> ( y = z -> A. x y = z ) ) $=
-      ( weq wal wn nfeqf1 nf5rd ) ABDAEFBCDAABCGH $.
+    dveeq1 $p |- ( -. A. x x =s y -> ( y =s z -> A. x y =s z ) ) $=
+      ( wequ wal wn nfeqf1 nf5rd ) ABDAEFBCDAABCGH $.
   $}
 
   ${
@@ -31565,8 +31534,8 @@ $)
        the involved variables. ` F/ ` version of ~ ax-c9 .  (Contributed by
        Mario Carneiro, 6-Oct-2016.)  Remove dependency on ~ ax-11 .  (Revised
        by Wolf Lammen, 6-Sep-2018.) $)
-    nfeqf $p |- ( ( -. A. z z = x /\ -. A. z z = y ) -> F/ z x = y ) $=
-      ( vw weq wal wn nfna1 nfan wex equviniva dveeq1 imp equtr2 alanimi syl2an
+    nfeqf $p |- ( ( -. A. z z =s x /\ -. A. z z =s y ) -> F/ z x =s y ) $=
+      ( vw wequ wal wn nfna1 nfan wex equviniva dveeq1 imp equtr2 alanimi syl2an
       wa an4s ex exlimdv syl5 nf5d ) CAEZCFGZCBEZCFGZQZABEZCUDUFCUCCHUECHIUHADE
       ZBDEZQZDJUGUHCFZABDKUGUKULDUGUKULUDUIUFUJULUDUIQUICFZUJCFZULUFUJQUDUIUMCA
       DLMUFUJUNCBDLMUIUJUHCABDNOPRSTUAUB $.
@@ -31575,9 +31544,9 @@ $)
   $( Derive set.mm's original ~ ax-c9 from the shorter ~ ax-13 .  (Contributed
      by NM, 29-Nov-2015.)  (Revised by NM, 24-Dec-2015.)  (Proof shortened by
      Wolf Lammen, 29-Apr-2018.) $)
-  axc9 $p |- ( -. A. z z = x -> ( -. A. z z = y
-              -> ( x = y -> A. z x = y ) ) ) $=
-    ( weq wal wn wi wa nfeqf nf5rd ex ) CADCEFZCBDCEFZABDZNCEGLMHNCABCIJK $.
+  axc9 $p |- ( -. A. z z =s x -> ( -. A. z z =s y
+              -> ( x =s y -> A. z x =s y ) ) ) $=
+    ( wequ wal wn wi wa nfeqf nf5rd ex ) CADCEFZCBDCEFZABDZNCEGLMHNCABCIJK $.
 
   ${
     $d x z $.  $d y z $.  $d z ph $.
@@ -31589,9 +31558,9 @@ $)
        Normally, ~ axc15 should be used rather than ~ ax-c15 , except by
        theorems specifically studying the latter's properties.  (Contributed by
        NM, 2-Feb-2007.)  (Proof shortened by Wolf Lammen, 21-Apr-2018.) $)
-    axc15 $p |- ( -. A. x x = y ->
-                 ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) ) $=
-      ( vz weq wal wn wex wi ax6ev dveeq2 ax12v equequ2 sps imbi1d albid imbi2d
+    axc15 $p |- ( -. A. x x =s y ->
+                 ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) ) $=
+      ( vz wequ wal wn wex wi ax6ev dveeq2 ax12v equequ2 sps imbi1d albid imbi2d
       wb nfa1 imbi12d mpbii syl6 exlimdv mpi ) BCEZBFGZDCEZDHUEAUEAIZBFZIZIZDCJ
       UFUGUKDUFUGUGBFZUKBCDKULBDEZAUMAIZBFZIZIUKABDLULUMUEUPUJUGUMUERBDCBMNZULU
       OUIAULUNUHBUGBSULUMUEAUQOPQTUAUBUCUD $.
@@ -31601,8 +31570,8 @@ $)
      (Contributed by NM, 22-Jan-2007.)  Proof uses contemporary axioms.
      (Revised by Wolf Lammen, 8-Aug-2020.)  (Proof shortened by BJ,
      4-Jul-2021.) $)
-  ax12 $p |- ( x = y -> ( A. y ph -> A. x ( x = y -> ph ) ) ) $=
-    ( weq wal wi axc11r ala1 syl6 a1d wn sp axc15 syl7 pm2.61i ) BCDZBEZPACEZPA
+  ax12 $p |- ( x =s y -> ( A. y ph -> A. x ( x =s y -> ph ) ) ) $=
+    ( wequ wal wi axc11r ala1 syl6 a1d wn sp axc15 syl7 pm2.61i ) BCDZBEZPACEZPA
     FBEZFZFQTPQRABESACBGAPBHIJRAQKPSACLABCMNO $.
 
   ${
@@ -31610,8 +31579,8 @@ $)
     $( Obsolete proof of ~ ax13 as of 2-Jun-2021.  (Contributed by NM,
        21-Dec-2015.)  (Proof shortened by Wolf Lammen, 31-Jan-2018.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
-    ax13OLD $p |- ( -. x = y -> ( y = z -> A. x y = z ) ) $=
-      ( weq wn wal wi sp con3i axc9 syl2im ax13b mpbir ) ABDZEZBCDZPAFZGZGOACDZ
+    ax13OLD $p |- ( -. x =s y -> ( y =s z -> A. x y =s z ) ) $=
+      ( wequ wn wal wi sp con3i axc9 syl2im ax13b mpbir ) ABDZEZBCDZPAFZGZGOACDZ
       EZRGGONAFZETSAFZERUANNAHIUBSSAHIBCAJKQABCLM $.
   $}
 
@@ -31621,8 +31590,8 @@ $)
        (Contributed by NM, 8-Jul-2016.)  (Proof shortened by Wolf Lammen,
        17-Feb-2018.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc11nlemALT $p |- ( A. x x = w -> A. y y = x ) $=
-      ( weq wal cbvaev equequ2 biimprd al2imi syl5com dveeq1 spsd com12 pm2.61d
+    axc11nlemALT $p |- ( A. x x =s w -> A. y y =s x ) $=
+      ( wequ wal cbvaev equequ2 biimprd al2imi syl5com dveeq1 spsd com12 pm2.61d
       wn con1d ) ACDZAEZQBEZBADZBEZRBCDZBESUAACBFQUBTBQTUBACBGHIJRUASUAOZRSUCQS
       ABACKLMPN $.
   $}
@@ -31639,8 +31608,8 @@ $)
        shortened by Wolf Lammen, 6-Mar-2018.)  (Revised by Wolf Lammen,
        30-Nov-2019.)  (Proof shortened by BJ, 29-Mar-2021.)  (Proof shortened
        by Wolf Lammen, 2-Jul-2021.) $)
-    axc11n $p |- ( A. x x = y -> A. y y = x ) $=
-      ( vz weq wal wn dveeq1 com12 axc11r aev syl6 syl9 ax6evr exlimiiv pm2.18d
+    axc11n $p |- ( A. x x =s y -> A. y y =s x ) $=
+      ( vz wequ wal wn dveeq1 com12 axc11r aev syl6 syl9 ax6evr exlimiiv pm2.18d
       wi ) ABDAEZBADBEZACDZQRFZRPPCSTSBEZQRTSUABACGHQUASAERSBAIACBABJKLCAMNO $.
 
     $( Obsolete proof of ~ axc11n as of 2-Jul-2021.  (Contributed by NM,
@@ -31648,8 +31617,8 @@ $)
        Lammen, 6-Mar-2018.)  (Revised by Wolf Lammen, 30-Nov-2019.)  (Proof
        shortened by BJ, 29-Mar-2021.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc11nOLD $p |- ( A. x x = y -> A. y y = x ) $=
-      ( vz weq wal wn wi equcomi dveeq1 syl5com axc11r syl6 syl9 ax6ev exlimiiv
+    axc11nOLD $p |- ( A. x x =s y -> A. y y =s x ) $=
+      ( vz wequ wal wn wi equcomi dveeq1 syl5com axc11r syl6 syl9 ax6ev exlimiiv
       aev pm2.18d ) ABDAEZBADBEZCADZRSFZSGGCTUAACDZBEZRSTUBUAUCCAHBACIJRUCUBAES
       UBBAKACBABPLMCANOQ $.
 
@@ -31658,8 +31627,8 @@ $)
        Wolf Lammen, 6-Mar-2018.)  Adapt to a modification of ~ axc11nlemOLD2 .
        (Revised by Wolf Lammen, 30-Nov-2019.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
-    axc11nOLDOLD $p |- ( A. x x = y -> A. y y = x ) $=
-      ( vz weq wal wn wi equcomi dveeq1 syl5com axc11r axc11nlemOLD2 syl6 ax6ev
+    axc11nOLDOLD $p |- ( A. x x =s y -> A. y y =s x ) $=
+      ( vz wequ wal wn wi equcomi dveeq1 syl5com axc11r axc11nlemOLD2 syl6 ax6ev
       syl9 exlimiiv pm2.18d ) ABDAEZBADBEZCADZRSFZSGGCTUAACDZBEZRSTUBUAUCCAHBAC
       IZJRUCUBAESUBBAKABCUDLMOCANPQ $.
   $}
@@ -31670,8 +31639,8 @@ $)
        10-May-1993.)  (Revised by NM, 7-Nov-2015.)  (Proof shortened by Wolf
        Lammen, 6-Mar-2018.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc11nALT $p |- ( A. x x = y -> A. y y = x ) $=
-      ( vz weq wn wi equcomi dveeq1 syl5com axc11r axc11nlemALT syl6 syl9 ax6ev
+    axc11nALT $p |- ( A. x x =s y -> A. y y =s x ) $=
+      ( vz wequ wn wi equcomi dveeq1 syl5com axc11r axc11nlemALT syl6 syl9 ax6ev
       wal exlimiiv pm2.18d ) ABDAOZBADBOZCADZRSEZSFFCTUAACDZBOZRSTUBUAUCCAGBACH
       IRUCUBAOSUBBAJABCKLMCANPQ $.
   $}
@@ -31680,62 +31649,62 @@ $)
      biconditional are true when ` x ` and ` y ` are substituted with the same
      variable.  (Contributed by NM, 10-May-1993.)  Changed to a biconditional.
      (Revised by BJ, 26-Sep-2019.) $)
-  aecom $p |- ( A. x x = y <-> A. y y = x ) $=
-    ( weq wal axc11n impbii ) ABCADBACBDABEBAEF $.
+  aecom $p |- ( A. x x =s y <-> A. y y =s x ) $=
+    ( wequ wal axc11n impbii ) ABCADBACBDABEBAEF $.
 
   ${
-    aecoms.1 $e |- ( A. x x = y -> ph ) $.
+    aecoms.1 $e |- ( A. x x =s y -> ph ) $.
     $( A commutation rule for identical variable specifiers.  (Contributed by
        NM, 10-May-1993.) $)
-    aecoms $p |- ( A. y y = x -> ph ) $=
-      ( weq wal aecom sylbi ) CBECFBCEBFACBGDH $.
+    aecoms $p |- ( A. y y =s x -> ph ) $=
+      ( wequ wal aecom sylbi ) CBECFBCEBFACBGDH $.
   $}
 
   ${
-    naecoms.1 $e |- ( -. A. x x = y -> ph ) $.
+    naecoms.1 $e |- ( -. A. x x =s y -> ph ) $.
     $( A commutation rule for distinct variable specifiers.  (Contributed by
        NM, 2-Jan-2002.) $)
-    naecoms $p |- ( -. A. y y = x -> ph ) $=
-      ( weq wal aecom sylnbir ) CBECFBCEBFABCGDH $.
+    naecoms $p |- ( -. A. y y =s x -> ph ) $=
+      ( wequ wal aecom sylnbir ) CBECFBCEBFABCGDH $.
   $}
 
   $( Show that ~ ax-c11 can be derived from ~ ax-c11n in the form of ~ axc11n .
      Normally, ~ axc11 should be used rather than ~ ax-c11 , except by theorems
      specifically studying the latter's properties.  (Contributed by NM,
      16-May-2008.)  (Proof shortened by Wolf Lammen, 21-Apr-2018.) $)
-  axc11 $p |- ( A. x x = y -> ( A. x ph -> A. y ph ) ) $=
+  axc11 $p |- ( A. x x =s y -> ( A. x ph -> A. y ph ) ) $=
     ( wal wi axc11r aecoms ) ABDACDECBABCFG $.
 
   $( All variables are effectively bound in an identical variable specifier.
      (Contributed by NM, 13-May-1993.)  (Proof shortened by Wolf Lammen,
      21-Apr-2018.) $)
-  hbae $p |- ( A. x x = y -> A. z A. x x = y ) $=
-    ( weq wal wi wn sp axc9 syl7 axc11r axc11 pm2.43i syl5 pm2.61ii axc4i ax-11
+  hbae $p |- ( A. x x =s y -> A. z A. x x =s y ) $=
+    ( wequ wal wi wn sp axc9 syl7 axc11r axc11 pm2.43i syl5 pm2.61ii axc4i ax-11
     syl ) ABDZAEZSCEZAETCESUAACADCEZCBDCEZTUAFTSUBGUCGUASAHABCIJSACKTSBEZUCUATU
     DSABLMSBCKNOPSACQR $.
 
   $( All variables are effectively bound in an identical variable specifier.
      (Contributed by Mario Carneiro, 11-Aug-2016.) $)
-  nfae $p |- F/ z A. x x = y $=
-    ( weq wal hbae nf5i ) ABDAECABCFG $.
+  nfae $p |- F/ z A. x x =s y $=
+    ( wequ wal hbae nf5i ) ABDAECABCFG $.
 
   $( All variables are effectively bound in a distinct variable specifier.
      Lemma L19 in [Megill] p. 446 (p. 14 of the preprint).  (Contributed by NM,
      13-May-1993.) $)
-  hbnae $p |- ( -. A. x x = y -> A. z -. A. x x = y ) $=
-    ( weq wal hbae hbn ) ABDAECABCFG $.
+  hbnae $p |- ( -. A. x x =s y -> A. z -. A. x x =s y ) $=
+    ( wequ wal hbae hbn ) ABDAECABCFG $.
 
   $( All variables are effectively bound in a distinct variable specifier.
      (Contributed by Mario Carneiro, 11-Aug-2016.) $)
-  nfnae $p |- F/ z -. A. x x = y $=
-    ( weq wal nfae nfn ) ABDAECABCFG $.
+  nfnae $p |- F/ z -. A. x x =s y $=
+    ( wequ wal nfae nfn ) ABDAECABCFG $.
 
   ${
-    hbnaes.1 $e |- ( A. z -. A. x x = y -> ph ) $.
+    hbnaes.1 $e |- ( A. z -. A. x x =s y -> ph ) $.
     $( Rule that applies ~ hbnae to antecedent.  (Contributed by NM,
        15-May-1993.) $)
-    hbnaes $p |- ( -. A. x x = y -> ph ) $=
-      ( weq wal wn hbnae syl ) BCFBGHZKDGABCDIEJ $.
+    hbnaes $p |- ( -. A. x x =s y -> ph ) $=
+      ( wequ wal wn hbnae syl ) BCFBGHZKDGABCDIEJ $.
   $}
 
   ${
@@ -31744,8 +31713,8 @@ $)
        (Contributed by NM, 22-Jul-2015.)  (Proof shortened by Wolf Lammen,
        17-Feb-2018.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    aevlemALTOLD $p |- ( A. z z = w -> A. y y = x ) $=
-      ( vv weq wal cbvaev axc11nlemALT 4syl ) CDFCGEDFEGCEFCGAEFAGBAFBGCDEHECDI
+    aevlemALTOLD $p |- ( A. z z =s w -> A. y y =s x ) $=
+      ( vv wequ wal cbvaev axc11nlemALT 4syl ) CDFCGEDFEGCEFCGAEFAGBAFBGCDEHECDI
       CEAHABEIJ $.
   $}
 
@@ -31754,19 +31723,19 @@ $)
     $( Older alternate proof of ~ aev .  Obsolete as of 30-Mar-2021.
        (Contributed by NM, 8-Nov-2006.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    aevALTOLD $p |- ( A. x x = y -> A. z w = v ) $=
-      ( vu weq wal hbae aevlem ax7 spimv syl alrimih ) ABGAHZDEGZCABCIOFEGZFHPA
+    aevALTOLD $p |- ( A. x x =s y -> A. z w =s v ) $=
+      ( vu wequ wal hbae aevlem ax7 spimv syl alrimih ) ABGAHZDEGZCABCIOFEGZFHPA
       BFEJQPFDFDEKLMN $.
   $}
 
   ${
     $d x y z $.  $d z ph $.
-    axc16i.1 $e |- ( x = z -> ( ph <-> ps ) ) $.
+    axc16i.1 $e |- ( x =s z -> ( ph <-> ps ) ) $.
     axc16i.2 $e |- ( ps -> A. x ps ) $.
     $( Inference with ~ axc16 as its conclusion.  (Contributed by NM,
        20-May-2008.)  (Proof modification is discouraged.) $)
-    axc16i $p |- ( A. x x = y -> ( ph -> A. x ph ) ) $=
-      ( weq wal wi nfv ax7 cbv3 spimv equcomi syl syl5com alimdv mpcom alimi
+    axc16i $p |- ( A. x x =s y -> ( ph -> A. x ph ) ) $=
+      ( wequ wal wi nfv ax7 cbv3 spimv equcomi syl syl5com alimdv mpcom alimi
       biimpcd nf5i biimprd syl6com 3syl ) CDHZCIEDHZEIZCEHZEIZAACIZJUFUGCEUFEKU
       GCKCEDLMUHECHZEIZUJUFUHUMUGUFECECDLNUFUGULEUFDCHZUGULCDOUGDEHUNULJEDODECL
       PQRSULUIEECOZTPAUJBEIUKAUIBEUIABFUARBAECBCGUBAEKULUIBAJUOUIABFUCPMUDUE $.
@@ -31777,88 +31746,88 @@ $)
     $( Alternate proof of ~ axc16nf , shorter but requiring ~ ax-11 and
        ~ ax-13 .  (Contributed by Mario Carneiro, 7-Oct-2016.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
-    axc16nfALT $p |- ( A. x x = y -> F/ z ph ) $=
-      ( weq wal nfae axc16g nf5d ) BCEBFADBCDGABCDHI $.
+    axc16nfALT $p |- ( A. x x =s y -> F/ z ph ) $=
+      ( wequ wal nfae axc16g nf5d ) BCEBFADBCDGABCDHI $.
   $}
 
   ${
-    dral1.1 $e |- ( A. x x = y -> ( ph <-> ps ) ) $.
+    dral1.1 $e |- ( A. x x =s y -> ( ph <-> ps ) ) $.
     $( Formula-building lemma for use with the Distinctor Reduction Theorem.
        Part of Theorem 9.4 of [Megill] p. 448 (p. 16 of preprint).
        (Contributed by NM, 27-Feb-2005.)  Allow a shortening of ~ dral1 .
        (Revised by Wolf Lammen, 4-Mar-2018.) $)
-    dral2 $p |- ( A. x x = y -> ( A. z ph <-> A. z ps ) ) $=
-      ( weq wal nfae albid ) CDGCHABECDEIFJ $.
+    dral2 $p |- ( A. x x =s y -> ( A. z ph <-> A. z ps ) ) $=
+      ( wequ wal nfae albid ) CDGCHABECDEIFJ $.
 
     $( Formula-building lemma for use with the Distinctor Reduction Theorem.
        Part of Theorem 9.4 of [Megill] p. 448 (p. 16 of preprint).
        (Contributed by NM, 24-Nov-1994.)  Remove dependency on ~ ax-11 .
        (Revised by Wolf Lammen, 6-Sep-2018.) $)
-    dral1 $p |- ( A. x x = y -> ( A. x ph <-> A. y ps ) ) $=
-      ( weq wal nfa1 albid axc11 axc11r impbid bitrd ) CDFZCGZACGBCGZBDGZOABCNC
+    dral1 $p |- ( A. x x =s y -> ( A. x ph <-> A. y ps ) ) $=
+      ( wequ wal nfa1 albid axc11 axc11r impbid bitrd ) CDFZCGZACGBCGZBDGZOABCNC
       HEIOPQBCDJBDCKLM $.
 
     $( Alternate proof of ~ dral1 , shorter but requiring ~ ax-11 .
        (Contributed by NM, 24-Nov-1994.)  (Proof shortened by Wolf Lammen,
        22-Apr-2018.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    dral1ALT $p |- ( A. x x = y -> ( A. x ph <-> A. y ps ) ) $=
-      ( weq wal dral2 axc11 axc11r impbid bitrd ) CDFCGZACGBCGZBDGZABCDCEHMNOBC
+    dral1ALT $p |- ( A. x x =s y -> ( A. x ph <-> A. y ps ) ) $=
+      ( wequ wal dral2 axc11 axc11r impbid bitrd ) CDFCGZACGBCGZBDGZABCDCEHMNOBC
       DIBDCJKL $.
 
     $( Formula-building lemma for use with the Distinctor Reduction Theorem.
        Part of Theorem 9.4 of [Megill] p. 448 (p. 16 of preprint).
        (Contributed by NM, 27-Feb-2005.) $)
-    drex1 $p |- ( A. x x = y -> ( E. x ph <-> E. y ps ) ) $=
-      ( weq wal wn wex notbid dral1 df-ex 3bitr4g ) CDFCGZAHZCGZHBHZDGZHACIBDIN
+    drex1 $p |- ( A. x x =s y -> ( E. x ph <-> E. y ps ) ) $=
+      ( wequ wal wn wex notbid dral1 df-ex 3bitr4g ) CDFCGZAHZCGZHBHZDGZHACIBDIN
       PROQCDNABEJKJACLBDLM $.
 
     $( Formula-building lemma for use with the Distinctor Reduction Theorem.
        Part of Theorem 9.4 of [Megill] p. 448 (p. 16 of preprint).
        (Contributed by NM, 27-Feb-2005.) $)
-    drex2 $p |- ( A. x x = y -> ( E. z ph <-> E. z ps ) ) $=
-      ( weq wal hbae exbidh ) CDGCHABECDEIFJ $.
+    drex2 $p |- ( A. x x =s y -> ( E. z ph <-> E. z ps ) ) $=
+      ( wequ wal hbae exbidh ) CDGCHABECDEIFJ $.
 
     $( Formula-building lemma for use with the Distinctor Reduction Theorem.
        (Contributed by Mario Carneiro, 4-Oct-2016.) $)
-    drnf1 $p |- ( A. x x = y -> ( F/ x ph <-> F/ y ps ) ) $=
-      ( weq wal wi wnf dral1 imbi12d nf5 3bitr4g ) CDFCGZAACGZHZCGBBDGZHZDGACIB
+    drnf1 $p |- ( A. x x =s y -> ( F/ x ph <-> F/ y ps ) ) $=
+      ( wequ wal wi wnf dral1 imbi12d nf5 3bitr4g ) CDFCGZAACGZHZCGBBDGZHZDGACIB
       DIPRCDNABOQEABCDEJKJACLBDLM $.
 
     $( Formula-building lemma for use with the Distinctor Reduction Theorem.
        (Contributed by Mario Carneiro, 4-Oct-2016.)  (Proof shortened by Wolf
        Lammen, 5-May-2018.) $)
-    drnf2 $p |- ( A. x x = y -> ( F/ z ph <-> F/ z ps ) ) $=
-      ( weq wal nfae nfbidf ) CDGCHABECDEIFJ $.
+    drnf2 $p |- ( A. x x =s y -> ( F/ z ph <-> F/ z ps ) ) $=
+      ( wequ wal nfae nfbidf ) CDGCHABECDEIFJ $.
   $}
 
   ${
     nfald2.1 $e |- F/ y ph $.
-    nfald2.2 $e |- ( ( ph /\ -. A. x x = y ) -> F/ x ps ) $.
+    nfald2.2 $e |- ( ( ph /\ -. A. x x =s y ) -> F/ x ps ) $.
     $( Variation on ~ nfald which adds the hypothesis that ` x ` and ` y ` are
        distinct in the inner subproof.  (Contributed by Mario Carneiro,
        8-Oct-2016.) $)
     nfald2 $p |- ( ph -> F/ x A. y ps ) $=
-      ( weq wal wnf wn wa nfnae nfan nfald ex nfa1 biidd drnf1 mpbiri pm2.61d2
+      ( wequ wal wnf wn wa nfnae nfan nfald ex nfa1 biidd drnf1 mpbiri pm2.61d2
       ) ACDGCHZBDHZCIZAUAJZUCAUDKBCDAUDDECDDLMFNOUAUCUBDIBDPUBUBCDUAUBQRST $.
 
     $( Variation on ~ nfexd which adds the hypothesis that ` x ` and ` y ` are
        distinct in the inner subproof.  (Contributed by Mario Carneiro,
        8-Oct-2016.) $)
     nfexd2 $p |- ( ph -> F/ x E. y ps ) $=
-      ( wex wn wal df-ex weq wa nfnd nfald2 nfxfrd ) BDGBHZDIZHACBDJAQCAPCDEACD
+      ( wex wn wal df-ex wequ wa nfnd nfald2 nfxfrd ) BDGBHZDIZHACBDJAQCAPCDEACD
       KCIHLBCFMNMO $.
   $}
 
   ${
-    exdistrf.1 $e |- ( -. A. x x = y -> F/ y ph ) $.
+    exdistrf.1 $e |- ( -. A. x x =s y -> F/ y ph ) $.
     $( Distribution of existential quantifiers, with a bound-variable
        hypothesis saying that ` y ` is not free in ` ph ` , but ` x ` can be
        free in ` ph ` (and there is no distinct variable condition on ` x ` and
        ` y ` ).  (Contributed by Mario Carneiro, 20-Mar-2013.)  (Proof
        shortened by Wolf Lammen, 14-May-2018.) $)
     exdistrf $p |- ( E. x E. y ( ph /\ ps ) -> E. x ( ph /\ E. y ps ) ) $=
-      ( wa wex weq wal wi 19.8a anim2i eximi biidd drex1 syl5ibr wn 19.40 19.9d
+      ( wa wex wequ wal wi 19.8a anim2i eximi biidd drex1 syl5ibr wn 19.40 19.9d
       nfe1 anim1d syl56 pm2.61i exlimi ) ABFZDGZABDGZFZCGZCUHCTCDHCIZUFUIJUFUIU
       JUHDGUEUHDBUGABDKLMUHUHCDUJUHNOPUFADGZUGFUJQZUHUIABDRULUKAUGAULDESUAUHCKU
       BUCUD $.
@@ -31867,12 +31836,12 @@ $)
   ${
     dvelimf.1 $e |- F/ x ph $.
     dvelimf.2 $e |- F/ z ps $.
-    dvelimf.3 $e |- ( z = y -> ( ph <-> ps ) ) $.
+    dvelimf.3 $e |- ( z =s y -> ( ph <-> ps ) ) $.
     $( Version of ~ dvelimv without any variable restrictions.  (Contributed by
        NM, 1-Oct-2002.)  (Revised by Mario Carneiro, 6-Oct-2016.)  (Proof
        shortened by Wolf Lammen, 11-May-2018.) $)
-    dvelimf $p |- ( -. A. x x = y -> F/ x ps ) $=
-      ( weq wi wal wn equsal bicomi nfnae wa wnf nfeqf ancoms a1i nfald2 nfxfrd
+    dvelimf $p |- ( -. A. x x =s y -> F/ x ps ) $=
+      ( wequ wi wal wn equsal bicomi nfnae wa wnf nfeqf ancoms a1i nfald2 nfxfrd
       nfimd ) BEDIZAJZEKZCDICKLZCUFBABEDGHMNUGUECECDEOUGCEICKLZPZUDACUHUGUDCQED
       CRSACQUIFTUCUAUB $.
   $}
@@ -31882,31 +31851,31 @@ $)
     dvelimdf.2 $e |- F/ z ph $.
     dvelimdf.3 $e |- ( ph -> F/ x ps ) $.
     dvelimdf.4 $e |- ( ph -> F/ z ch ) $.
-    dvelimdf.5 $e |- ( ph -> ( z = y -> ( ps <-> ch ) ) ) $.
+    dvelimdf.5 $e |- ( ph -> ( z =s y -> ( ps <-> ch ) ) ) $.
     $( Deduction form of ~ dvelimf .  (Contributed by NM, 7-Apr-2004.)
        (Revised by Mario Carneiro, 6-Oct-2016.)  (Proof shortened by Wolf
        Lammen, 11-May-2018.) $)
-    dvelimdf $p |- ( ph -> ( -. A. x x = y -> F/ x ch ) ) $=
-      ( weq wal wn wi wnf nfim1 wb com12 pm5.74d dvelimf pm5.5 nfbidf syl5ib )
+    dvelimdf $p |- ( ph -> ( -. A. x x =s y -> F/ x ch ) ) $=
+      ( wequ wal wn wi wnf nfim1 wb com12 pm5.74d dvelimf pm5.5 nfbidf syl5ib )
       DELDMNACOZDPACDPABOUEDEFABDGIQACFHJQFELZABCAUFBCRKSTUAAUECDGACUBUCUD $.
   $}
 
   ${
     dvelimh.1 $e |- ( ph -> A. x ph ) $.
     dvelimh.2 $e |- ( ps -> A. z ps ) $.
-    dvelimh.3 $e |- ( z = y -> ( ph <-> ps ) ) $.
+    dvelimh.3 $e |- ( z =s y -> ( ph <-> ps ) ) $.
     $( Version of ~ dvelim without any variable restrictions.  (Contributed by
        NM, 1-Oct-2002.)  (Proof shortened by Wolf Lammen, 11-May-2018.) $)
-    dvelimh $p |- ( -. A. x x = y -> ( ps -> A. x ps ) ) $=
-      ( weq wal wn nf5i dvelimf nf5rd ) CDICJKBCABCDEACFLBEGLHMN $.
+    dvelimh $p |- ( -. A. x x =s y -> ( ps -> A. x ps ) ) $=
+      ( wequ wal wn nf5i dvelimf nf5rd ) CDICJKBCABCDEACFLBEGLHMN $.
   $}
 
   ${
     $d z ps $.
     dvelim.1 $e |- ( ph -> A. x ph ) $.
-    dvelim.2 $e |- ( z = y -> ( ph <-> ps ) ) $.
+    dvelim.2 $e |- ( z =s y -> ( ph <-> ps ) ) $.
     $( This theorem can be used to eliminate a distinct variable restriction on
-       ` x ` and ` z ` and replace it with the "distinctor" ` -. A. x x = y `
+       ` x ` and ` z ` and replace it with the "distinctor" ` -. A. x x =s y `
        as an antecedent. ` ph ` normally has ` z ` free and can be read
        ` ph ( z ) ` , and ` ps ` substitutes ` y ` for ` z ` and can be read
        ` ph ( y ) ` .  We do not require that ` x ` and ` y ` be distinct: if
@@ -31919,27 +31888,27 @@ $)
        Other variants of this theorem are ~ dvelimh (with no distinct variable
        restrictions) and ~ dvelimhw (that avoids ~ ax-13 ).  (Contributed by
        NM, 23-Nov-1994.) $)
-    dvelim $p |- ( -. A. x x = y -> ( ps -> A. x ps ) ) $=
+    dvelim $p |- ( -. A. x x =s y -> ( ps -> A. x ps ) ) $=
       ( ax-5 dvelimh ) ABCDEFBEHGI $.
   $}
 
   ${
     $d x ph $.  $d z ps $.
-    dvelimv.1 $e |- ( z = y -> ( ph <-> ps ) ) $.
+    dvelimv.1 $e |- ( z =s y -> ( ph <-> ps ) ) $.
     $( Similar to ~ dvelim with first hypothesis replaced by a distinct
        variable condition.  (Contributed by NM, 25-Jul-2015.)  (Proof shortened
        by Wolf Lammen, 30-Apr-2018.) $)
-    dvelimv $p |- ( -. A. x x = y -> ( ps -> A. x ps ) ) $=
+    dvelimv $p |- ( -. A. x x =s y -> ( ps -> A. x ps ) ) $=
       ( ax-5 dvelim ) ABCDEACGFH $.
   $}
 
   ${
     $d z ps $.
     dvelimnf.1 $e |- F/ x ph $.
-    dvelimnf.2 $e |- ( z = y -> ( ph <-> ps ) ) $.
+    dvelimnf.2 $e |- ( z =s y -> ( ph <-> ps ) ) $.
     $( Version of ~ dvelim using "not free" notation.  (Contributed by Mario
        Carneiro, 9-Oct-2016.) $)
-    dvelimnf $p |- ( -. A. x x = y -> F/ x ps ) $=
+    dvelimnf $p |- ( -. A. x x =s y -> F/ x ps ) $=
       ( nfv dvelimf ) ABCDEFBEHGI $.
   $}
 
@@ -31948,8 +31917,8 @@ $)
     $( Alternate proof of ~ dveeq2 , shorter but requiring ~ ax-11 .
        (Contributed by NM, 2-Jan-2002.)  (Revised by NM, 20-Jul-2015.)
        (New usage is discouraged.)  (Proof modification is discouraged.) $)
-    dveeq2ALT $p |- ( -. A. x x = y -> ( z = y -> A. x z = y ) ) $=
-      ( vw weq equequ2 dvelimv ) CDECBEABDDBCFG $.
+    dveeq2ALT $p |- ( -. A. x x =s y -> ( z =s y -> A. x z =s y ) ) $=
+      ( vw wequ equequ2 dvelimv ) CDECBEABDDBCFG $.
   $}
 
   $( Obsolete proof of ~ ax12 as of 4-Jul-2021 .  Rederivation of axiom ~ ax-12
@@ -31957,19 +31926,19 @@ $)
      22-Jan-2007.)  Proof uses contemporary axioms.  (Revised by Wolf Lammen,
      8-Aug-2020.)  (Proof modification is discouraged.)
      (New usage is discouraged.) $)
-  ax12OLD $p |- ( x = y -> ( A. y ph -> A. x ( x = y -> ph ) ) ) $=
-    ( weq wal wi biidd dral1 ax-1 alimi syl6bir a1d wn sp axc15 syl7 pm2.61i )
+  ax12OLD $p |- ( x =s y -> ( A. y ph -> A. x ( x =s y -> ph ) ) ) $=
+    ( wequ wal wi biidd dral1 ax-1 alimi syl6bir a1d wn sp axc15 syl7 pm2.61i )
     BCDZBEZRACEZRAFZBEZFZFSUCRSTABEUBAABCSAGHAUABARIJKLTASMRUBACNABCOPQ $.
 
   ${
     $d x z $.  $d y z $.  $d z ph $.
-    ax12v2OLD.1 $e |- ( x = z -> ( ph -> A. x ( x = z -> ph ) ) ) $.
+    ax12v2OLD.1 $e |- ( x =s z -> ( ph -> A. x ( x =s z -> ph ) ) ) $.
     $( Obsolete proof of ~ ax12v as of 24-Mar-2021.  (Contributed by NM,
        12-Feb-2007.)  (Proof shortened by Wolf Lammen, 21-Apr-2018.)
        (New usage is discouraged.)  (Proof modification is discouraged.) $)
-    ax12v2OLD $p |- ( -. A. x x = y ->
-                 ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) ) $=
-      ( weq wal wn wex wi ax6ev dveeq2 wb equequ2 sps nfa1 imbi1d albid imbi12d
+    ax12v2OLD $p |- ( -. A. x x =s y ->
+                 ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) ) $=
+      ( wequ wal wn wex wi ax6ev dveeq2 wb equequ2 sps nfa1 imbi1d albid imbi12d
       imbi2d mpbii syl6 exlimdv mpi ) BCFZBGHZDCFZDIUEAUEAJZBGZJZJZDCKUFUGUKDUF
       UGUGBGZUKBCDLULBDFZAUMAJZBGZJZJUKEULUMUEUPUJUGUMUEMBDCBNOZULUOUIAULUNUHBU
       GBPULUMUEAUQQRTSUAUBUCUD $.
@@ -31977,12 +31946,12 @@ $)
 
   ${
     $d x z $.  $d y z $.  $d z ph $.
-    ax12a2OLD.1 $e |- ( x = z -> ( A. z ph -> A. x ( x = z -> ph ) ) ) $.
+    ax12a2OLD.1 $e |- ( x =s z -> ( A. z ph -> A. x ( x =s z -> ph ) ) ) $.
     $( Obsolete proof of ~ ax12v as of 24-Mar-2021.  (Contributed by NM,
        12-Feb-2007.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    ax12a2OLD $p |- ( -. A. x x = y ->
-                 ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) ) $=
+    ax12a2OLD $p |- ( -. A. x x =s y ->
+                 ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) ) $=
       ( ax12v ax12v2OLD ) ABCDABDFG $.
   $}
 
@@ -31991,15 +31960,15 @@ $)
     $( Obsolete proof of ~ axc15 as of 24-Mar-2021.  (Contributed by NM,
        3-Feb-2007.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc15OLD $p |- ( -. A. x x = y ->
-               ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) ) $=
+    axc15OLD $p |- ( -. A. x x =s y ->
+               ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) ) $=
       ( vz ax-12 ax12a2OLD ) ABCDABDEF $.
   $}
 
   $( A bidirectional version of ~ axc15 .  (Contributed by NM, 30-Jun-2006.) $)
-  ax12b $p |- ( ( -. A. x x = y /\ x = y ) ->
-              ( ph <-> A. x ( x = y -> ph ) ) ) $=
-    ( weq wal wn wa wi axc15 imp sp com12 adantl impbid ) BCDZBEFZOGAOAHZBEZPOA
+  ax12b $p |- ( ( -. A. x x =s y /\ x =s y ) ->
+              ( ph <-> A. x ( x =s y -> ph ) ) ) $=
+    ( wequ wal wn wa wi axc15 imp sp com12 adantl impbid ) BCDZBEFZOGAOAHZBEZPOA
     RHABCIJORAHPROAQBKLMN $.
 
   $( A variable introduction law for equality.  Lemma 15 of [Monk2] p. 109,
@@ -32008,8 +31977,8 @@ $)
      required to be distinct from ` x ` and ` y ` .  (Contributed by NM,
      10-Jan-1993.)  (Proof shortened by Andrew Salmon, 25-May-2011.)  (Proof
      shortened by Wolf Lammen, 15-Sep-2018.) $)
-  equvini $p |- ( x = y -> E. z ( x = z /\ z = y ) ) $=
-    ( weq wa wex wi equtr equeuclr anc2ri syli 19.8a syl6 wn ax13 eximii 19.35i
+  equvini $p |- ( x =s y -> E. z ( x =s z /\ z =s y ) ) $=
+    ( wequ wa wex wi equtr equeuclr anc2ri syli 19.8a syl6 wn ax13 eximii 19.35i
     wal ax6e pm2.61i ) CADZABDZACDZCBDZEZCFZGUAUBUEUFUBUAUDUECABHUDUBUCCABIJZKU
     ECLMUANUBUBCRUFCABOUBUECUDUBUEGCCBSUGPQMT $.
 
@@ -32017,8 +31986,8 @@ $)
      requirements.  Compare ~ equvini .  (Contributed by NM, 1-Mar-2013.)
      (Proof shortened by Mario Carneiro, 17-Oct-2016.)  (Proof shortened by
      Wolf Lammen, 15-Jun-2019.) $)
-  equvel $p |- ( A. z ( z = x <-> z = y ) -> x = y ) $=
-    ( weq wb wal wex albi wi ax6e biimpr ax7 syli com12 eximii 19.35i spsd a1dd
+  equvel $p |- ( A. z ( z =s x <-> z =s y ) -> x =s y ) $=
+    ( wequ wb wal wex albi wi ax6e biimpr ax7 syli com12 eximii 19.35i spsd a1dd
     sps wn wa nfeqf 19.9d ex bija sylc ) CADZCBDZEZCFUGCFZUHCFZEABDZCGZULUGUHCH
     UIULCUHUIULICCBJUIUHULUHUIUGULUGUHKCABLZMNOPUJUKUMULIZUJUKULUMUGUKULICUGUHU
     LCUNQSRUJTZUKTZUOULUPUQUACABCUBUCUDUEUF $.
@@ -32026,15 +31995,15 @@ $)
   $( A property related to substitution that unlike ~ equs5 does not require a
      distinctor antecedent.  See ~ equs5aALT for an alternate proof using
      ~ ax-12 but not ~ ax13 .  (Contributed by NM, 2-Feb-2007.) $)
-  equs5a $p |- ( E. x ( x = y /\ A. y ph ) -> A. x ( x = y -> ph ) ) $=
-    ( weq wal wa wi nfa1 ax12 imp exlimi ) BCDZACEZFLAGZBEZBNBHLMOABCIJK $.
+  equs5a $p |- ( E. x ( x =s y /\ A. y ph ) -> A. x ( x =s y -> ph ) ) $=
+    ( wequ wal wa wi nfa1 ax12 imp exlimi ) BCDZACEZFLAGZBEZBNBHLMOABCIJK $.
 
   $( A property related to substitution that unlike ~ equs5 does not require a
      distinctor antecedent.  See ~ equs5eALT for an alternate proof using
      ~ ax-12 but not ~ ax13 .  (Contributed by NM, 2-Feb-2007.)  (Proof
      shortened by Wolf Lammen, 15-Jan-2018.) $)
-  equs5e $p |- ( E. x ( x = y /\ ph ) -> A. x ( x = y -> E. y ph ) ) $=
-    ( weq wa wex wi wal nfa1 ax12 hbe1 19.23bi impel exlimi ) BCDZAEOACFZGZBHZB
+  equs5e $p |- ( E. x ( x =s y /\ ph ) -> A. x ( x =s y -> E. y ph ) ) $=
+    ( wequ wa wex wi wal nfa1 ax12 hbe1 19.23bi impel exlimi ) BCDZAEOACFZGZBHZB
     QBIOPCHZRAPBCJASCACKLMN $.
 
   ${
@@ -32045,8 +32014,8 @@ $)
        hypothesis with a dv condition and ~ equs5 replaces it with a distinctor
        as antecedent.  (Contributed by NM, 25-Apr-2008.)  (Revised by Mario
        Carneiro, 4-Oct-2016.) $)
-    equs45f $p |- ( E. x ( x = y /\ ph ) <-> A. x ( x = y -> ph ) ) $=
-      ( weq wa wex wi wal nf5ri anim2i eximi equs5a syl equs4 impbii ) BCEZAFZB
+    equs45f $p |- ( E. x ( x =s y /\ ph ) <-> A. x ( x =s y -> ph ) ) $=
+      ( wequ wa wex wi wal nf5ri anim2i eximi equs5a syl equs4 impbii ) BCEZAFZB
       GZQAHBIZSQACIZFZBGTRUBBAUAQACDJKLABCMNABCOP $.
   $}
 
@@ -32054,16 +32023,16 @@ $)
      condition on ` x , y ` , then ~ sb56 can be used instead; if ` y ` is not
      free in ` ph ` , then ~ equs45f can be used.  (Contributed by NM,
      14-May-1993.)  (Revised by BJ, 1-Oct-2018.) $)
-  equs5 $p |- ( -. A. x x = y ->
-             ( E. x ( x = y /\ ph ) <-> A. x ( x = y -> ph ) ) ) $=
-    ( weq wal wn wa wex wi nfna1 nfa1 axc15 impd exlimd equs4 impbid1 ) BCDZBEF
+  equs5 $p |- ( -. A. x x =s y ->
+             ( E. x ( x =s y /\ ph ) <-> A. x ( x =s y -> ph ) ) ) $=
+    ( wequ wal wn wa wex wi nfna1 nfa1 axc15 impd exlimd equs4 impbid1 ) BCDZBEF
     ZQAGZBHQAIZBEZRSUABQBJTBKRQAUAABCLMNABCOP $.
 
   $( One direction of a simplified definition of substitution.  The converse
      requires either a dv condition ( ~ sb6 ) or a non-freeness hypothesis
      ( ~ sb6f ).  (Contributed by NM, 13-May-1993.) $)
-  sb2 $p |- ( A. x ( x = y -> ph ) -> [ y / x ] ph ) $=
-    ( weq wi wal wa wex wsb sp equs4 df-sb sylanbrc ) BCDZAEZBFONAGBHABCIOBJABC
+  sb2 $p |- ( A. x ( x =s y -> ph ) -> [ y / x ] ph ) $=
+    ( wequ wi wal wa wex wsb sp equs4 df-sb sylanbrc ) BCDZAEZBFONAGBHABCIOBJABC
     KABCLM $.
 
   $( The specialization axiom of standard predicate calculus.  It states that
@@ -32074,7 +32043,7 @@ $)
      [Mendelson] p. 69.  See also ~ spsbc and ~ rspsbc .  (Contributed by NM,
      14-May-1993.) $)
   stdpc4 $p |- ( A. x ph -> [ y / x ] ph ) $=
-    ( wal weq wi wsb ala1 sb2 syl ) ABDBCEZAFBDABCGAKBHABCIJ $.
+    ( wal wequ wi wsb ala1 sb2 syl ) ABDBCEZAFBDABCGAKBHABCIJ $.
 
   $( A double specialization using explicit substitution.  This is Theorem
      PM*11.1 in [WhiteheadRussell] p. 159.  See ~ stdpc4 for the analogous
@@ -32086,52 +32055,52 @@ $)
 
   $( One direction of a simplified definition of substitution when variables
      are distinct.  (Contributed by NM, 5-Aug-1993.) $)
-  sb3 $p |- ( -. A. x x = y -> ( E. x ( x = y /\ ph ) -> [ y / x ] ph ) ) $=
-    ( weq wal wn wa wex wi wsb equs5 sb2 syl6bi ) BCDZBEFNAGBHNAIBEABCJABCKABCL
+  sb3 $p |- ( -. A. x x =s y -> ( E. x ( x =s y /\ ph ) -> [ y / x ] ph ) ) $=
+    ( wequ wal wn wa wex wi wsb equs5 sb2 syl6bi ) BCDZBEFNAGBHNAIBEABCJABCKABCL
     M $.
 
   $( One direction of a simplified definition of substitution when variables
      are distinct.  (Contributed by NM, 14-May-1993.) $)
-  sb4 $p |- ( -. A. x x = y -> ( [ y / x ] ph -> A. x ( x = y -> ph ) ) ) $=
-    ( wsb weq wa wex wal wn wi sb1 equs5 syl5ib ) ABCDBCEZAFBGNBHINAJBHABCKABCL
+  sb4 $p |- ( -. A. x x =s y -> ( [ y / x ] ph -> A. x ( x =s y -> ph ) ) ) $=
+    ( wsb wequ wa wex wal wn wi sb1 equs5 syl5ib ) ABCDBCEZAFBGNBHINAJBHABCKABCL
     M $.
 
   $( A version of ~ sb4 that doesn't require a distinctor antecedent.
      (Contributed by NM, 2-Feb-2007.) $)
-  sb4a $p |- ( [ y / x ] A. y ph -> A. x ( x = y -> ph ) ) $=
-    ( wal wsb weq wa wex wi sb1 equs5a syl ) ACDZBCEBCFZMGBHNAIBDMBCJABCKL $.
+  sb4a $p |- ( [ y / x ] A. y ph -> A. x ( x =s y -> ph ) ) $=
+    ( wal wsb wequ wa wex wi sb1 equs5a syl ) ACDZBCEBCFZMGBHNAIBDMBCJABCKL $.
 
   $( Simplified definition of substitution when variables are distinct.
      (Contributed by NM, 27-May-1997.) $)
-  sb4b $p |- ( -. A. x x = y -> ( [ y / x ] ph <-> A. x ( x = y -> ph ) ) ) $=
-    ( weq wal wn wsb wi sb4 sb2 impbid1 ) BCDZBEFABCGLAHBEABCIABCJK $.
+  sb4b $p |- ( -. A. x x =s y -> ( [ y / x ] ph <-> A. x ( x =s y -> ph ) ) ) $=
+    ( wequ wal wn wsb wi sb4 sb2 impbid1 ) BCDZBEFABCGLAHBEABCIABCJK $.
 
   $( Bound-variable hypothesis builder for substitution.  (Contributed by NM,
      14-May-1993.) $)
-  hbsb2 $p |- ( -. A. x x = y -> ( [ y / x ] ph -> A. x [ y / x ] ph ) ) $=
-    ( weq wal wn wsb wi sb4 sb2 axc4i syl6 ) BCDZBEFABCGZMAHZBENBEABCIONBABCJKL
+  hbsb2 $p |- ( -. A. x x =s y -> ( [ y / x ] ph -> A. x [ y / x ] ph ) ) $=
+    ( wequ wal wn wsb wi sb4 sb2 axc4i syl6 ) BCDZBEFABCGZMAHZBENBEABCIONBABCJKL
     $.
 
   $( Bound-variable hypothesis builder for substitution.  (Contributed by Mario
      Carneiro, 4-Oct-2016.) $)
-  nfsb2 $p |- ( -. A. x x = y -> F/ x [ y / x ] ph ) $=
-    ( weq wal wn wsb nfna1 hbsb2 nf5d ) BCDZBEFABCGBKBHABCIJ $.
+  nfsb2 $p |- ( -. A. x x =s y -> F/ x [ y / x ] ph ) $=
+    ( wequ wal wn wsb nfna1 hbsb2 nf5d ) BCDZBEFABCGBKBHABCIJ $.
 
   $( Special case of a bound-variable hypothesis builder for substitution.
      (Contributed by NM, 2-Feb-2007.) $)
   hbsb2a $p |- ( [ y / x ] A. y ph -> A. x [ y / x ] ph ) $=
-    ( wal wsb weq wi sb4a sb2 axc4i syl ) ACDBCEBCFAGZBDABCEZBDABCHLMBABCIJK $.
+    ( wal wsb wequ wi sb4a sb2 axc4i syl ) ACDBCEBCFAGZBDABCEZBDABCHLMBABCIJK $.
 
   $( One direction of a simplified definition of substitution that unlike ~ sb4
      doesn't require a distinctor antecedent.  (Contributed by NM,
      2-Feb-2007.) $)
-  sb4e $p |- ( [ y / x ] ph -> A. x ( x = y -> E. y ph ) ) $=
-    ( wsb weq wa wex wi wal sb1 equs5e syl ) ABCDBCEZAFBGMACGHBIABCJABCKL $.
+  sb4e $p |- ( [ y / x ] ph -> A. x ( x =s y -> E. y ph ) ) $=
+    ( wsb wequ wa wex wi wal sb1 equs5e syl ) ABCDBCEZAFBGMACGHBIABCJABCKL $.
 
   $( Special case of a bound-variable hypothesis builder for substitution.
      (Contributed by NM, 2-Feb-2007.) $)
   hbsb2e $p |- ( [ y / x ] ph -> A. x [ y / x ] E. y ph ) $=
-    ( wsb weq wex wi wal sb4e sb2 axc4i syl ) ABCDBCEACFZGZBHMBCDZBHABCINOBMBCJ
+    ( wsb wequ wex wi wal sb4e sb2 axc4i syl ) ABCDBCEACFZGZBHMBCDZBHABCINOBMBCJ
     KL $.
 
   ${
@@ -32156,7 +32125,7 @@ $)
        ~ ax-13 and using ~ df-nf and ~ df-sb .  (Contributed by NM,
        17-May-2008.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc16ALT $p |- ( A. x x = y -> ( ph -> A. x ph ) ) $=
+    axc16ALT $p |- ( A. x x =s y -> ( ph -> A. x ph ) ) $=
       ( vz wsb sbequ12 ax-5 hbsb3 axc16i ) AABDEBCDABDFABDADGHI $.
   $}
 
@@ -32166,32 +32135,32 @@ $)
        ~ ax-11 , ~ ax-13 .  (Contributed by NM, 15-May-1993.)  (Proof shortened
        by Andrew Salmon, 25-May-2011.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axc16gALT $p |- ( A. x x = y -> ( ph -> A. z ph ) ) $=
-      ( weq wal aev axc16ALT biidd dral1 biimprd sylsyld ) BCEBFDBEDFZAABFZADFZ
+    axc16gALT $p |- ( A. x x =s y -> ( ph -> A. z ph ) ) $=
+      ( wequ wal aev axc16ALT biidd dral1 biimprd sylsyld ) BCEBFDBEDFZAABFZADFZ
       BCDBDGABCHMONAADBMAIJKL $.
   $}
 
   $( Substitution applied to an atomic wff.  (Contributed by NM,
      10-May-1993.) $)
-  equsb1 $p |- [ y / x ] x = y $=
-    ( weq wi wsb sb2 id mpg ) ABCZIDIABEAIABFIGH $.
+  equsb1 $p |- [ y / x ] x =s y $=
+    ( wequ wi wsb sb2 id mpg ) ABCZIDIABEAIABFIGH $.
 
   $( Substitution applied to an atomic wff.  (Contributed by NM,
      10-May-1993.) $)
-  equsb2 $p |- [ y / x ] y = x $=
-    ( weq wi wsb sb2 equcomi mpg ) ABCBACZDIABEAIABFABGH $.
+  equsb2 $p |- [ y / x ] y =s x $=
+    ( wequ wi wsb sb2 equcomi mpg ) ABCBACZDIABEAIABFABGH $.
 
   ${
     $d w z x $.  $d w y $.
     $( Quantifier introduction when one pair of variables is distinct.
        (Contributed by NM, 2-Jan-2002.) $)
-    dveel1 $p |- ( -. A. x x = y -> ( y e. z -> A. x y e. z ) ) $=
-      ( vw wel elequ1 dvelimv ) DCEBCEABDDBCFG $.
+    dveel1 $p |- ( -. A. x x =s y -> ( y e.s z -> A. x y e.s z ) ) $=
+      ( vw wsel elequ1 dvelimv ) DCEBCEABDDBCFG $.
 
     $( Quantifier introduction when one pair of variables is distinct.
        (Contributed by NM, 2-Jan-2002.) $)
-    dveel2 $p |- ( -. A. x x = y -> ( z e. y -> A. x z e. y ) ) $=
-      ( vw wel elequ2 dvelimv ) CDECBEABDDBCFG $.
+    dveel2 $p |- ( -. A. x x =s y -> ( z e.s y -> A. x z e.s y ) ) $=
+      ( vw wsel elequ2 dvelimv ) CDECBEABDDBCFG $.
   $}
 
   ${
@@ -32204,19 +32173,19 @@ $)
        ~ ax-5 .  By the end of the proof it has vanished, and the final theorem
        has no distinct variable requirements.  (Contributed by NM,
        29-Jun-1995.)  (Proof modification is discouraged.) $)
-    axc14 $p |- ( -. A. z z = x -> ( -. A. z z = y ->
-              ( x e. y -> A. z x e. y ) ) ) $=
-      ( vw weq wal wn wel hbn1 dveel2 hbim1 elequ1 imbi2d dvelim nfa1 nfn 19.21
-      wi syl6ib pm2.86d ) CAECFGZCBEZCFZGZABHZUECFZUAUDUERZUGCFUDUFRUDDBHZRUGCA
-      DUDUHCUBCICBDJKDAEUHUEUDDABLMNUDUECUCCUBCOPQST $.
+    axc14 $p |- ( -. A. z z =s x -> ( -. A. z z =s y ->
+              ( x e.s y -> A. z x e.s y ) ) ) $=
+      ( vw wequ wal wn wsel wi hbn1 dveel2 hbim1 elequ1 imbi2d dvelim nfn 19.21
+      nfa1 syl6ib pm2.86d ) CAECFGZCBEZCFZGZABHZUECFZUAUDUEIZUGCFUDUFIUDDBHZIUG
+      CADUDUHCUBCJCBDKLDAEUHUEUDDABMNOUDUECUCCUBCRPQST $.
   $}
 
   $( An alternate definition of proper substitution that, like ~ df-sb , mixes
      free and bound variables to avoid distinct variable requirements.
      (Contributed by NM, 17-Feb-2005.) $)
   dfsb2 $p |- ( [ y / x ] ph <->
-              ( ( x = y /\ ph ) \/ A. x ( x = y -> ph ) ) ) $=
-    ( wsb weq wa wi wal wo sp sbequ2 sps orc syl6an sb4 olc syl6 pm2.61i sbequ1
+              ( ( x =s y /\ ph ) \/ A. x ( x =s y -> ph ) ) ) $=
+    ( wsb wequ wa wi wal wo sp sbequ2 sps orc syl6an sb4 olc syl6 pm2.61i sbequ1
     wn imp sb2 jaoi impbii ) ABCDZBCEZAFZUFAGBHZIZUFBHZUEUIGUJUFUEAUIUFBJUFUEAG
     BABCKLUGUHMNUJTUEUHUIABCOUHUGPQRUGUEUHUFAUEABCSUAABCUBUCUD $.
 
@@ -32224,14 +32193,14 @@ $)
      primitive connectives (no defined terms) on the right-hand side.
      (Contributed by NM, 6-Mar-2007.) $)
   dfsb3 $p |- ( [ y / x ] ph <->
-              ( ( x = y -> -. ph ) -> A. x ( x = y -> ph ) ) ) $=
-    ( weq wa wi wal wo wn wsb df-or dfsb2 imnan imbi1i 3bitr4i ) BCDZAEZPAFBGZH
+              ( ( x =s y -> -. ph ) -> A. x ( x =s y -> ph ) ) ) $=
+    ( wequ wa wi wal wo wn wsb df-or dfsb2 imnan imbi1i 3bitr4i ) BCDZAEZPAFBGZH
     QIZRFABCJPAIFZRFQRKABCLTSRPAMNO $.
 
   $( An equality theorem for substitution.  (Contributed by NM, 14-May-1993.)
      (Proof shortened by Wolf Lammen, 15-Sep-2018.) $)
-  sbequi $p |- ( x = y -> ( [ x / z ] ph -> [ y / z ] ph ) ) $=
-    ( weq wsb wi equtr sbequ2 sbequ1 syl9 syld wn wal sp con3i sb4 syl equeuclr
+  sbequi $p |- ( x =s y -> ( [ x / z ] ph -> [ y / z ] ph ) ) $=
+    ( wequ wsb wi equtr sbequ2 sbequ1 syl9 syld wn wal sp con3i sb4 syl equeuclr
     ax13 imim1d al2imi sb2 syl6 pm2.61i ) DBEZBCEZADBFZADCFZGZGUFUGDCEZUJDBCHUF
     UHAUKUIADBIADCJKLUFMZUGUGDNZUJDBCTULUHUFAGZDNZUMUIULUFDNZMUHUOGUPUFUFDOPADB
     QRUMUOUKAGZDNUIUGUNUQDUGUKUFABDCSUAUBADCUCUDKLUE $.
@@ -32239,22 +32208,22 @@ $)
   $( An equality theorem for substitution.  Used in proof of Theorem 9.7 in
      [Megill] p. 449 (p. 16 of the preprint).  (Contributed by NM,
      14-May-1993.) $)
-  sbequ $p |- ( x = y -> ( [ x / z ] ph <-> [ y / z ] ph ) ) $=
-    ( weq wsb sbequi wi equcoms impbid ) BCEADBFZADCFZABCDGLKHCBACBDGIJ $.
+  sbequ $p |- ( x =s y -> ( [ x / z ] ph <-> [ y / z ] ph ) ) $=
+    ( wequ wsb sbequi wi equcoms impbid ) BCEADBFZADCFZABCDGLKHCBACBDGIJ $.
 
   $( Formula-building lemma for use with the Distinctor Reduction Theorem.
      Part of Theorem 9.4 of [Megill] p. 448 (p. 16 of preprint).  (Contributed
      by NM, 2-Jun-1993.) $)
-  drsb1 $p |- ( A. x x = y -> ( [ z / x ] ph <-> [ z / y ] ph ) ) $=
-    ( weq wal wi wa wex wsb wb equequ1 sps imbi1d anbi1d drex1 anbi12d 3bitr4g
+  drsb1 $p |- ( A. x x =s y -> ( [ z / x ] ph <-> [ z / y ] ph ) ) $=
+    ( wequ wal wi wa wex wsb wb equequ1 sps imbi1d anbi1d drex1 anbi12d 3bitr4g
     df-sb ) BCEZBFZBDEZAGZUBAHZBIZHCDEZAGZUFAHZCIZHABDJACDJUAUCUGUEUIUAUBUFATUB
     UFKBBCDLMZNUDUHBCUAUBUFAUJOPQABDSACDSR $.
 
   $( Formula-building lemma for use with the Distinctor Reduction Theorem.
      Part of Theorem 9.4 of [Megill] p. 448 (p. 16 of preprint).  (Contributed
      by NM, 27-Feb-2005.) $)
-  drsb2 $p |- ( A. x x = y -> ( [ x / z ] ph <-> [ y / z ] ph ) ) $=
-    ( weq wsb wb sbequ sps ) BCEADBFADCFGBABCDHI $.
+  drsb2 $p |- ( A. x x =s y -> ( [ x / z ] ph <-> [ y / z ] ph ) ) $=
+    ( wequ wsb wb sbequ sps ) BCEADBFADCFGBABCDHI $.
 
   $( Substitution has no effect on a non-free variable.  (Contributed by NM,
      30-May-2009.)  (Revised by Mario Carneiro, 12-Oct-2016.)  (Proof shortened
@@ -32298,8 +32267,8 @@ $)
     $( Equivalence involving substitution for a variable not free.
        (Contributed by NM, 2-Jun-1993.)  (Revised by Mario Carneiro,
        4-Oct-2016.) $)
-    sb6x $p |- ( [ y / x ] ph <-> A. x ( x = y -> ph ) ) $=
-      ( wsb weq wi wal sbf biidd equsal bitr4i ) ABCEABCFZAGBHABCDIAABCDMAJKL
+    sb6x $p |- ( [ y / x ] ph <-> A. x ( x =s y -> ph ) ) $=
+      ( wsb wequ wi wal sbf biidd equsal bitr4i ) ABCEABCFZAGBHABCDIAABCDMAJKL
       $.
   $}
 
@@ -32310,8 +32279,8 @@ $)
        hypothesis.  Theorem ~ sb6 replaces the non-freeness hypothesis with a
        dv condition.  (Contributed by NM, 2-Jun-1993.)  (Revised by Mario
        Carneiro, 4-Oct-2016.) $)
-    sb6f $p |- ( [ y / x ] ph <-> A. x ( x = y -> ph ) ) $=
-      ( wsb weq wi wal nf5ri sbimi sb4a syl sb2 impbii ) ABCEZBCFAGBHZOACHZBCEP
+    sb6f $p |- ( [ y / x ] ph <-> A. x ( x =s y -> ph ) ) $=
+      ( wsb wequ wi wal nf5ri sbimi sb4a syl sb2 impbii ) ABCEZBCFAGBHZOACHZBCEP
       AQBCACDIJABCKLABCMN $.
 
     $( Equivalence for substitution when ` y ` is not free in ` ph ` .  The
@@ -32319,28 +32288,28 @@ $)
        non-freeness hypothesis.  Theorem ~ sb5 replaces the non-freeness
        hypothesis with a dv condition.  (Contributed by NM, 5-Aug-1993.)
        (Revised by Mario Carneiro, 4-Oct-2016.) $)
-    sb5f $p |- ( [ y / x ] ph <-> E. x ( x = y /\ ph ) ) $=
-      ( wsb weq wi wal wa wex sb6f equs45f bitr4i ) ABCEBCFZAGBHNAIBJABCDKABCDL
+    sb5f $p |- ( [ y / x ] ph <-> E. x ( x =s y /\ ph ) ) $=
+      ( wsb wequ wi wal wa wex sb6f equs45f bitr4i ) ABCEBCFZAGBHNAIBJABCDKABCDL
       M $.
   $}
 
   $( Substitution does not change an identical variable specifier.
      (Contributed by NM, 15-May-1993.) $)
-  sbequ5 $p |- ( [ w / z ] A. x x = y <-> A. x x = y ) $=
-    ( weq wal nfae sbf ) ABEAFCDABCGH $.
+  sbequ5 $p |- ( [ w / z ] A. x x =s y <-> A. x x =s y ) $=
+    ( wequ wal nfae sbf ) ABEAFCDABCGH $.
 
   $( Substitution does not change a distinctor.  (Contributed by NM,
      5-Aug-1993.) $)
-  sbequ6 $p |- ( [ w / z ] -. A. x x = y <-> -. A. x x = y ) $=
-    ( weq wal wn nfnae sbf ) ABEAFGCDABCHI $.
+  sbequ6 $p |- ( [ w / z ] -. A. x x =s y <-> -. A. x x =s y ) $=
+    ( wequ wal wn nfnae sbf ) ABEAFGCDABCHI $.
 
   $( A variable not free remains so after substitution with a distinct variable
      (closed form of ~ nfsb4 ).  (Contributed by NM, 7-Apr-2004.)  (Revised by
      Mario Carneiro, 4-Oct-2016.)  (Proof shortened by Wolf Lammen,
      11-May-2018.) $)
   nfsb4t $p |- ( A. x F/ z ph ->
-                 ( -. A. z z = y -> F/ z [ y / x ] ph ) ) $=
-    ( wnf wal weq wn wsb wi wa sbequ12 sps drnf2 biimpd spsd impcom nfnae nfan
+                 ( -. A. z z =s y -> F/ z [ y / x ] ph ) ) $=
+    ( wnf wal wequ wn wsb wi wa sbequ12 sps drnf2 biimpd spsd impcom nfnae nfan
     wb a1d nfnf1 nfal nfa1 sp adantr nfsb2 adantl a1i dvelimdf pm2.61dan ) ADEZ
     BFZBCGZBFZDCGDFHZABCIZDEZJUMUOKURUPUOUMURUOULURBUOULURAUQBCDUNAUQTZBABCLZMN
     OPQUAUMUOHZKZAUQDCBUMVADULDBADUBUCBCDRSUMVABULBUDBCBRSUMULVAULBUEUFVAUQBEUM
@@ -32351,21 +32320,21 @@ $)
     $( A variable not free remains so after substitution with a distinct
        variable.  (Contributed by NM, 14-May-1993.)  (Revised by Mario
        Carneiro, 4-Oct-2016.) $)
-    nfsb4 $p |- ( -. A. z z = y -> F/ z [ y / x ] ph ) $=
-      ( wnf weq wal wn wsb wi nfsb4t mpg ) ADFDCGDHIABCJDFKBABCDLEM $.
+    nfsb4 $p |- ( -. A. z z =s y -> F/ z [ y / x ] ph ) $=
+      ( wnf wequ wal wn wsb wi nfsb4t mpg ) ADFDCGDHIABCJDFKBABCDLEM $.
   $}
 
   $( Negation inside and outside of substitution are equivalent.  (Contributed
      by NM, 14-May-1993.)  (Proof shortened by Wolf Lammen, 30-Apr-2018.) $)
   sbn $p |- ( [ y / x ] -. ph <-> -. [ y / x ] ph ) $=
-    ( wn wsb weq wi wal wa wex df-sb exanali anbi2i annim 3bitri dfsb3 xchbinxr
+    ( wn wsb wequ wi wal wa wex df-sb exanali anbi2i annim 3bitri dfsb3 xchbinxr
     ) ADZBCEZBCFZRGZTAGBHZGZABCESUATRIBJZIUAUBDZIUCDRBCKUDUEUATABLMUAUBNOABCPQ
     $.
 
   $( Removal of implication from substitution.  (Contributed by NM,
      14-May-1993.) $)
   sbi1 $p |- ( [ y / x ] ( ph -> ps ) -> ( [ y / x ] ph -> [ y / x ] ps ) ) $=
-    ( weq wal wi wsb sbequ2 syl5d sbequ1 syl6d sps sb4 ax-2 al2imi syl6 pm2.61i
+    ( wequ wal wi wsb sbequ2 syl5d sbequ1 syl6d sps sb4 ax-2 al2imi syl6 pm2.61i
     wn sb2 ) CDEZCFZABGZCDHZACDHZBCDHZGGZUAUGCUAUDUEBUFUAUEAUDBACDIUCCDIJBCDKLM
     UBSZUEUAAGZCFZUDUFACDNUHUDUAUCGZCFZUJUFGUCCDNULUJUABGZCFUFUKUIUMCUAABOPBCDT
     QQJR $.
@@ -32473,40 +32442,40 @@ $)
   $( Alternate proof of ~ sbequ8 , shorter but requiring more axioms.
      (Contributed by NM, 5-Aug-1993.)  (New usage is discouraged.)
      (Proof modification is discouraged.) $)
-  sbequ8ALT $p |- ( [ y / x ] ph <-> [ y / x ] ( x = y -> ph ) ) $=
-    ( wsb weq wi equsb1 a1bi sbim bitr4i ) ABCDZBCEZBCDZKFLAFBCDMKBCGHLABCIJ $.
+  sbequ8ALT $p |- ( [ y / x ] ph <-> [ y / x ] ( x =s y -> ph ) ) $=
+    ( wsb wequ wi equsb1 a1bi sbim bitr4i ) ABCDZBCEZBCDZKFLAFBCDMKBCGHLABCIJ $.
 
   ${
-    sbie.1 $e |- F/ x ps $.
-    sbie.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    sbies.1 $e |- F/ x ps $.
+    sbies.2 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Conversion of implicit substitution to explicit substitution.
        (Contributed by NM, 30-Jun-1994.)  (Revised by Mario Carneiro,
        4-Oct-2016.)  (Proof shortened by Wolf Lammen, 13-Jul-2019.) $)
-    sbie $p |- ( [ y / x ] ph <-> ps ) $=
-      ( wb wsb weq equsb1 sbimi ax-mp sbf sblbis mpbi ) ABGZCDHZACDHBGCDIZCDHQC
+    sbies $p |- ( [ y / x ] ph <-> ps ) $=
+      ( wb wsb wequ equsb1 sbimi ax-mp sbf sblbis mpbi ) ABGZCDHZACDHBGCDIZCDHQC
       DJRPCDFKLBBACDBCDEMNO $.
   $}
 
   ${
-    sbied.1 $e |- F/ x ph $.
-    sbied.2 $e |- ( ph -> F/ x ch ) $.
-    sbied.3 $e |- ( ph -> ( x = y -> ( ps <-> ch ) ) ) $.
+    sbiesd.1 $e |- F/ x ph $.
+    sbiesd.2 $e |- ( ph -> F/ x ch ) $.
+    sbiesd.3 $e |- ( ph -> ( x =s y -> ( ps <-> ch ) ) ) $.
     $( Conversion of implicit substitution to explicit substitution (deduction
        version of ~ sbie ).  (Contributed by NM, 30-Jun-1994.)  (Revised by
        Mario Carneiro, 4-Oct-2016.)  (Proof shortened by Wolf Lammen,
        24-Jun-2018.) $)
-    sbied $p |- ( ph -> ( [ y / x ] ps <-> ch ) ) $=
-      ( wsb wi sbrim nfim1 weq wb com12 pm5.74d sbie bitr3i pm5.74ri ) ABDEIZCA
+    sbiesd $p |- ( ph -> ( [ y / x ] ps <-> ch ) ) $=
+      ( wsb wi sbrim nfim1 wequ wb com12 pm5.74d sbies bitr3i pm5.74ri ) ABDEIZCA
       TJABJZDEIACJZABDEFKUAUBDEACDFGLDEMZABCAUCBCNHOPQRS $.
   $}
 
   ${
     $d x ph $.  $d x ch $.
-    sbiedv.1 $e |- ( ( ph /\ x = y ) -> ( ps <-> ch ) ) $.
+    sbiesdv.1 $e |- ( ( ph /\ x =s y ) -> ( ps <-> ch ) ) $.
     $( Conversion of implicit substitution to explicit substitution (deduction
        version of ~ sbie ).  (Contributed by NM, 7-Jan-2017.) $)
-    sbiedv $p |- ( ph -> ( [ y / x ] ps <-> ch ) ) $=
-      ( nfv nfvd weq wb ex sbied ) ABCDEADGACDHADEIBCJFKL $.
+    sbiesdv $p |- ( ph -> ( [ y / x ] ps <-> ch ) ) $=
+      ( nfv nfvd wequ wb ex sbiesd ) ABCDEADGACDHADEIBCJFKL $.
   $}
 
   $( Substituting ` y ` for ` x ` and then ` z ` for ` y ` is equivalent to
@@ -32514,7 +32483,7 @@ $)
      Mascellani, 8-Apr-2018.)  Remove dependency on ~ ax-11 .  (Revised by Wolf
      Lammen, 16-Sep-2018.)  (Proof shortened by Wolf Lammen, 16-Sep-2018.) $)
   sbcom3 $p |- ( [ z / y ] [ y / x ] ph <-> [ z / y ] [ z / x ] ph ) $=
-    ( weq wal wsb wb nfa1 drsb2 sbbid wn sb4b sbequ pm5.74i albii syl6bb bitr4d
+    ( wequ wal wsb wb nfa1 drsb2 sbbid wn sb4b sbequ pm5.74i albii syl6bb bitr4d
     wi pm2.61i ) CDEZCFZABCGZCDGZABDGZCDGZHUBUCUECDUACIACDBJKUBLZUDUAUESZCFZUFU
     GUDUAUCSZCFUIUCCDMUJUHCUAUCUEACDBNOPQUECDMRT $.
 
@@ -32543,7 +32512,7 @@ $)
        (Revised by Mario Carneiro, 6-Oct-2016.)  (Proof shortened by Wolf
        Lammen, 17-Sep-2018.) $)
     sbco2 $p |- ( [ y / z ] [ z / x ] ph <-> [ y / x ] ph ) $=
-      ( weq wal wsb wb sbequ12 sbequ bitr3d sps wn nfnae nfsb4 wi sbied pm2.61i
+      ( wequ wal wsb wb sbequ12 sbequ bitr3d sps wn nfnae nfsb4 wi sbiesd pm2.61i
       a1i ) DCFZDGZABDHZDCHZABCHZIZUAUFDUAUCUDUEUCDCJADCBKZLMUBNZUCUEDCDCDOABCD
       EPUAUCUEIQUHUGTRS $.
   $}
@@ -32563,7 +32532,7 @@ $)
   $( A composition law for substitution.  (Contributed by NM, 2-Jun-1993.)
      (Proof shortened by Wolf Lammen, 18-Sep-2018.) $)
   sbco3 $p |- ( [ z / y ] [ y / x ] ph <-> [ z / x ] [ x / y ] ph ) $=
-    ( weq wal wsb wb drsb1 nfae sbequ12a sbbid bitr3d wn sbco sbbii nfnae nfsb2
+    ( wequ wal wsb wb drsb1 nfae sbequ12a sbbid bitr3d wn sbco sbbii nfnae nfsb2
     sps sbco2d syl5rbbr pm2.61i ) BCEZBFZABCGZCDGZACBGZBDGZHUDUEBDGUFUHUEBCDIUD
     UEUGBDBCBJUCUEUGHBABCKSLMUHUECBGZBDGUDNZUFUIUGBDACBOPUJUECDBBCCQBCBQABCRTUA
     UB $.
@@ -32606,33 +32575,33 @@ $)
     $( Reversed substitution.  (Contributed by NM, 3-Feb-2005.)  (Revised by
        Mario Carneiro, 6-Oct-2016.)  (Proof shortened by Wolf Lammen,
        20-Sep-2018.) $)
-    sb5rf $p |- ( ph <-> E. y ( y = x /\ [ y / x ] ph ) ) $=
-      ( weq wsb wa wex sbequ12r equsex bicomi ) CBEABCFZGCHALACBDACBIJK $.
+    sb5rf $p |- ( ph <-> E. y ( y =s x /\ [ y / x ] ph ) ) $=
+      ( wequ wsb wa wex sbequ12r equsex bicomi ) CBEABCFZGCHALACBDACBIJK $.
 
     $( Reversed substitution.  (Contributed by NM, 1-Aug-1993.)  (Revised by
        Mario Carneiro, 6-Oct-2016.)  (Proof shortened by Wolf Lammen,
        21-Sep-2018.) $)
-    sb6rf $p |- ( ph <-> A. y ( y = x -> [ y / x ] ph ) ) $=
-      ( weq wsb wi wal sbequ12r equsal bicomi ) CBEABCFZGCHALACBDACBIJK $.
+    sb6rf $p |- ( ph <-> A. y ( y =s x -> [ y / x ] ph ) ) $=
+      ( wequ wsb wi wal sbequ12r equsal bicomi ) CBEABCFZGCHALACBDACBIJK $.
 
     $( Substitution of variable in universal quantifier.  (Contributed by NM,
        16-May-1993.)  (Revised by Mario Carneiro, 6-Oct-2016.)  (Proof
        shortened by Jim Kingdon, 15-Jan-2018.) $)
     sb8 $p |- ( A. x ph <-> A. y [ y / x ] ph ) $=
-      ( wsb nfs1 sbequ12 cbval ) AABCEBCDABCDFABCGH $.
+      ( wsb nfs1 sbequ12 cbvals ) AABCEBCDABCDFABCGH $.
 
     $( Substitution of variable in existential quantifier.  (Contributed by NM,
        12-Aug-1993.)  (Revised by Mario Carneiro, 6-Oct-2016.)  (Proof
        shortened by Jim Kingdon, 15-Jan-2018.) $)
     sb8e $p |- ( E. x ph <-> E. y [ y / x ] ph ) $=
-      ( wsb nfs1 sbequ12 cbvex ) AABCEBCDABCDFABCGH $.
+      ( wsb nfs1 sbequ12 cbvexs ) AABCEBCDABCDFABCGH $.
   $}
 
   $( Commutation of quantification and substitution variables.  (Contributed by
      NM, 5-Aug-1993.)  Allow a shortening of ~ sb9i .  (Revised by Wolf Lammen,
      15-Jun-2019.) $)
   sb9 $p |- ( A. x [ x / y ] ph <-> A. y [ y / x ] ph ) $=
-    ( weq wal wsb wb sbequ12a equcoms sps dral1 wn nfnae wnf nfsb2 naecoms cbv2
+    ( wequ wal wsb wb sbequ12a equcoms sps dral1 wn nfnae wnf nfsb2 naecoms cbv2
     wi a1i pm2.61i ) BCDZBEZACBFZBEABCFZCEGUCUDBCUAUCUDGZBUECBACBHIZJKUBLZUCUDB
     CBCBMBCCMUCCNCBACBOPABCOUAUERUGUFSQT $.
 
@@ -32646,8 +32615,8 @@ $)
     $( Alternate proof of ~ ax12v2 , shorter, but depending on more axioms.
        (Contributed by NM, 5-Aug-1993.)  (New usage is discouraged.)
        (Proof modification is discouraged.) $)
-    ax12vALT $p |- ( x = y -> ( ph -> A. x ( x = y -> ph ) ) ) $=
-      ( weq wal wi ax-1 axc16 syl5 a1d axc15 pm2.61i ) BCDZBEZMAMAFZBEZFZFNQMAO
+    ax12vALT $p |- ( x =s y -> ( ph -> A. x ( x =s y -> ph ) ) ) $=
+      ( wequ wal wi ax-1 axc16 syl5 a1d axc15 pm2.61i ) BCDZBEZMAMAFZBEZFZFNQMAO
       NPAMGOBCHIJABCKL $.
   $}
 
@@ -32659,8 +32628,8 @@ $)
        ~ sb6f replaces the dv condition with a non-freeness hypothesis.
        (Contributed by NM, 18-Aug-1993.)  (Proof shortened by Wolf Lammen,
        21-Sep-2018.) $)
-    sb6 $p |- ( [ y / x ] ph <-> A. x ( x = y -> ph ) ) $=
-      ( wsb weq wi wal wa wex sb1 sb56 sylib sb2 impbii ) ABCDZBCEZAFBGZOPAHBIQ
+    sb6 $p |- ( [ y / x ] ph <-> A. x ( x =s y -> ph ) ) $=
+      ( wsb wequ wi wal wa wex sb1 sb56 sylib sb2 impbii ) ABCDZBCEZAFBGZOPAHBIQ
       ABCJABCKLABCMN $.
   $}
 
@@ -32670,16 +32639,16 @@ $)
        The implication "to the right" is ~ sb1 and does not require any dv
        condition.  Theorem ~ sb5f replaces the dv condition with a non-freeness
        hypothesis.  (Contributed by NM, 18-Aug-1993.) $)
-    sb5 $p |- ( [ y / x ] ph <-> E. x ( x = y /\ ph ) ) $=
-      ( wsb weq wi wal wa wex sb6 sb56 bitr4i ) ABCDBCEZAFBGMAHBIABCJABCKL $.
+    sb5 $p |- ( [ y / x ] ph <-> E. x ( x =s y /\ ph ) ) $=
+      ( wsb wequ wi wal wa wex sb6 sb56 bitr4i ) ABCDBCEZAFBGMAHBIABCJABCKL $.
   $}
 
   ${
     $d y z $.  $d x y $.
     $( Lemma for ~ equsb3 .  (Contributed by Raph Levien and FL, 4-Dec-2005.)
        (Proof shortened by Andrew Salmon, 14-Jun-2011.) $)
-    equsb3lem $p |- ( [ x / y ] y = z <-> x = z ) $=
-      ( weq nfv equequ1 sbie ) BCDACDZBAHBEBACFG $.
+    equsb3lem $p |- ( [ x / y ] y =s z <-> x =s z ) $=
+      ( wequ nfv equequ1 sbies ) BCDACDZBAHBEBACFG $.
   $}
 
   ${
@@ -32687,8 +32656,8 @@ $)
     $( Substitution applied to an atomic wff.  (Contributed by Raph Levien and
        FL, 4-Dec-2005.)  Remove dependency on ~ ax-11 .  (Revised by Wolf
        Lammen, 21-Sep-2018.) $)
-    equsb3 $p |- ( [ x / y ] y = z <-> x = z ) $=
-      ( vw weq wsb equsb3lem sbbii sbcom3 nfv sbf bitri 3bitr3i ) BCEZBDFZDAFZD
+    equsb3 $p |- ( [ x / y ] y =s z <-> x =s z ) $=
+      ( vw wequ wsb equsb3lem sbbii sbcom3 nfv sbf bitri 3bitr3i ) BCEZBDFZDAFZD
       CEZDAFNBAFZACEOQDADBCGHPRDAFRNBDAIRDARDJKLADCGM $.
   $}
 
@@ -32697,8 +32666,8 @@ $)
     $( Alternate proof of ~ equsb3 , shorter but requiring ~ ax-11 .
        (Contributed by Raph Levien and FL, 4-Dec-2005.)
        (New usage is discouraged.)  (Proof modification is discouraged.) $)
-    equsb3ALT $p |- ( [ x / y ] y = z <-> x = z ) $=
-      ( vw weq wsb equsb3lem sbbii nfv sbco2 3bitr3i ) BCEZBDFZDAFDCEZDAFLBAFAC
+    equsb3ALT $p |- ( [ x / y ] y =s z <-> x =s z ) $=
+      ( vw wequ wsb equsb3lem sbbii nfv sbco2 3bitr3i ) BCEZBDFZDAFDCEZDAFLBAFAC
       EMNDADBCGHLBADLDIJADCGK $.
   $}
 
@@ -32706,9 +32675,9 @@ $)
     $d w y z $.  $d w x $.
     $( Substitution applied to an atomic membership wff.  (Contributed by NM,
        7-Nov-2006.)  (Proof shortened by Andrew Salmon, 14-Jun-2011.) $)
-    elsb3 $p |- ( [ x / y ] y e. z <-> x e. z ) $=
-      ( vw wel wsb nfv sbco2 elequ1 sbie sbbii 3bitr3i ) DCEZDBFZBAFMDAFBCEZBAF
-      ACEZMDABMBGHNOBAMODBODGDBCIJKMPDAPDGDACIJL $.
+    elsb3 $p |- ( [ x / y ] y e.s z <-> x e.s z ) $=
+      ( vw wsel wsb nfv sbco2 elequ1 sbies sbbii 3bitr3i ) DCEZDBFZBAFMDAFBCEZB
+      AFACEZMDABMBGHNOBAMODBODGDBCIJKMPDAPDGDACIJL $.
   $}
 
   ${
@@ -32716,9 +32685,9 @@ $)
     $( Substitution applied to an atomic membership wff.  (Contributed by
        Rodolfo Medina, 3-Apr-2010.)  (Proof shortened by Andrew Salmon,
        14-Jun-2011.) $)
-    elsb4 $p |- ( [ x / y ] z e. y <-> z e. x ) $=
-      ( vw wel wsb nfv sbco2 elequ2 sbie sbbii 3bitr3i ) CDEZDBFZBAFMDAFCBEZBAF
-      CAEZMDABMBGHNOBAMODBODGDBCIJKMPDAPDGDACIJL $.
+    elsb4 $p |- ( [ x / y ] z e.s y <-> z e.s x ) $=
+      ( vw wsel wsb nfv sbco2 elequ2 sbies sbbii 3bitr3i ) CDEZDBFZBAFMDAFCBEZB
+      AFCAEZMDABMBGHNOBAMODBODGDBCIJKMPDAPDGDACIJL $.
   $}
 
   ${
@@ -32726,7 +32695,7 @@ $)
     $( The setvar ` x ` is not free in ` [ y / x ] ph ` when ` x ` and ` y `
        are distinct.  (Contributed by NM, 26-May-1993.) $)
     hbs1 $p |- ( [ y / x ] ph -> A. x [ y / x ] ph ) $=
-      ( weq wal wsb wi axc16 hbsb2 pm2.61i ) BCDBEABCFZKBEGKBCHABCIJ $.
+      ( wequ wal wsb wi axc16 hbsb2 pm2.61i ) BCDBEABCFZKBEGKBCHABCIJ $.
 
     $( The setvar ` x ` is not free in ` [ y / x ] ph ` when ` x ` and ` y `
        are distinct.  (Contributed by Mario Carneiro, 11-Aug-2016.) $)
@@ -32765,7 +32734,7 @@ $)
        ` y ` and ` z ` are distinct.  (Contributed by Mario Carneiro,
        11-Aug-2016.) $)
     nfsb $p |- F/ z [ y / x ] ph $=
-      ( weq wal wsb wnf axc16nf nfsb4 pm2.61i ) DCFDGABCHZDIMDCDJABCDEKL $.
+      ( wequ wal wsb wnf axc16nf nfsb4 pm2.61i ) DCFDGABCHZDIMDCDJABCDEKL $.
   $}
 
   ${
@@ -32783,7 +32752,7 @@ $)
     nfsbd.2 $e |- ( ph -> F/ z ps ) $.
     $( Deduction version of ~ nfsb .  (Contributed by NM, 15-Feb-2013.) $)
     nfsbd $p |- ( ph -> F/ z [ y / x ] ps ) $=
-      ( weq wal wsb wnf wn wi alrimi nfsb4t syl axc16nf pm2.61d2 ) AEDHEIZBCDJZ
+      ( wequ wal wsb wnf wn wi alrimi nfsb4t syl axc16nf pm2.61d2 ) AEDHEIZBCDJZ
       EKZABEKZCISLUAMAUBCFGNBCDEOPTEDEQR $.
   $}
 
@@ -32792,16 +32761,16 @@ $)
     $( Equivalence for double substitution.  (Contributed by NM,
        3-Feb-2005.) $)
     2sb5 $p |- ( [ z / x ] [ w / y ] ph <->
-               E. x E. y ( ( x = z /\ y = w ) /\ ph ) ) $=
-      ( wsb weq wa wex sb5 19.42v anass exbii anbi2i 3bitr4ri bitri ) ACEFZBDFB
+               E. x E. y ( ( x =s z /\ y =s w ) /\ ph ) ) $=
+      ( wsb wequ wa wex sb5 19.42v anass exbii anbi2i 3bitr4ri bitri ) ACEFZBDFB
       DGZQHZBIRCEGZHAHZCIZBIQBDJSUBBRTAHZHZCIRUCCIZHUBSRUCCKUAUDCRTALMQUERACEJN
       OMP $.
 
     $( Equivalence for double substitution.  (Contributed by NM,
        3-Feb-2005.) $)
     2sb6 $p |- ( [ z / x ] [ w / y ] ph <->
-               A. x A. y ( ( x = z /\ y = w ) -> ph ) ) $=
-      ( wsb weq wi wal wa sb6 19.21v impexp albii imbi2i 3bitr4ri bitri ) ACEFZ
+               A. x A. y ( ( x =s z /\ y =s w ) -> ph ) ) $=
+      ( wsb wequ wi wal wa sb6 19.21v impexp albii imbi2i 3bitr4ri bitri ) ACEFZ
       BDFBDGZRHZBISCEGZJAHZCIZBIRBDKTUCBSUAAHZHZCISUDCIZHUCTSUDCLUBUECSUAAMNRUF
       SACEKOPNQ $.
   $}
@@ -32812,7 +32781,7 @@ $)
        [Megill] p. 449 (p. 16 of the preprint).  (Contributed by NM,
        27-May-1997.)  (Proof shortened by Wolf Lammen, 24-Sep-2018.) $)
     sbcom2 $p |- ( [ w / z ] [ y / x ] ph <-> [ y / x ] [ w / z ] ph ) $=
-      ( vu vv weq wex wsb wb ax6ev wi wa wal 2sb6 alcom nfv sbequ sbbid ancomst
+      ( vu vv wequ wex wsb wb ax6ev wi wa wal 2sb6 alcom nfv sbequ sbbid ancomst
       2albii 3bitri bitr4i syl5bbr sylan9bb sylan9bbr bitr3d ex exlimdv exlimiv
       mp2 ) FCHZFIGEHZGIZABCJZDEJZADEJZBCJZKZFCLGELUMUOUTMFUMUNUTGUMUNUTUMUNNAD
       GJZBFJZUQUSUMVBUPDGJZUNUQVBABFJZDGJZUMVCVEBFHZDGHZNAMZDOBOZVBVEVGVFNAMZBO
@@ -32849,18 +32818,18 @@ $)
     $d x y $.
     $( Equivalence for substitution.  (Contributed by NM, 2-Jun-1993.)  (Proof
        shortened by Wolf Lammen, 23-Sep-2018.) $)
-    sb6a $p |- ( [ y / x ] ph <-> A. x ( x = y -> [ x / y ] ph ) ) $=
-      ( wsb weq wi wal sbco sb6 bitr3i ) ABCDACBDZBCDBCEKFBGABCHKBCIJ $.
+    sb6a $p |- ( [ y / x ] ph <-> A. x ( x =s y -> [ x / y ] ph ) ) $=
+      ( wsb wequ wi wal sbco sb6 bitr3i ) ABCDACBDZBCDBCEKFBGABCHKBCIJ $.
   $}
 
   $( We can always find values matching ` x ` and ` y ` , as long as they are
      represented by distinct variables.  This theorem merges two ~ ax6e
-     instances ` E. z z = x ` and ` E. w w = y ` into a common expression.
+     instances ` E. z z =s x ` and ` E. w w =s y ` into a common expression.
      Alan Sare contributed a variant of this theorem with distinct variable
      conditions before, see ~ ax6e2nd .  (Contributed by Wolf Lammen,
      27-Sep-2018.) $)
-  2ax6elem $p |- ( -. A. w w = z -> E. z E. w ( z = x /\ w = y ) ) $=
-    ( weq wal wn wex ax6e nfnae nfan nfeqf pm3.21 spimed eximd mpi nfae equvini
+  2ax6elem $p |- ( -. A. w w =s z -> E. z E. w ( z =s x /\ w =s y ) ) $=
+    ( wequ wal wn wex ax6e nfnae nfan nfeqf pm3.21 spimed eximd mpi nfae equvini
     wa ex equtrr anim1d aleximi syl5 pm2.61d2 ) DCEDFGZDAEZDFZCAEZDBEZSZDHZCHZU
     FUHGZUMUFUNSZUICHUMCAIUOUIULCUFUNCDCCJDACJKUIUKUODBCADLUJUIMNOPTUHCBEZCHUMC
     BIUHUPULCDACQUPCDEZUJSZDHUHULCBDRUGURUKDUGUQUIUJDACUAUBUCUDOPUE $.
@@ -32871,8 +32840,8 @@ $)
        represented by distinct variables.  Version of ~ 2ax6elem with a
        distinct variable constraint.  (Contributed by Wolf Lammen,
        28-Sep-2018.) $)
-    2ax6e $p |- E. z E. w ( z = x /\ w = y ) $=
-      ( weq wal wa wex aeveq jca 19.8a 3syl 2ax6elem pm2.61i ) DCEDFZCAEZDBEZGZ
+    2ax6e $p |- E. z E. w ( z =s x /\ w =s y ) $=
+      ( wequ wal wa wex aeveq jca 19.8a 3syl 2ax6elem pm2.61i ) DCEDFZCAEZDBEZGZ
       DHZCHZORSTOPQDCCAIDCDBIJRDKSCKLABCDMN $.
   $}
 
@@ -32884,8 +32853,8 @@ $)
        (Revised by Mario Carneiro, 6-Oct-2016.)  Remove distinct variable
        constraints.  (Revised by Wolf Lammen, 28-Sep-2018.) $)
     2sb5rf $p |- ( ph <->
-                E. z E. w ( ( z = x /\ w = y ) /\ [ z / x ] [ w / y ] ph ) ) $=
-      ( weq wa wex wsb 19.41 exbii bitri sbequ12r sylan9bb pm5.32i 2exbii 2ax6e
+                E. z E. w ( ( z =s x /\ w =s y ) /\ [ z / x ] [ w / y ] ph ) ) $=
+      ( wequ wa wex wsb 19.41 exbii bitri sbequ12r sylan9bb pm5.32i 2exbii 2ax6e
       biantrur 3bitr4ri ) DBHZECHZIZAIZEJZDJZUDEJZDJZAIZUDACEKZBDKZIZEJDJAUGUHA
       IZDJUJUFUNDUDAEGLMUHADFLNUMUEDEUDULAUBULUKUCAUKDBOAECOPQRUIABCDESTUA $.
 
@@ -32893,8 +32862,8 @@ $)
        (Revised by Mario Carneiro, 6-Oct-2016.)  Remove variable constraints.
        (Revised by Wolf Lammen, 28-Sep-2018.) $)
     2sb6rf $p |- ( ph <->
-                A. z A. w ( ( z = x /\ w = y ) -> [ z / x ] [ w / y ] ph ) ) $=
-      ( weq wa wsb wal wex sbequ12r sylan9bb pm5.74i 2albii 19.23 albii bitri
+                A. z A. w ( ( z =s x /\ w =s y ) -> [ z / x ] [ w / y ] ph ) ) $=
+      ( wequ wa wsb wal wex sbequ12r sylan9bb pm5.74i 2albii 19.23 albii bitri
       wi wb 2ax6e pm5.5 ax-mp 3bitrri ) DBHZECHZIZACEJZBDJZTZEKDKUHATZEKZDKZUHE
       LZDLZATZAUKULDEUHUJAUFUJUIUGAUIDBMAECMNOPUNUOATZDKUQUMURDUHAEGQRUOADFQSUP
       UQAUABCDEUBUPAUCUDUE $.
@@ -32911,8 +32880,8 @@ $)
        is distasteful to some logicians.)  (Contributed by NM, 26-Jul-2006.)
        (Revised by Mario Carneiro, 6-Oct-2016.) $)
     sb7f $p |- ( [ y / x ] ph <->
-               E. z ( z = y /\ E. x ( x = z /\ ph ) ) ) $=
-      ( wsb weq wa wex sb5f sbbii sbco2 sb5 3bitr3i ) ABDFZDCFBDGAHBIZDCFABCFDC
+               E. z ( z =s y /\ E. x ( x =s z /\ ph ) ) ) $=
+      ( wsb wequ wa wex sb5f sbbii sbco2 sb5 3bitr3i ) ABDFZDCFBDGAHBIZDCFABCFDC
       GPHDIOPDCABDEJKABCDELPDCMN $.
   $}
 
@@ -32927,7 +32896,7 @@ $)
        is distasteful to some logicians.)  (Contributed by NM, 26-Jul-2006.)
        (Proof shortened by Andrew Salmon, 25-May-2011.) $)
     sb7h $p |- ( [ y / x ] ph <->
-               E. z ( z = y /\ E. x ( x = z /\ ph ) ) ) $=
+               E. z ( z =s y /\ E. x ( x =s z /\ ph ) ) ) $=
       ( nf5i sb7f ) ABCDADEFG $.
   $}
 
@@ -32943,7 +32912,7 @@ $)
        which is obtained from this theorem by applying ~ df-clab .  Theorem
        ~ sb7h provides a version where ` ph ` and ` z ` don't have to be
        distinct.  (Contributed by NM, 28-Jan-2004.) $)
-    dfsb7 $p |- ( [ y / x ] ph <-> E. z ( z = y /\ E. x ( x = z /\ ph ) ) ) $=
+    dfsb7 $p |- ( [ y / x ] ph <-> E. z ( z =s y /\ E. x ( x =s z /\ ph ) ) ) $=
       ( nfv sb7f ) ABCDADEF $.
   $}
 
@@ -32954,8 +32923,8 @@ $)
        1979), p. 328.  In traditional predicate calculus, this is a sole axiom
        for identity from which the usual ones can be derived.  (Contributed by
        NM, 9-May-2005.)  (Revised by Mario Carneiro, 6-Oct-2016.) $)
-    sb10f $p |- ( [ y / z ] ph <-> E. x ( x = y /\ [ x / z ] ph ) ) $=
-      ( weq wsb wa wex nfsb sbequ equsexv bicomi ) BCFADBGZHBIADCGZNOBCADCBEJAB
+    sb10f $p |- ( [ y / z ] ph <-> E. x ( x =s y /\ [ x / z ] ph ) ) $=
+      ( wequ wsb wa wex nfsb sbequ equsexv bicomi ) BCFADBGZHBIADCGZNOBCADCBEJAB
       CDKLM $.
   $}
 
@@ -32971,29 +32940,29 @@ $)
   ${
     $d x y $.  $d x ph $.
     $( Elimination of substitution.  (Contributed by NM, 5-Aug-1993.) $)
-    sbelx $p |- ( ph <-> E. x ( x = y /\ [ x / y ] ph ) ) $=
-      ( wsb weq wa wex sbid2v sb5 bitr3i ) AACBDZBCDBCEKFBGABCHKBCIJ $.
+    sbelx $p |- ( ph <-> E. x ( x =s y /\ [ x / y ] ph ) ) $=
+      ( wsb wequ wa wex sbid2v sb5 bitr3i ) AACBDZBCDBCEKFBGABCHKBCIJ $.
   $}
 
   ${
     $d x y ph $.
     $( Elimination of double substitution.  (Contributed by NM, 5-Aug-1993.)
        (Proof shortened by Wolf Lammen, 29-Sep-2018.) $)
-    sbel2x $p |- ( ph <-> E. x E. y ( ( x = z /\ y = w ) /\
+    sbel2x $p |- ( ph <-> E. x E. y ( ( x =s z /\ y =s w ) /\
                      [ y / w ] [ x / z ] ph ) ) $=
-      ( weq wa wsb wex nfv 2sb5rf ancom anbi1i 2exbii excom 3bitri ) ACEFZBDFZG
+      ( wequ wa wsb wex nfv 2sb5rf ancom anbi1i 2exbii excom 3bitri ) ACEFZBDFZG
       ZADBHECHZGZBICIRQGZTGZBICIUCCIBIAEDCBACJABJKUAUCCBSUBTQRLMNUCCBOP $.
   $}
 
   ${
     $d x y $.
     $( A theorem used in elimination of disjoint variable restriction on ` x `
-       and ` y ` by replacing it with a distinctor ` -. A. x x = z ` .
+       and ` y ` by replacing it with a distinctor ` -. A. x x =s z ` .
        (Contributed by NM, 15-May-1993.)  (Proof shortened by Wolf Lammen,
        3-Oct-2018.) $)
-    sbal1 $p |- ( -. A. x x = z ->
+    sbal1 $p |- ( -. A. x x =s z ->
              ( [ z / y ] A. x ph <-> A. x [ z / y ] ph ) ) $=
-      ( weq wal wn wsb wb wa wi sb4b nfnae wnf nfeqf2 19.21t bicomd sbequ12 sps
+      ( wequ wal wn wsb wb wa wi sb4b nfnae wnf nfeqf2 19.21t bicomd sbequ12 sps
       albid syl sylan9bbr alcom syl6bb adantl bitr4d ex dral2 bitr3d pm2.61d2 )
       BDEBFGZCDEZCFZABFZCDHZACDHZBFZIZUKUMGZURUKUSJUOULAKZBFZCFZUQUSUOULUNKZCFU
       KVBUNCDLUKVCVACBDCMUKULBNZVCVAIBDCOVDVAVCULABPQUATUBUSUQVBIUKUSUQUTCFZBFV
@@ -33006,9 +32975,9 @@ $)
     $( Move quantifier in and out of substitution.  (Contributed by NM,
        2-Jan-2002.)  Remove a distinct variable constraint.  (Revised by Wolf
        Lammen, 3-Oct-2018.) $)
-    sbal2 $p |- ( -. A. x x = y ->
+    sbal2 $p |- ( -. A. x x =s y ->
              ( [ z / y ] A. x ph <-> A. x [ z / y ] ph ) ) $=
-      ( weq wal wn wsb wb wa wi sb4b adantl nfnae albid alcom wnf drsb2 syl5bbr
+      ( wequ wal wn wsb wb wa wi sb4b adantl nfnae albid alcom wnf drsb2 syl5bbr
       sbid nfeqf1 19.21t syl syl5bb sylan9bbr bitr4d ex dral2 bitr3d pm2.61d2 )
       BCEBFGZCDEZCFZABFZCDHZACDHZBFZIZUKUMGZURUKUSJUOULUNKZCFZUQUSUOVAIUKUNCDLM
       USUQULAKZCFZBFZUKVAUSUPVCBCDBNACDLOVDVBBFZCFUKVAVBBCPUKVEUTCBCCNUKULBQVEU
@@ -33021,7 +32990,7 @@ $)
     $( Move universal quantifier in and out of substitution.  (Contributed by
        NM, 16-May-1993.)  (Proof shortened by Wolf Lammen, 29-Sep-2018.) $)
     sbal $p |- ( [ z / y ] A. x ph <-> A. x [ z / y ] ph ) $=
-      ( weq wal wsb wb nfae axc16gb sbbid bitr3d sbal1 pm2.61i ) BDEBFZABFZCDGZ
+      ( wequ wal wsb wb nfae axc16gb sbbid bitr3d sbal1 pm2.61i ) BDEBFZABFZCDGZ
       ACDGZBFZHORQSOAPCDBDCIABDBJKRBDBJLABCDMN $.
   $}
 
@@ -33084,8 +33053,8 @@ $)
     $d x y $.  $d y ph $.
     $( An equivalent expression for existence.  (Contributed by NM,
        2-Feb-2005.) $)
-    exsb $p |- ( E. x ph <-> E. y A. x ( x = y -> ph ) ) $=
-      ( weq wi wal nfv nfa1 ax12v sp com12 impbid cbvex ) ABCDZAEZBFZBCACGOBHNA
+    exsb $p |- ( E. x ph <-> E. y A. x ( x =s y -> ph ) ) $=
+      ( wequ wi wal nfv nfa1 ax12v sp com12 impbid cbvexs ) ABCDZAEZBFZBCACGOBHNA
       PABCIPNAOBJKLM $.
   $}
 
@@ -33094,8 +33063,8 @@ $)
     $( An equivalent expression for double existence.  (Contributed by NM,
        2-Feb-2005.)  (Proof shortened by Wolf Lammen, 30-Sep-2018.) $)
     2exsb $p |- ( E. x E. y ph <->
-                  E. z E. w A. x A. y ( ( x = z /\ y = w ) -> ph ) ) $=
-      ( wex wsb weq wa wi wal 2sb8e 2sb6 2exbii bitri ) ACFBFACEGBDGZEFDFBDHCEH
+                  E. z E. w A. x A. y ( ( x =s z /\ y =s w ) -> ph ) ) $=
+      ( wex wsb wequ wa wi wal 2sb8e 2sb6 2exbii bitri ) ACFBFACEGBDGZEFDFBDHCEH
       IAJCKBKZEFDFABCDELPQDEABCDEMNO $.
   $}
 
@@ -33126,17 +33095,17 @@ $)
        ~ eujustALT for a proof that provides an example of how it can be
        achieved through the use of ~ dvelim .  (Contributed by NM,
        11-Mar-2010.)  (Proof shortened by Andrew Salmon, 9-Jul-2011.) $)
-    eujust $p |- ( E. y A. x ( ph <-> x = y )
-        <-> E. z A. x ( ph <-> x = z ) ) $=
-      ( vw weq wb wal wex equequ2 bibi2d albidv cbvexv bitri ) ABCFZGZBHZCIABEF
+    eujust $p |- ( E. y A. x ( ph <-> x =s y )
+        <-> E. z A. x ( ph <-> x =s z ) ) $=
+      ( vw wequ wb wal wex equequ2 bibi2d albidv cbvexvs bitri ) ABCFZGZBHZCIABEF
       ZGZBHZEIABDFZGZBHZDIQTCECEFZPSBUDORACEBJKLMTUCEDEDFZSUBBUERUAAEDBJKLMN $.
 
     $( Alternate proof of ~ eujust illustrating the use of ~ dvelim .
        (Contributed by NM, 11-Mar-2010.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    eujustALT $p |- ( E. y A. x ( ph <-> x = y )
-        <-> E. z A. x ( ph <-> x = z ) ) $=
-      ( vw weq wal wb wex equequ2 bibi2d albidv sps wn hbnae ax-5 notbid dvelim
+    eujustALT $p |- ( E. y A. x ( ph <-> x =s y )
+        <-> E. z A. x ( ph <-> x =s z ) ) $=
+      ( vw wequ wal wb wex equequ2 bibi2d albidv sps wn hbnae ax-5 notbid dvelim
       wi df-ex drex1 alrimih naecoms a1i cbv2h syl 3bitr4g pm2.61i ) CDFZCGZABC
       FZHZBGZCIZABDFZHZBGZDIZHUMUQCDUIUMUQHCUIULUPBUIUKUOACDBJKLZMUAUJNZUMNZCGZ
       NUQNZDGZNUNURUTVBVDUTUTDGZCGVBVDHUTVECCDCOCDDOUBUTVAVCCDVAVADGSDCABEFZHZB
@@ -33154,7 +33123,7 @@ $)
        distinct variable condition on ` y ` and ` ph ` ).  Double uniqueness is
        tricky: ` E! x E! y ph ` does not mean "exactly one ` x ` and one
        ` y ` " (see ~ 2eu4 ).  (Contributed by NM, 12-Aug-1993.) $)
-    df-eu $a |- ( E! x ph <-> E. y A. x ( ph <-> x = y ) ) $.
+    df-eu $a |- ( E! x ph <-> E. y A. x ( ph <-> x =s y ) ) $.
   $}
 
   $( Define "there exists at most one ` x ` such that ` ph ` ."  Here we define
@@ -33166,13 +33135,13 @@ $)
   ${
     $d x y z $.
     $( Equality has existential uniqueness.  Special case of ~ eueq1 proved
-       using only predicate calculus.  The proof needs ` y = z ` be free of
+       using only predicate calculus.  The proof needs ` y =s z ` be free of
        ` x ` .  This is ensured by having ` x ` and ` y ` be distinct.
-       Alternatively, a distinctor ` -. A. x x = y ` could have been used
+       Alternatively, a distinctor ` -. A. x x =s y ` could have been used
        instead.  (Contributed by Stefan Allan, 4-Dec-2008.)  (Proof shortened
        by Wolf Lammen, 8-Sep-2019.) $)
-    euequ1 $p |- E! x x = y $=
-      ( vz weq weu wb wal wex ax6evr equequ2 alrimiv eximii df-eu mpbir ) ABDZA
+    euequ1 $p |- E! x x =s y $=
+      ( vz wequ weu wb wal wex ax6evr equequ2 alrimiv eximii df-eu mpbir ) ABDZA
       EOACDFZAGZCHBCDZQCCBIRPABCAJKLOACMN $.
   $}
 
@@ -33184,9 +33153,9 @@ $)
        these axioms anyway, so this advantage is no longer important.
        (Contributed by Wolf Lammen, 27-May-2019.)  (Proof shortened by Wolf
        Lammen, 10-Nov-2019.) $)
-    mo2v $p |- ( E* x ph <-> E. y A. x ( ph -> x = y ) ) $=
+    mo2v $p |- ( E* x ph <-> E. y A. x ( ph -> x =s y ) ) $=
       ( wmo wex weu wi wb df-mo df-eu imbi2i wn alnex pm2.21 alimi sylbir eximi
-      weq wal com12 19.23bi biimp ja nfia1 wa ax12v embantd spsd albiim syl6ibr
+      wequ wal com12 19.23bi biimp ja nfia1 wa ax12v embantd spsd albiim syl6ibr
       id ancld exlimi eximdv impbii 3bitri ) ABDABEZABFZGUQABCRZHZBSZCEZGZAUSGZ
       BSZCEZABIURVBUQABCJKVCVFUQVBVFUQLZVFCVGVECVGALZBSVEABMVHVDBAUSNOPQUAVAVEC
       UTVDBAUSUBOQUCUQVFVBUQVEVACAVEVAGBVDUTBUDAVEVEUSAGBSZUEVAAVEVIAVDVIBAAUSV
@@ -33199,8 +33168,8 @@ $)
     $( A version of the existential uniqueness definition with a hypothesis
        instead of a distinct variable condition.  (Contributed by NM,
        12-Aug-1993.)  (Proof shortened by Wolf Lammen, 30-Oct-2018.) $)
-    euf $p |- ( E! x ph <-> E. y A. x ( ph <-> x = y ) ) $=
-      ( vz weu weq wb wal wex df-eu nfbi nfal equequ2 bibi2d albidv cbvex bitri
+    euf $p |- ( E! x ph <-> E. y A. x ( ph <-> x =s y ) ) $=
+      ( vz weu wequ wb wal wex df-eu nfbi nfal equequ2 bibi2d albidv cbvexs bitri
       nfv ) ABFABEGZHZBIZEJABCGZHZBIZCJABEKUBUEECUACBATCDTCSLMUEESECGZUAUDBUFTU
       CAECBNOPQR $.
   $}
@@ -33210,8 +33179,8 @@ $)
     mo2.1 $e |- F/ y ph $.
     $( Alternate definition of "at most one."  (Contributed by NM, 8-Mar-1995.)
        Restrict dummy variable z.  (Revised by Wolf Lammen, 28-May-2019.) $)
-    mo2 $p |- ( E* x ph <-> E. y A. x ( ph -> x = y ) ) $=
-      ( vz wmo weq wal wex mo2v nfv nfim nfal equequ2 imbi2d albidv cbvex bitri
+    mo2 $p |- ( E* x ph <-> E. y A. x ( ph -> x =s y ) ) $=
+      ( vz wmo wequ wal wex mo2v nfv nfim nfal equequ2 imbi2d albidv cbvexs bitri
       wi ) ABFABEGZSZBHZEIABCGZSZBHZCIABEJUBUEECUACBATCDTCKLMUEEKECGZUAUDBUFTUC
       AECBNOPQR $.
   $}
@@ -33221,7 +33190,7 @@ $)
     $( Bound-variable hypothesis builder for uniqueness.  (Contributed by NM,
        9-Jul-1994.)  (Revised by Mario Carneiro, 7-Oct-2016.) $)
     nfeu1 $p |- F/ x E! x ph $=
-      ( vy weu weq wb wal wex df-eu nfa1 nfex nfxfr ) ABDABCEFZBGZCHBABCINBCMBJ
+      ( vy weu wequ wb wal wex df-eu nfa1 nfex nfxfr ) ABDABCEFZBGZCHBABCINBCMBJ
       KL $.
   $}
 
@@ -33234,19 +33203,19 @@ $)
   ${
     $d x z $.  $d y z $.  $d z ph $.  $d z ps $.
     nfeud2.1 $e |- F/ y ph $.
-    nfeud2.2 $e |- ( ( ph /\ -. A. x x = y ) -> F/ x ps ) $.
+    nfeud2.2 $e |- ( ( ph /\ -. A. x x =s y ) -> F/ x ps ) $.
     $( Bound-variable hypothesis builder for uniqueness.  (Contributed by Mario
        Carneiro, 14-Nov-2016.)  (Proof shortened by Wolf Lammen,
        4-Oct-2018.) $)
     nfeud2 $p |- ( ph -> F/ x E! y ps ) $=
-      ( vz weu weq wb wal wex df-eu nfv wn wa wnf nfeqf1 adantl nfbid nfald2
+      ( vz weu wequ wb wal wex df-eu nfv wn wa wnf nfeqf1 adantl nfbid nfald2
       nfexd nfxfrd ) BDHBDGIZJZDKZGLACBDGMAUFCGAGNAUECDEACDICKOZPBUDCFUGUDCQACD
       GRSTUAUBUC $.
   $}
 
   ${
     nfmod2.1 $e |- F/ y ph $.
-    nfmod2.2 $e |- ( ( ph /\ -. A. x x = y ) -> F/ x ps ) $.
+    nfmod2.2 $e |- ( ( ph /\ -. A. x x =s y ) -> F/ x ps ) $.
     $( Bound-variable hypothesis builder for "at most one."  (Contributed by
        Mario Carneiro, 14-Nov-2016.) $)
     nfmod2 $p |- ( ph -> F/ x E* y ps ) $=
@@ -33260,12 +33229,12 @@ $)
     $( Deduction version of ~ nfeu .  (Contributed by NM, 15-Feb-2013.)
        (Revised by Mario Carneiro, 7-Oct-2016.) $)
     nfeud $p |- ( ph -> F/ x E! y ps ) $=
-      ( wnf weq wal wn adantr nfeud2 ) ABCDEABCGCDHCIJFKL $.
+      ( wnf wequ wal wn adantr nfeud2 ) ABCDEABCGCDHCIJFKL $.
 
     $( Bound-variable hypothesis builder for "at most one."  (Contributed by
        Mario Carneiro, 14-Nov-2016.) $)
     nfmod $p |- ( ph -> F/ x E* y ps ) $=
-      ( wnf weq wal wn adantr nfmod2 ) ABCDEABCGCDHCIJFKL $.
+      ( wnf wequ wal wn adantr nfmod2 ) ABCDEABCGCDHCIJFKL $.
   $}
 
   ${
@@ -33290,7 +33259,7 @@ $)
     $( Formula-building rule for uniqueness quantifier (deduction rule).
        (Contributed by NM, 9-Jul-1994.) $)
     eubid $p |- ( ph -> ( E! x ps <-> E! x ch ) ) $=
-      ( vy weq wb wal wex weu bibi1d albid exbidv df-eu 3bitr4g ) ABDGHZIZDJZGK
+      ( vy wequ wb wal wex weu bibi1d albid exbidv df-eu 3bitr4g ) ABDGHZIZDJZGK
       CRIZDJZGKBDLCDLATUBGASUADEABCRFMNOBDGPCDGPQ $.
   $}
 
@@ -33347,7 +33316,7 @@ $)
        shortened by Andrew Salmon, 9-Jul-2011.)  (Proof shortened by Wolf
        Lammen, 4-Dec-2018.) $)
     euex $p |- ( E! x ph -> E. x ph ) $=
-      ( vy weu weq wb wal wex df-eu wi ax6ev biimpr com12 eximii 19.35i exlimiv
+      ( vy weu wequ wb wal wex df-eu wi ax6ev biimpr com12 eximii 19.35i exlimiv
       sylbi ) ABDABCEZFZBGZCHABHZABCITUACSABRSAJBBCKSRAARLMNOPQ $.
   $}
 
@@ -33373,8 +33342,8 @@ $)
     $( An alternate way to express existential uniqueness.  (Contributed by NM,
        8-Jul-1994.)  Add a distinct variable condition on ` ph ` .  (Revised by
        Wolf Lammen, 29-May-2019.) $)
-    eu3v $p |- ( E! x ph <-> ( E. x ph /\ E. y A. x ( ph -> x = y ) ) ) $=
-      ( weu wex wmo wa weq wi wal eu5 mo2v anbi2i bitri ) ABDABEZABFZGOABCHIBJC
+    eu3v $p |- ( E! x ph <-> ( E. x ph /\ E. y A. x ( ph -> x =s y ) ) ) $=
+      ( weu wex wmo wa wequ wi wal eu5 mo2v anbi2i bitri ) ABDABEZABFZGOABCHIBJC
       EZGABKPQOABCLMN $.
   $}
 
@@ -33410,8 +33379,8 @@ $)
        7-Aug-1994.)  (Revised by Mario Carneiro, 7-Oct-2016.)  (Proof shortened
        by Wolf Lammen, 24-Aug-2019.) $)
     sb8eu $p |- ( E! x ph <-> E! y [ y / x ] ph ) $=
-      ( vz vw weq wal wex wsb weu nfv sb8 equsb3 sblbis albii nfsb nfbi df-eu
-      wb sbequ equequ1 bibi12d cbval 3bitri exbii 3bitr4i ) ABEGZTZBHZEIABCJZCE
+      ( vz vw wequ wal wex wsb weu nfv sb8 equsb3 sblbis albii nfsb nfbi df-eu
+      wb sbequ equequ1 bibi12d cbvals 3bitri exbii 3bitr4i ) ABEGZTZBHZEIABCJZCE
       GZTZCHZEIABKUKCKUJUNEUJUIBFJZFHABFJZFEGZTZFHUNUIBFUIFLMUOURFUHUQABFFBENOP
       URUMFCUPUQCABFCDQUQCLRUMFLFCGUPUKUQULAFCBUAFCEUBUCUDUEUFABESUKCESUG $.
 
@@ -33425,23 +33394,23 @@ $)
   ${
     cbveu.1 $e |- F/ y ph $.
     cbveu.2 $e |- F/ x ps $.
-    cbveu.3 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    cbveu.3 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 25-Nov-1994.)  (Revised by Mario Carneiro,
        7-Oct-2016.) $)
     cbveu $p |- ( E! x ph <-> E! y ps ) $=
-      ( weu wsb sb8eu sbie eubii bitri ) ACHACDIZDHBDHACDEJNBDABCDFGKLM $.
+      ( weu wsb sb8eu sbies eubii bitri ) ACHACDIZDHBDHACDEJNBDABCDFGKLM $.
   $}
 
   ${
     cbvmo.1 $e |- F/ y ph $.
     cbvmo.2 $e |- F/ x ps $.
-    cbvmo.3 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    cbvmo.3 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Rule used to change bound variables, using implicit substitution.
        (Contributed by NM, 9-Mar-1995.)  (Revised by Andrew Salmon,
        8-Jun-2011.) $)
     cbvmo $p |- ( E* x ph <-> E* y ps ) $=
-      ( wex weu wi wmo cbvex cbveu imbi12i df-mo 3bitr4i ) ACHZACIZJBDHZBDIZJAC
+      ( wex weu wi wmo cbvexs cbveu imbi12i df-mo 3bitr4i ) ACHZACIZJBDHZBDIZJAC
       KBDKQSRTABCDEFGLABCDEFGMNACOBDOP $.
   $}
 
@@ -33453,8 +33422,8 @@ $)
        occur in ` ph ` in place of our hypothesis.  (Contributed by NM,
        8-Mar-1995.)  (Proof shortened by Wolf Lammen, 18-Aug-2019.) $)
     mo3 $p |- ( E* x ph <->
-               A. x A. y ( ( ph /\ [ y / x ] ph ) -> x = y ) ) $=
-      ( vz wmo wsb wa weq wi wal nfmo1 nfmo mo2v sp spsbim equsb3 syl6ib alrimi
+               A. x A. y ( ( ph /\ [ y / x ] ph ) -> x =s y ) ) $=
+      ( vz wmo wsb wa wequ wi wal nfmo1 nfmo mo2v sp spsbim equsb3 syl6ib alrimi
       wex anim12d equtr2 syl6 exlimiv sylbi nfs1v pm3.21 imim1d alimd com12 mo2
       aleximi sb8e 3imtr4g moabs sylibr alcoms impbii ) ABFZAABCGZHZBCIZJZCKZBK
       USVDBABLUSVCCACBDMUSABEIZJZBKZETVCABENVGVCEVGVAVECEIZHVBVGAVEUTVHVFBOVGUT
@@ -33469,9 +33438,9 @@ $)
     $( Equivalent definitions of "there exists at most one."  (Contributed by
        NM, 7-Aug-1994.)  (Revised by Mario Carneiro, 7-Oct-2016.)  (Proof
        shortened by Wolf Lammen, 2-Dec-2018.) $)
-    mo $p |- ( E. y A. x ( ph -> x = y ) <->
-               A. x A. y ( ( ph /\ [ y / x ] ph ) -> x = y ) ) $=
-      ( weq wi wal wex wmo wsb wa mo2 mo3 bitr3i ) ABCEZFBGCHABIAABCJKOFCGBGABC
+    mo $p |- ( E. y A. x ( ph -> x =s y ) <->
+               A. x A. y ( ( ph /\ [ y / x ] ph ) -> x =s y ) ) $=
+      ( wequ wi wal wex wmo wsb wa mo2 mo3 bitr3i ) ABCEZFBGCHABIAABCJKOFCGBGABC
       DLABCDMN $.
   $}
 
@@ -33482,8 +33451,8 @@ $)
        [TakeutiZaring] p. 26.  (Contributed by NM, 8-Jul-1994.)  (Proof
        shortened by Wolf Lammen, 2-Dec-2018.) $)
     eu2 $p |- ( E! x ph <->
-    ( E. x ph /\ A. x A. y ( ( ph /\ [ y / x ] ph ) -> x = y ) ) ) $=
-      ( weu wex wmo wa wsb weq wi wal eu5 mo3 anbi2i bitri ) ABEABFZABGZHQAABCI
+    ( E. x ph /\ A. x A. y ( ( ph /\ [ y / x ] ph ) -> x =s y ) ) ) $=
+      ( weu wex wmo wa wsb wequ wi wal eu5 mo3 anbi2i bitri ) ABEABFZABGZHQAABCI
       HBCJKCLBLZHABMRSQABCDNOP $.
   $}
 
@@ -33495,8 +33464,8 @@ $)
        by Mario Carneiro, 7-Oct-2016.)  (Proof shortened by Wolf Lammen,
        29-Oct-2018.) $)
     eu1 $p |- ( E! x ph <->
-                E. x ( ph /\ A. y ( [ y / x ] ph -> x = y ) ) ) $=
-      ( wsb weu weq wb wal wi wa nfs1v sb8eu sb6rf equcom imbi2i albii anbi12ci
+                E. x ( ph /\ A. y ( [ y / x ] ph -> x =s y ) ) ) $=
+      ( wsb weu wequ wb wal wi wa nfs1v sb8eu sb6rf equcom imbi2i albii anbi12ci
       wex euf albiim bitr4i exbii 3bitr4i ) ABCEZCFUECBGZHCIZBSABFAUEBCGZJZCIZK
       ZBSUECBABCLTABCDMUKUGBUKUEUFJZCIZUFUEJCIZKUGAUNUJUMABCDNUIULCUHUFUEBCOPQR
       UEUFCUAUBUCUD $.
@@ -33508,7 +33477,7 @@ $)
        by NM, 15-Sep-1993.)  (Proof shortened by Andrew Salmon, 9-Jul-2011.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
     euexALT $p |- ( E! x ph -> E. x ph ) $=
-      ( vy weu wsb weq wi wal wa wex nfv eu1 exsimpl sylbi ) ABDAABCEBCFGCHZIBJ
+      ( vy weu wsb wequ wi wal wa wex nfv eu1 exsimpl sylbi ) ABDAABCEBCFGCHZIBJ
       ABJABCACKLAOBMN $.
   $}
 
@@ -33540,7 +33509,7 @@ $)
     $( Substitution into "at most one".  (Contributed by Jeff Madsen,
        2-Sep-2009.) $)
     sbmo $p |- ( [ y / x ] E* z ph <-> E* z [ y / x ] ph ) $=
-      ( vw weq wi wal wex wsb wmo sbex nfv sblim sbalv exbii bitri mo2v 3bitr4i
+      ( vw wequ wi wal wex wsb wmo sbex nfv sblim sbalv exbii bitri mo2v 3bitr4i
       sbbii ) ADEFZGZDHZEIZBCJZABCJZUAGZDHZEIZADKZBCJUFDKUEUCBCJZEIUIUCEBCLUKUH
       EUBUGBCDAUABCUABMNOPQUJUDBCADERTUFDERS $.
   $}
@@ -33548,31 +33517,31 @@ $)
   ${
     $d x y $.  $d y ph $.
     mo4f.1 $e |- F/ x ps $.
-    mo4f.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    mo4f.2 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( "At most one" expressed using implicit substitution.  (Contributed by
        NM, 10-Apr-2004.) $)
-    mo4f $p |- ( E* x ph <-> A. x A. y ( ( ph /\ ps ) -> x = y ) ) $=
-      ( wmo wsb wa weq wi wal nfv mo3 sbie anbi2i imbi1i 2albii bitri ) ACGAACD
+    mo4f $p |- ( E* x ph <-> A. x A. y ( ( ph /\ ps ) -> x =s y ) ) $=
+      ( wmo wsb wa wequ wi wal nfv mo3 sbies anbi2i imbi1i 2albii bitri ) ACGAACD
       HZIZCDJZKZDLCLABIZUBKZDLCLACDADMNUCUECDUAUDUBTBAABCDEFOPQRS $.
   $}
 
   ${
     $d x y $.  $d y ph $.  $d x ps $.
-    mo4.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    mo4.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( "At most one" expressed using implicit substitution.  (Contributed by
        NM, 26-Jul-1995.) $)
-    mo4 $p |- ( E* x ph <-> A. x A. y ( ( ph /\ ps ) -> x = y ) ) $=
+    mo4 $p |- ( E* x ph <-> A. x A. y ( ( ph /\ ps ) -> x =s y ) ) $=
       ( nfv mo4f ) ABCDBCFEG $.
   $}
 
   ${
     $d x y $.  $d y ph $.  $d x ps $.
-    eu4.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    eu4.1 $e |- ( x =s y -> ( ph <-> ps ) ) $.
     $( Uniqueness using implicit substitution.  (Contributed by NM,
        26-Jul-1995.) $)
     eu4 $p |- ( E! x ph <-> ( E. x ph /\
-             A. x A. y ( ( ph /\ ps ) -> x = y ) ) ) $=
-      ( weu wex wmo wa weq wi wal eu5 mo4 anbi2i bitri ) ACFACGZACHZIQABICDJKDL
+             A. x A. y ( ( ph /\ ps ) -> x =s y ) ) ) $=
+      ( weu wex wmo wa wequ wi wal eu5 mo4 anbi2i bitri ) ACFACGZACHZIQABICDJKDL
       CLZIACMRSQABCDENOP $.
   $}
 
@@ -33581,7 +33550,7 @@ $)
     $( "At most one" reverses implication.  (Contributed by NM,
        22-Apr-1995.) $)
     moim $p |- ( A. x ( ph -> ps ) -> ( E* x ps -> E* x ph ) ) $=
-      ( vy wi wal weq wex wmo imim1 al2imi eximdv mo2v 3imtr4g ) ABEZCFZBCDGZEZ
+      ( vy wi wal wequ wex wmo imim1 al2imi eximdv mo2v 3imtr4g ) ABEZCFZBCDGZEZ
       CFZDHAQEZCFZDHBCIACIPSUADORTCABQJKLBCDMACDMN $.
   $}
 
@@ -33690,7 +33659,7 @@ $)
        quantifier.  (Contributed by NM, 27-Jan-1997.)  (Proof shortened by Wolf
        Lammen, 17-Sep-2019.) $)
     mopick $p |- ( ( E* x ph /\ E. x ( ph /\ ps ) ) -> ( ph -> ps ) ) $=
-      ( vy wmo wa wex wi weq wal mo2v sp pm3.45 aleximi sb56 sylbi syl6 exlimiv
+      ( vy wmo wa wex wi wequ wal mo2v sp pm3.45 aleximi sb56 sylbi syl6 exlimiv
       syl5d imp ) ACEZABFZCGZABHZUAACDIZHZCJZDGUCUDHZACDKUGUHDUGAUEUCBUFCLUGUCU
       EBFZCGZUEBHZUFUBUICAUEBMNUJUKCJUKBCDOUKCLPQSRPT $.
   $}
@@ -33802,8 +33771,8 @@ $)
        existential uniqueness, if at least one pair exists.  (Contributed by
        Wolf Lammen, 26-Oct-2019.) $)
     2mo2 $p |- ( ( E* x E. y ph /\ E* y E. x ph ) <->
-               E. z E. w A. x A. y ( ph -> ( x = z /\ y = w ) ) ) $=
-      ( wex weq wi wal wmo eeanv jcab 2albii 19.26-2 19.23v albii alcom anbi12i
+               E. z E. w A. x A. y ( ph -> ( x =s z /\ y =s w ) ) ) $=
+      ( wex wequ wi wal wmo eeanv jcab 2albii 19.26-2 19.23v albii alcom anbi12i
       wa mo2v bitri 3bitri 2exbii 3bitr4ri ) ACFZBDGZHZBIZABFZCEGZHZCIZSZEFDFUH
       DFZULEFZSAUFUJSHZCIBIZEFDFUEBJZUICJZSUHULDEKUQUMDEUQAUFHZAUJHZSZCIBIUTCIZ
       BIZVACIBIZSUMUPVBBCAUFUJLMUTVABCNVDUHVEULVCUGBAUFCOPVEVABIZCIULVABCQVFUKC
@@ -33815,10 +33784,10 @@ $)
     $( Two equivalent expressions for double "at most one."  (Contributed by
        NM, 2-Feb-2005.)  (Revised by Mario Carneiro, 17-Oct-2016.)  (Proof
        shortened by Wolf Lammen, 2-Nov-2019.) $)
-    2mo $p |- ( E. z E. w A. x A. y ( ph -> ( x = z /\ y = w ) ) <->
+    2mo $p |- ( E. z E. w A. x A. y ( ph -> ( x =s z /\ y =s w ) ) <->
               A. x A. y A. z A. w ( ( ph /\ [ z / x ] [ w / y ] ph ) ->
-                   ( x = z /\ y = w ) ) ) $=
-      ( weq wa wi wal wex wsb wmo nfmo1 nfe1 nfmo nfan 19.8a spsbe sbimi nfv wn
+                   ( x =s z /\ y =s w ) ) ) $=
+      ( wequ wa wi wal wex wsb wmo nfmo1 nfe1 nfmo nfan 19.8a spsbe sbimi nfv wn
       2mo2 biimpi 19.21bbi syl2ani sbcom2 sylbi anim12ii alrimi alrimivv sylbir
       nfs1v nfsb pm3.21 imim1d alimd com12 aleximi 2nexaln 2sb8e xchnxbi pm2.21
       mo3 2alimi 2eximi 19.23bi pm2.61d1 impbii alrot4 bitri ) ABDFZCEFZGZHZCIZ
@@ -33833,12 +33802,12 @@ $)
 
   ${
     $d z w ph $.  $d x y ps $.  $d x y z w $.
-    2mos.1 $e |- ( ( x = z /\ y = w ) -> ( ph <-> ps ) ) $.
+    2mos.1 $e |- ( ( x =s z /\ y =s w ) -> ( ph <-> ps ) ) $.
     $( Double "exists at most one", using implicit substitution.  (Contributed
        by NM, 10-Feb-2005.) $)
-    2mos $p |- ( E. z E. w A. x A. y ( ph -> ( x = z /\ y = w ) ) <->
-             A. x A. y A. z A. w ( ( ph /\ ps ) -> ( x = z /\ y = w ) ) ) $=
-      ( weq wa wi wal wex wsb 2mo nfv sbiedv sbie anbi2i imbi1i 2albii bitri )
+    2mos $p |- ( E. z E. w A. x A. y ( ph -> ( x =s z /\ y =s w ) ) <->
+             A. x A. y A. z A. w ( ( ph /\ ps ) -> ( x =s z /\ y =s w ) ) ) $=
+      ( wequ wa wi wal wex wsb 2mo nfv sbiesdv sbies anbi2i imbi1i 2albii bitri )
       ACEHZDFHIZJDKCKFLELAADFMZCEMZIZUCJZFKEKZDKCKABIZUCJZFKEKZDKCKACDEFNUHUKCD
       UGUJEFUFUIUCUEBAUDBCEBCOUBABDFGPQRSTTUA $.
   $}
@@ -33878,8 +33847,8 @@ $)
        definitions.  (Contributed by NM, 3-Dec-2001.)  (Proof shortened by Wolf
        Lammen, 14-Sep-2019.) $)
     2eu4 $p |- ( ( E! x E. y ph /\ E! y E. x ph ) <->
-      ( E. x E. y ph /\ E. z E. w A. x A. y ( ph -> ( x = z /\ y = w ) ) ) ) $=
-      ( wex weu wa wmo weq wi wal excom anbi1i bitri anbi12i anandi 2mo2 anbi2i
+      ( E. x E. y ph /\ E. z E. w A. x A. y ( ph -> ( x =s z /\ y =s w ) ) ) ) $=
+      ( wex weu wa wmo wequ wi wal excom anbi1i bitri anbi12i anandi 2mo2 anbi2i
       eu5 3bitr2i ) ACFZBGZABFZCGZHUBBFZUBBIZHZUFUDCIZHZHUFUGUIHZHUFABDJCEJHKCL
       BLEFDFZHUCUHUEUJUBBTUEUDCFZUIHUJUDCTUMUFUIACBMNOPUFUGUIQUKULUFABCDERSUA
       $.
@@ -33894,8 +33863,8 @@ $)
        correct definition apparently has never been published.  ( ` E* ` means
        "exists at most one.").  (Contributed by NM, 26-Oct-2003.) $)
     2eu5 $p |- ( ( E! x E! y ph /\ A. x E* y ph ) <->
-      ( E. x E. y ph /\ E. z E. w A. x A. y ( ph -> ( x = z /\ y = w ) ) ) ) $=
-      ( weu wmo wal wa wex weq 2eu1 pm5.32ri eumo adantl 2moex syl pm4.71i 2eu4
+      ( E. x E. y ph /\ E. z E. w A. x A. y ( ph -> ( x =s z /\ y =s w ) ) ) ) $=
+      ( weu wmo wal wa wex wequ 2eu1 pm5.32ri eumo adantl 2moex syl pm4.71i 2eu4
       wi 3bitr2i ) ACFBFZACGBHZIACJZBFZABJZCFZIZUCIUHUDBJABDKCEKITCHBHEJDJIUCUB
       UHABCLMUHUCUHUFCGZUCUGUIUEUFCNOACBPQRABCDESUA $.
   $}
@@ -33906,8 +33875,8 @@ $)
        (Contributed by NM, 2-Feb-2005.)  (Revised by Mario Carneiro,
        17-Oct-2016.)  (Proof shortened by Wolf Lammen, 2-Oct-2019.) $)
     2eu6 $p |- ( ( E! x E. y ph /\ E! y E. x ph ) <->
-               E. z E. w A. x A. y ( ph <-> ( x = z /\ y = w ) ) ) $=
-      ( wex weu wa weq wi wal wb 2eu4 imim2i sps exlimd syli wsb 2alimi 2eximi
+               E. z E. w A. x A. y ( ph <-> ( x =s z /\ y =s w ) ) ) $=
+      ( wex weu wa wequ wi wal wb 2eu4 imim2i sps exlimd syli wsb 2alimi 2eximi
       nfia1 nfa1 nfv simpl ax12v com12 spsd nfs1v sbequ1 imim2d al2imi sb6 2sb6
       simpr bitr3i syl6ib sylcom ancld 2albiim syl6ibr exlimi 2eximdv imp 2exsb
       biimpr sylibr biimp jca impbii bitri ) ACFZBGABFCGHVKBFZABDIZCEIZHZJZCKZB
@@ -33942,14 +33911,14 @@ $)
     $( Two ways to express "only one thing exists."  The left-hand side
        requires only one variable to express this.  Both sides are false in set
        theory; see theorem ~ dtru .  (Contributed by NM, 5-Apr-2004.) $)
-    exists1 $p |- ( E! x x = x <-> A. x x = y ) $=
-      ( weq weu wb wal wex df-eu equid tbt bicom bitri albii exbii nfae 3bitr2i
+    exists1 $p |- ( E! x x =s x <-> A. x x =s y ) $=
+      ( wequ weu wb wal wex df-eu equid tbt bicom bitri albii exbii nfae 3bitr2i
       19.9 ) AACZADRABCZEZAFZBGSAFZBGUBRABHUBUABSTASSRETRSAIJSRKLMNUBBABBOQP $.
 
     $( A condition implying that at least two things exist.  (Contributed by
        NM, 10-Apr-2004.)  (Proof shortened by Andrew Salmon, 9-Jul-2011.) $)
-    exists2 $p |- ( ( E. x ph /\ E. x -. ph ) -> -. E! x x = x ) $=
-      ( vy wex wn weq weu nfeu1 nfa1 wi exists1 axc16 sylbi exlimd com12 syl6ib
+    exists2 $p |- ( ( E. x ph /\ E. x -. ph ) -> -. E! x x =s x ) $=
+      ( vy wex wn wequ weu nfeu1 nfa1 wi exists1 axc16 sylbi exlimd com12 syl6ib
       wal alex con2d imp ) ABDZAEBDZBBFZBGZEUAUDUBUAUDABQZUBEUDUAUEUDAUEBUCBHAB
       IUDBCFBQAUEJBCKABCLMNOABRPST $.
   $}
@@ -34047,20 +34016,20 @@ $(
   In traditional Aristotelian syllogisms the predicates
   have a restricted form ("x is a ..."); those predicates
   could be modeled in modern notation by more specific constructs such as
-  ` x = A ` , ` x e. A ` , or ` x C_ A ` .
+  ` x = A ` , ` x e.s A ` , or ` x C_ A ` .
   Here we use wff variables instead of specialized restricted forms.
   This generalization makes the syllogisms more useful
   in more circumstances.  In addition, these expressions make
   it clearer that the syllogisms of Aristotelian logic are the
   forerunners of predicate calculus.  If we used restricted forms
-  like ` x e. A ` instead, we would not only unnecessarily limit
+  like ` x e.s A ` instead, we would not only unnecessarily limit
   their use, but we would also need to use set and class axioms,
   making their relationship to predicate calculus less clear.
   Using such specific constructs would also be anti-historical; Aristotle
   and others who directly followed his work focused on relating wholes
   to their parts, an approach now called part-whole theory.
   The work of Cantor and Peano (over 2,000 years later) led to a sharper
-  distinction between inclusion ( ` C_ ` ) and membership ( ` e. ` );
+  distinction between inclusion ( ` C_ ` ) and membership ( ` e.s ` );
   this distinction was not directly made in Aristotle's work.
 
   There are some widespread misconceptions about the existential
@@ -34117,9 +34086,9 @@ $)
        For example, given "All men are mortal" and "Socrates is a man", we can
        prove "Socrates is mortal".  If H is the set of men, M is the set of
        mortal beings, and S is Socrates, these word phrases can be represented
-       as ` A. x ( x e. H -> x e. M ) ` (all men are mortal) and
-       ` A. x ( x = S -> x e. H ) ` (Socrates is a man) therefore
-       ` A. x ( x = S -> x e. M ) ` (Socrates is mortal).  Russell and
+       as ` A. x ( x e.s H -> x e.s M ) ` (all men are mortal) and
+       ` A. x ( x = S -> x e.s H ) ` (Socrates is a man) therefore
+       ` A. x ( x = S -> x e.s M ) ` (Socrates is mortal).  Russell and
        Whitehead note that the "syllogism in Barbara is derived..." from
        ~ syl .  (quote after Theorem *2.06 of [WhiteheadRussell] p. 101).  Most
        of the proof is in ~ alsyl .  There are a legion of sources for Barbara,
@@ -34593,13 +34562,13 @@ $)
      logic, this is equivalent to ~ ax-6 but in intuitionistic logic it needs
      to be stated using the existential quantifier.  (Contributed by Jim
      Kingdon, 31-Dec-2017.)  (New usage is discouraged.) $)
-  axi9 $p |- E. x x = y $=
+  axi9 $p |- E. x x =s y $=
     ( ax6e ) ABC $.
 
   $( Axiom of Quantifier Substitution (intuitionistic logic axiom ax-10).  This
      is just ~ axc11n by another name.  (Contributed by Jim Kingdon,
      31-Dec-2017.)  (New usage is discouraged.) $)
-  axi10 $p |- ( A. x x = y -> A. y y = x ) $=
+  axi10 $p |- ( A. x x =s y -> A. y y =s x ) $=
     ( axc11n ) ABC $.
 
   $( Axiom of Quantifier Introduction (intuitionistic logic axiom ax-i12).  In
@@ -34607,9 +34576,9 @@ $)
      additional quantifier).  But in intuitionistic logic, changing the
      negations and implications to disjunctions makes it stronger.
      (Contributed by Jim Kingdon, 31-Dec-2017.) $)
-  axi12 $p |- ( A. z z = x \/ ( A. z z = y \/
-                A. z ( x = y -> A. z x = y ) ) ) $=
-    ( weq wal wo wi nfae nfor 19.32 wn axc9 orrd orri orass mpbir mpgbi mpbi )
+  axi12 $p |- ( A. z z =s x \/ ( A. z z =s y \/
+                A. z ( x =s y -> A. z x =s y ) ) ) $=
+    ( wequ wal wo wi nfae nfor 19.32 wn axc9 orrd orri orass mpbir mpgbi mpbi )
     CADCEZCBDCEZFZABDZUBCEGZCEZFZSTUDFFUAUCFZUECUAUCCSTCCACHCBCHIJUFSTUCFZFSUGS
     KTUCABCLMNSTUCOPQSTUDOR $.
 
@@ -34618,9 +34587,9 @@ $)
      ~ axc9 .  But in intuitionistic logic, it is not easy to add the extra
      ` A. x ` to ~ axi12 and so we treat the two as separate axioms.
      (Contributed by Jim Kingdon, 22-Mar-2018.) $)
-  axbnd $p |- ( A. z z = x \/ ( A. z z = y \/
-                 A. x A. z ( x = y -> A. z x = y ) ) ) $=
-    ( weq wal wi wo wn wa nfnae nfan axc9 imp alrimi ex orrd orri ) CADCEZCBDCE
+  axbnd $p |- ( A. z z =s x \/ ( A. z z =s y \/
+                 A. x A. z ( x =s y -> A. z x =s y ) ) ) $=
+    ( wequ wal wi wo wn wa nfnae nfan axc9 imp alrimi ex orrd orri ) CADCEZCBDCE
     ZABDZTCEFZCEZAEZGRHZSUCUDSHZUCUDUEIZUBAUDUEACAAJCBAJKUFUACUDUECCACJCBCJKUDU
     EUAABCLMNNOPQ $.
 
@@ -34636,7 +34605,7 @@ $(
   Set theory uses the formalism of propositional and predicate calculus to
   assert properties of arbitrary mathematical objects called "sets."  A set can
   be an element of another set, and this relationship is indicated by the
-  ` e. `
+  ` e.s `
   symbol.  Starting with the simplest mathematical object, called the empty
   set, set theory builds up more and more complex structures whose existence
   follows from the axioms, eventually resulting in extremely complicated sets
@@ -34658,6 +34627,7 @@ $(
   Separation, Null Set, and Pairing from the others as theorems.
 
 $)
+
 
 $(
 #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
@@ -34684,10 +34654,10 @@ $)
        Axiom Ext of [BellMachover] p. 461.
 
        Set theory can also be formulated with a _single_ primitive predicate
-       ` e. ` on top of traditional predicate calculus _without_ equality.  In
+       ` e.s ` on top of traditional predicate calculus _without_ equality.  In
        that case the Axiom of Extensionality becomes
-       ` ( A. w ( w e. x <-> w e. y ) -> ( x e. z -> y e. z ) ) ` , and
-       equality ` x = y ` is _defined_ as ` A. w ( w e. x <-> w e. y ) ` .  All
+       ` ( A. w ( w e.s x <-> w e.s y ) -> ( x e.s z -> y e.s z ) ) ` , and
+       equality ` x = y ` is _defined_ as ` A. w ( w e.s x <-> w e.s y ) ` .  All
        of the usual axioms of equality then become theorems of set theory.
        See, for example, Axiom 1 of [TakeutiZaring] p. 8.
 
@@ -34700,7 +34670,7 @@ $)
        _General remarks_:  Our set theory axioms are presented using defined
        connectives ( ` <-> ` , ` E. ` , etc.) for convenience.  However, it is
        implicitly understood that the actual axioms use only the primitive
-       connectives ` -> ` , ` -. ` , ` A. ` , ` = ` , and ` e. ` .  It is
+       connectives ` -> ` , ` -. ` , ` A. ` , ` = ` , and ` e.s ` .  It is
        straightforward to establish the equivalence between the actual axioms
        and the ones we display, and we will not do so.
 
@@ -34718,15 +34688,15 @@ $)
        axioms generated by the ~ ax-ext scheme exactly logically equivalent to
        each other and in particular to the actual axiom of the textbook
        version.  (Contributed by NM, 21-May-1993.) $)
-    ax-ext $a |- ( A. z ( z e. x <-> z e. y ) -> x = y ) $.
+    ax-ext $a |- ( A. z ( z e.s x <-> z e.s y ) -> x =s y ) $.
 
     $( The Axiom of Extensionality ( ~ ax-ext ) restated so that it postulates
        the existence of a set ` z ` given two arbitrary sets ` x ` and ` y ` .
        This way to express it follows the general idea of the other ZFC axioms,
        which is to postulate the existence of sets given other sets.
        (Contributed by NM, 28-Sep-2003.) $)
-    axext2 $p |- E. z ( ( z e. x <-> z e. y ) -> x = y ) $=
-      ( wel wb weq wi wex wal ax-ext 19.36v mpbir ) CADCBDEZABFZGCHMCINGABCJMNC
+    axext2 $p |- E. z ( ( z e.s x <-> z e.s y ) -> x =s y ) $=
+      ( wsel wb wequ wi wex wal ax-ext 19.36v mpbir ) CADCBDEZABFZGCHMCINGABCJMNC
       KL $.
   $}
 
@@ -34736,8 +34706,8 @@ $)
        need not be distinct.  (Contributed by NM, 15-Sep-1993.)  (Proof
        shortened by Andrew Salmon, 12-Aug-2011.)  Remove dependencies on
        ~ ax-10 , ~ ax-12 , ~ ax-13 .  (Revised by Wolf Lammen, 9-Dec-2019.) $)
-    axext3 $p |- ( A. z ( z e. x <-> z e. y ) -> x = y ) $=
-      ( vw weq wel wb wal wi elequ2 bibi1d albidv ax-ext syl6bir ax7 syld ax6ev
+    axext3 $p |- ( A. z ( z e.s x <-> z e.s y ) -> x =s y ) $=
+      ( vw wequ wsel wb wal wi elequ2 bibi1d albidv ax-ext syl6bir ax7 syld ax6ev
       exlimiiv ) DAEZCAFZCBFZGZCHZABEZIDSUCDBEZUDSUCCDFZUAGZCHUESUGUBCSUFTUADAC
       JKLDBCMNDABOPDAQR $.
 
@@ -34746,8 +34716,8 @@ $)
        (Contributed by NM, 15-Sep-1993.)  (Proof shortened by Andrew Salmon,
        12-Aug-2011.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
-    axext3ALT $p |- ( A. z ( z e. x <-> z e. y ) -> x = y ) $=
-      ( vw wel wb wal weq wi elequ2 bibi1d albidv equequ1 imbi12d ax-ext chvarv
+    axext3ALT $p |- ( A. z ( z e.s x <-> z e.s y ) -> x =s y ) $=
+      ( vw wsel wb wal wequ wi elequ2 bibi1d albidv equequ1 imbi12d ax-ext chvarv
       ) CDEZCBEZFZCGZDBHZICAEZRFZCGZABHZIDADAHZTUDUAUEUFSUCCUFQUBRDACJKLDABMNDB
       COP $.
 
@@ -34756,8 +34726,8 @@ $)
        of Extensionality for its proof under our axiomatization.  See the
        comments for ~ ax-ext and ~ df-cleq .  (Contributed by NM,
        14-Nov-2008.) $)
-    axext4 $p |- ( x = y <-> A. z ( z e. x <-> z e. y ) ) $=
-      ( weq wel wb wal elequ2 alrimiv axext3 impbii ) ABDZCAECBEFZCGLMCABCHIABC
+    axext4 $p |- ( x =s y <-> A. z ( z e.s x <-> z e.s y ) ) $=
+      ( wequ wsel wb wal elequ2 alrimiv axext3 impbii ) ABDZCAECBEFZCGLMCABCHIABC
       JK $.
   $}
 
@@ -34767,9 +34737,9 @@ $)
     $( Any set defined by a property is the only set defined by that property.
        Theorem 1.1 of [BellMachover] p. 462.  (Contributed by NM, 30-Jun-1994.)
        (Proof shortened by Wolf Lammen, 13-Nov-2019.) $)
-    bm1.1 $p |- ( E. x A. y ( y e. x <-> ph ) ->
-                  E! x A. y ( y e. x <-> ph ) ) $=
-      ( vz wel wb wal wa weq wi wex weu biantr alanimi ax-ext syl gen2 wmo nfv
+    bm1.1 $p |- ( E. x A. y ( y e.s x <-> ph ) ->
+                  E! x A. y ( y e.s x <-> ph ) ) $=
+      ( vz wsel wb wal wa wequ wi wex weu biantr alanimi ax-ext syl gen2 wmo nfv
       nfbi nfal elequ2 bibi1d albidv mo4f df-mo bitr3i mpbi ) CBFZAGZCHZCEFZAGZ
       CHZIZBEJZKZEHBHZULBLULBMKZURBEUPUJUMGZCHUQUKUNVACUJAUMNOBECPQRUSULBSUTULU
       OBEUNBCUMABUMBTDUAUBUQUKUNCUQUJUMABECUCUDUEUFULBUGUHUI $.
@@ -34786,6 +34756,16 @@ $)
   $c { $. $( Left brace $)
   $c | $.  $( Vertical bar $)
   $c } $. $( Right brace $)
+
+  $( Introduce the class builder or class abstraction notation ("the class of
+     sets ` x ` such that ` ph ` is true").  Our class variables ` A ` ,
+     ` B ` , etc. range over class builders (implicitly in the case of defined
+     class terms such as ~ df-nul ).  Note that a setvar variable can be
+     expressed as a class builder per theorem ~ cvjust , justifying the
+     assignment of setvar variables to class variables via the use of ~ cv . $)
+  cab $a class { x | ph } $.
+
+  $( $j primitive 'cv' 'wceq' 'wcel' 'cab'; $)
 
   $( Declare symbols as variables $)
   $v ./\ $.
@@ -34828,20 +34808,12 @@ $)
   $v T $.
   $v U $.
 
-  $( Introduce the class builder or class abstraction notation ("the class of
-     sets ` x ` such that ` ph ` is true").  Our class variables ` A ` ,
-     ` B ` , etc. range over class builders (implicitly in the case of defined
-     class terms such as ~ df-nul ).  Note that a setvar variable can be
-     expressed as a class builder per theorem ~ cvjust , justifying the
-     assignment of setvar variables to class variables via the use of ~ cv . $)
-  cab $a class { x | ph } $.
-
-  $( $j primitive 'cv' 'wceq' 'wcel' 'cab'; $)
-
   $( Let ` A ` be a class variable. $)
   cA $f class A $.
+
   $( Let ` B ` be a class variable. $)
   cB $f class B $.
+
   $( Let ` C ` be a class variable. $)
   cC $f class C $.
 
@@ -35052,20 +35024,39 @@ $)
   $( Let ` l ` be an individual variable. $)
   vl $f setvar l $.
 
+$(
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+                  Membership predicate for sets in classes
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+$)
+
+  $( Declare the membership predicate symbol for classes. $)
+  $c e.c $.
+
+  $( Extend wff definition to include the membership connective between
+     classes.
+
+     For a general discussion of the theory of classes, see
+     ~ mmset.html#class .
+
+     (The purpose of introducing ` wff A e. B ` here is to allow us to
+     express i.e.  "prove" the ~ wel of predicate calculus in terms of the
+     ~ wcel of set theory, so that we don't "overload" the ` e. ` connective
+     with two syntax definitions.  This is done to prevent ambiguity that
+     would complicate some Metamath parsers.  The class variables ` A ` and
+     ` B ` are introduced temporarily for the purpose of this definition but
+     otherwise not used in predicate calculus.  See ~ df-clab for more
+     information on the set theory usage of ~ wcel .) $)
+  wscel $a wff x e.c A $.
+
   $( Define class abstraction notation (so-called by Quine), also called a
      "class builder" in the literature. ` x ` and ` y ` need not be distinct.
      Definition 2.1 of [Quine] p. 16.  Typically, ` ph ` will have ` y ` as a
      free variable, and " ` { y | ph } ` " is read "the class of all sets ` y `
      such that ` ph ( y ) ` is true."  We do not define ` { y | ph } ` in
-     isolation but only as part of an expression that extends or "overloads"
-     the ` e. ` relationship.
+     isolation but only as part of this expression.
 
-     This is our first use of the ` e. ` symbol to connect classes instead of
-     sets.  The syntax definition ~ wcel , which extends or "overloads" the
-     ~ wel definition connecting setvar variables, requires that both sides of
-     ` e. ` be classes.  In ~ df-cleq and ~ df-clel , we introduce a new kind
-     of variable (class variable) that can be substituted with expressions such
-     as ` { y | ph } ` .  In the present definition, the ` x ` on the left-hand
+     In the present definition, the ` x ` on the left-hand
      side is a setvar variable.  Syntax definition ~ cv allows us to substitute
      a setvar variable ` x ` for a class variable: all sets are classes by
      ~ cvjust (but not necessarily vice-versa).  For a full description of how
@@ -35092,175 +35083,88 @@ $)
 
      For a general discussion of the theory of classes, see
      ~ mmset.html#class .  (Contributed by NM, 26-May-1993.) $)
-  df-clab $a |- ( x e. { y | ph } <-> [ x / y ] ph ) $.
+  df-sclab $a |- ( x e.c { y | ph } <-> [ x / y ] ph ) $.
 
   $( Simplification of class abstraction notation when the free and bound
      variables are identical.  (Contributed by NM, 26-May-1993.) $)
-  abid $p |- ( x e. { x | ph } <-> ph ) $=
-    ( cv cab wcel wsb df-clab sbid bitri ) BCABDEABBFAABBGABHI $.
+  sabid $p |- ( x e.c { x | ph } <-> ph ) $=
+    ( cab wscel wsb df-sclab sbid bitri ) BABCDABBEAABBFABGH $.
+
+  ${
+    $( Lemma for ~elscb3 (Contributed by Thierry Arnoux, 30-Oct-2021.) $)
+    elscb3lem $p |- ( x =s y -> ( x e.c { z | ph } <-> y e.c { z | ph } ) ) $=
+      ( wequ wsb cab wscel sbequ df-sclab 3bitr4g ) BCEADBFADCFBADGZHCLHABCDIAB
+      DJACDJK $.
+  $}
+
+  ${
+    $d ph w y $.  $d w y z $.  $d w x $.
+    $( Substitution applied to an set-to-class membership wff.  (Contributed by
+       Thierry Arnoux, 30-Oct-2021.) $)
+    elscb3 $p |- ( [ x / y ] y e.c { z | ph } <-> x e.c { z | ph } ) $=
+      ( vw cab wscel wsb nfv sbco2 elscb3lem sbies sbbii 3bitr3i ) EADFZGZECHZC
+      BHPEBHCOGZCBHBOGZPEBCPCIJQRCBPRECREIAECDKLMPSEBSEIAEBDKLN $.
+  $}
 
   ${
     $d x y $.
     $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
-       by NM, 26-May-1993.) $)
-    hbab1 $p |- ( y e. { x | ph } -> A. x y e. { x | ph } ) $=
-      ( cv cab wcel wsb df-clab hbs1 hbxfrbi ) CDABEFABCGBACBHABCIJ $.
+       by Thierry Arnoux, 30-Oct-2021.) $)
+    hbsclab1 $p |- ( y e.c { x | ph } -> A. x y e.c { x | ph } ) $=
+      ( cab wscel wsb df-sclab hbs1 hbxfrbi ) CABDEABCFBACBGABCHI $.
 
     $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
-       by Mario Carneiro, 11-Aug-2016.) $)
-    nfsab1 $p |- F/ x y e. { x | ph } $=
-      ( cv cab wcel hbab1 nf5i ) CDABEFBABCGH $.
+       by Thierry Arnoux, 30-Oct-2021.) $)
+    nfsclab1 $p |- F/ x y e.c { x | ph } $=
+      ( cab wscel hbsclab1 nf5i ) CABDEBABCFG $.
   $}
 
   ${
-    $d x z $.
-    hbab.1 $e |- ( ph -> A. x ph ) $.
-    $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
-       by NM, 1-Mar-1995.) $)
-    hbab $p |- ( z e. { y | ph } -> A. x z e. { y | ph } ) $=
-      ( cv cab wcel wsb df-clab hbsb hbxfrbi ) DFACGHACDIBADCJACDBEKL $.
+    $d y z $.
+    $( Relate set-class abstraction membership and set membership  (Contributed
+       by Thierry Arnoux, 30-Oct-2021.) $)
+    sclabselid $p |- ( x e.c { z | z e.s y } <-> x e.s y ) $=
+      ( wsel cab wscel wsb df-sclab elsb3 bitri ) ACBDZCEFKCAGABDKACHACBIJ $.
+
+    $( Relate set-class abstraction membership and set equality  (Contributed
+       by Thierry Arnoux, 31-Oct-2021.) $)
+    sclabseqid $p |- ( x e.c { z | z =s y } <-> x =s y ) $=
+      ( wequ cab wscel wsb df-sclab equsb3 bitri ) ACBDZCEFKCAGABDKACHACBIJ $.
+
+    $d ph z $. $d w z $.
+    $( Relate set-class abstraction membership and set equality  (Contributed
+       by Thierry Arnoux, 31-Oct-2021.) $)
+    sclabcelid $p |- ( x e.c { z | z e.c { w | ph } } <-> x e.c { w | ph } ) $=
+      ( cab wscel wsb df-sclab elscb3 bitri ) BCADEZFZCEFLCBGBKFLBCHABCDIJ $.
   $}
 
-  ${
-    $d x z $.
-    nfsab.1 $e |- F/ x ph $.
-    $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
-       by Mario Carneiro, 11-Aug-2016.) $)
-    nfsab $p |- F/ x z e. { y | ph } $=
-      ( cv cab wcel nf5ri hbab nf5i ) DFACGHBABCDABEIJK $.
-  $}
+$(
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+                   Class Equality
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+$)
 
   ${
-    $d x A $.  $d x B $.  $d x y z $.
-    df-cleq.1 $e |- ( A. x ( x e. y <-> x e. z ) -> y = z ) $.
+    $d x A $.  $d x B $.
     $( Define the equality connective between classes.  Definition 2.7 of
        [Quine] p. 18.  Also Definition 4.5 of [TakeutiZaring] p. 13; Chapter 4
        provides its justification and methods for eliminating it.  Note that
        its elimination will not necessarily result in a single wff in the
        original language but possibly a "scheme" of wffs.
 
-       This is an example of a somewhat "risky" definition, meaning that it has
-       a more complex than usual soundness justification (outside of Metamath),
-       because it "overloads" or reuses the existing equality symbol rather
-       than introducing a new symbol.  This allows us to make statements that
-       may not hold for the original symbol.  For example, it permits us to
-       deduce ` y = z <-> A. x ( x e. y <-> x e. z ) ` , which is not a theorem
-       of logic but rather presupposes the Axiom of Extensionality (see theorem
-       ~ axext4 ).  We therefore include this axiom as a hypothesis, so that
-       the use of Extensionality is properly indicated.
-
        See also comments under ~ df-clab , ~ df-clel , and ~ abeq2 .
 
-       In the form of ~ dfcleq , this is called the "axiom of extensionality"
+       This is called the "axiom of extensionality"
        by [Levy] p. 338, who treats the theory of classes as an extralogical
        extension to our logic and set theory axioms.
 
-       While the three class definitions ~ df-clab , ~ df-cleq , and ~ df-clel
-       are eliminable and conservative and thus meet the requirements for sound
-       definitions, they are technically axioms in that they do not satisfy the
-       requirements for the current definition checker.  The proofs of
-       conservativity require external justification that is beyond the scope
-       of the definition checker.
-
        For a general discussion of the theory of classes, see
        ~ mmset.html#class .  (Contributed by NM, 15-Sep-1993.) $)
-    df-cleq $a |- ( A = B <-> A. x ( x e. A <-> x e. B ) ) $.
+    df-cleq $a |- ( A = B <-> A. x ( x e.c A <-> x e.c B ) ) $.
   $}
 
   ${
-    $d x A $.  $d x B $.  $d x y z $.
-    $( The same as ~ df-cleq with the hypothesis removed using the Axiom of
-       Extensionality ~ ax-ext .  (Contributed by NM, 15-Sep-1993.)  Revised to
-       make use of ~ axext3 instead of ~ ax-ext , so that ~ ax-9 will appear in
-       lists of axioms used by a proof, since ~ df-cleq implies ~ ax-9 by
-       theorem ~ bj-ax9 .  We may revisit this in the future.  (Revised by NM,
-       28-Oct-2021.)  (Proof modification is discouraged.) $)
-    dfcleq $p |- ( A = B <-> A. x ( x e. A <-> x e. B ) ) $=
-      ( vy vz axext3 df-cleq ) ADEBCDEAFG $.
-  $}
-
-  ${
-    $d x y z $.
-    $( Every set is a class.  Proposition 4.9 of [TakeutiZaring] p. 13.  This
-       theorem shows that a setvar variable can be expressed as a class
-       abstraction.  This provides a motivation for the class syntax
-       construction ~ cv , which allows us to substitute a setvar variable for
-       a class variable.  See also ~ cab and ~ df-clab .  Note that this is not
-       a rigorous justification, because ~ cv is used as part of the proof of
-       this theorem, but a careful argument can be made outside of the
-       formalism of Metamath, for example as is done in Chapter 4 of Takeuti
-       and Zaring.  See also the discussion under the definition of class in
-       [Jech] p. 4 showing that "Every set can be considered to be a class."
-       (Contributed by NM, 7-Nov-2006.) $)
-    cvjust $p |- x = { y | y e. x } $=
-      ( vz cv wcel cab wceq wb dfcleq wsb df-clab elsb3 bitr2i mpgbir ) ADZBDOE
-      ZBFZGCDZOEZRQEZHCCOQITPBCJSPCBKCBALMN $.
-  $}
-
-  ${
-    $d x A $.  $d x B $.
-    $( Define the membership connective between classes.  Theorem 6.3 of
-       [Quine] p. 41, or Proposition 4.6 of [TakeutiZaring] p. 13, which we
-       adopt as a definition.  See these references for its metalogical
-       justification.  Note that like ~ df-cleq it extends or "overloads" the
-       use of the existing membership symbol, but unlike ~ df-cleq it does not
-       strengthen the set of valid wffs of logic when the class variables are
-       replaced with setvar variables (see ~ cleljust ), so we don't include
-       any set theory axiom as a hypothesis.  See also comments about the
-       syntax under ~ df-clab .  Alternate definitions of ` A e. B ` (but that
-       require either ` A ` or ` B ` to be a set) are shown by ~ clel2 ,
-       ~ clel3 , and ~ clel4 .
-
-       This is called the "axiom of membership" by [Levy] p. 338, who treats
-       the theory of classes as an extralogical extension to our logic and set
-       theory axioms.
-
-       While the three class definitions ~ df-clab , ~ df-cleq , and ~ df-clel
-       are eliminable and conservative and thus meet the requirements for sound
-       definitions, they are technically axioms in that they do not satisfy the
-       requirements for the current definition checker.  The proofs of
-       conservativity require external justification that is beyond the scope
-       of the definition checker.
-
-       For a general discussion of the theory of classes, see
-       ~ mmset.html#class .  (Contributed by NM, 26-May-1993.) $)
-    df-clel $a |- ( A e. B <-> E. x ( x = A /\ x e. B ) ) $.
-  $}
-
-  ${
-    $d x A $.  $d x B $.
-    eqriv.1 $e |- ( x e. A <-> x e. B ) $.
-    $( Infer equality of classes from equivalence of membership.  (Contributed
-       by NM, 21-Jun-1993.) $)
-    eqriv $p |- A = B $=
-      ( wceq cv wcel wb dfcleq mpgbir ) BCEAFZBGKCGHAABCIDJ $.
-  $}
-
-  ${
-    $d x A $.  $d x B $.  $d x ph $.
-    eqrdv.1 $e |- ( ph -> ( x e. A <-> x e. B ) ) $.
-    $( Deduce equality of classes from equivalence of membership.  (Contributed
-       by NM, 17-Mar-1996.) $)
-    eqrdv $p |- ( ph -> A = B ) $=
-      ( cv wcel wb wal wceq alrimiv dfcleq sylibr ) ABFZCGNDGHZBICDJAOBEKBCDLM
-      $.
-  $}
-
-  ${
-    $d x A $.  $d x B $.  $d x ph $.
-    eqrdav.1 $e |- ( ( ph /\ x e. A ) -> x e. C ) $.
-    eqrdav.2 $e |- ( ( ph /\ x e. B ) -> x e. C ) $.
-    eqrdav.3 $e |- ( ( ph /\ x e. C ) -> ( x e. A <-> x e. B ) ) $.
-    $( Deduce equality of classes from an equivalence of membership that
-       depends on the membership variable.  (Contributed by NM, 7-Nov-2008.)
-       (Proof shortened by Wolf Lammen, 19-Nov-2019.) $)
-    eqrdav $p |- ( ph -> A = B ) $=
-      ( cv wcel wa biimpd impancom mpd biimprd impbida eqrdv ) ABCDABIZCJZRDJZA
-      SKREJZTFAUASTAUAKZSTHLMNATKUASGAUATSUBSTHOMNPQ $.
-  $}
-
-  ${
-    $d x A $.
+    $d A x $.
     $( Law of identity (reflexivity of class equality).  Theorem 6.4 of [Quine]
        p. 41.
 
@@ -35270,7 +35174,92 @@ $)
        BJ for this information.)  (Contributed by NM, 21-Jun-1993.)  (Revised
        by BJ, 14-Oct-2017.) $)
     eqid $p |- A = A $=
-      ( vx cv wcel biid eqriv ) BAABCADEF $.
+      ( vx wceq wscel wb wal biid ax-gen df-cleq mpbir ) AACBADZKEZBFLBKGHBAAIJ
+      $.
+  $}
+
+  ${
+    $d ph y z $.  $d x z $.
+    $( Change bound variables inside a class abstraction $)
+    cbabeqv $p |- { x | ph } = { y | [ y / x ] ph } $=
+      ( vz cab wsb wceq wscel wb df-cleq nfv sbco2 df-sclab 3bitr4ri mpgbir ) A
+      BEZABCFZCEZGDPHZDRHZIDDPRJQCDFABDFTSABDCACKLQDCMADBMNO $.
+  $}
+
+  ${
+    $( An axiom to extend set-class membership to set membership.  $)
+    ax-abidc $a |- A = { x | x e.c A } $.
+  $}
+
+  ${
+    $d A x y z $.
+    $( Substitution applied to a set-class membership wff.  (Contributed by
+       Thierry Arnoux, 1 Nov 2021 .) $)
+    sclabsb3 $p |- ( [ x / y ] y e.c A <-> x e.c A ) $=
+      ( wscel cab wsb wb wceq wal ax-abidc df-cleq mpbi spi df-sclab bitr2i ) A
+      CDZABCDZBEZDZQBAFPSGZACRHTAIBCJACRKLMQABNO $.
+  $}
+
+  ${
+    $d A x y $.  $d ph y $.
+    $( Equality of a class variable and a class abstraction (also called a
+       class builder), written in terms of set-class membership.  Theorem 5.1
+       of [Quine] p. 34.  This theorem shows the relationship between
+       expressions with class abstractions and expressions with class
+       variables.  (Contributed by Thierry Arnoux, 30-Oct-2021.) $)
+    abeq2c $p |- ( A = { x | ph } <-> A. x ( x e.c A <-> ph ) ) $=
+      ( vy cab wceq wscel wal wsb df-cleq nfv nfsclab1 nfbi sb8 sclabsb3 elscb3
+      wb sbbi sabid bitri bibi12i albii 3bitri ) CABEZFDCGZDUDGZQZDHUGDBIZBHBCG
+      ZAQZBHDCUDJUGDBUEUFBUEBKABDLMNUHUJBUHUEDBIZUFDBIZQUJUEUFDBRUKUIULABDCOULB
+      UDGAABDBPABSTUATUBUC $.
+  $}
+
+  ${
+    $d x A $.
+    $( A justification for ax-abidc. $)
+    abidc $p |- A = { x | x e.c A } $=
+      ( wscel cab wceq wb wal biid ax-gen abeq2c mpbir ) BABCZADELLFZAGMALHILAB
+      JK $.
+  $}
+
+  ${
+    $( An axiom to extend set-class membership to set membership.  $)
+    ax-sclabsel $a |- ( x e.c y <-> x e.s y ) $.
+  $}
+
+  ${
+    $d y z $.
+    $( Substitution applied to a set-class membership wff.  (Contributed by
+       Thierry Arnoux, 1 Nov 2021 .) $)
+    celsb3 $p |- ( [ x / y ] y e.c z <-> x e.c z ) $=
+      ( wsel wsb cv wscel elsb3 ax-sclabsel sbbii 3bitr4i ) BCDZBAEACDBCFZGZBAE
+      AMGABCHNLBABCIJACIK $.
+  $}
+
+  ${
+    $d x y $.
+    $( A set variable is a class abstraction. $)
+    cvjust3 $p |- x = { y | y e.c x } $=
+      ( cv ax-abidc ) BACD $.
+
+    $( A set variable is a class abstraction. $)
+    cvjust2 $p |- x = { y | y e.s x } $=
+      ( cv wsel cab wceq wscel wb wal ax-sclabsel ax-gen abeq2c mpbir ) ACZBADZ
+      BEFBNGOHZBIPBBAJKOBNLM $.
+  $}
+
+  ${
+    $d x z $.  $d y z $.
+    $( Set equality is equivalent to class equality $)
+    seqeq $p |- ( x =s y <-> x = y ) $=
+      ( vz cv wscel wal wsel wceq wequ ax-sclabsel bibi12i albii df-cleq axext4
+      wb 3bitr4ri ) CADZEZCBDZEZOZCFCAGZCBGZOZCFQSHABIUAUDCRUBTUCCAJCBJKLCQSMAB
+      CNP $.
+
+    $( Equality for sets in terms of set membership. $)
+    dfseq $p |- ( x = y <-> A. z ( z e.s x <-> z e.s y ) ) $=
+      ( cv wceq wequ wsel wb wal seqeq axext4 bitr3i ) ADBDEABFCAGCBGHCIABJABCK
+      L $.
   $}
 
   $( Class identity law with antecedent.  (Contributed by NM, 21-Aug-2008.) $)
@@ -35284,17 +35273,16 @@ $)
        NM, 27-Dec-1993.)  Reduce dependencies on axioms.  (Revised by Wolf
        Lammen, 5-Dec-2019.) $)
     eqeq1d $p |- ( ph -> ( A = C <-> B = C ) ) $=
-      ( vx cv wcel wb wal wceq dfcleq biimpi bibi1 alimi albi 4syl 3bitr4g ) AF
-      GZBHZSDHZIZFJZSCHZUAIZFJZBDKCDKABCKZTUDIZFJZUBUEIZFJUCUFIEUGUIFBCLMUHUJFT
-      UDUANOUBUEFPQFBDLFCDLR $.
+      ( vx wscel wb wal wceq df-cleq biimpi bibi1 alimi albi 4syl 3bitr4g ) AFB
+      GZFDGZHZFIZFCGZSHZFIZBDJCDJABCJZRUBHZFIZTUCHZFIUAUDHEUEUGFBCKLUFUHFRUBSMN
+      TUCFOPFBDKFCDKQ $.
 
     $( Shorter proof of ~ eqeq1d based on more axioms.  (Contributed by NM,
        27-Dec-1993.)  (Revised by Wolf Lammen, 19-Nov-2019.)
        (Proof modification is discouraged.)  (New usage is discouraged.) $)
     eqeq1dALT $p |- ( ph -> ( A = C <-> B = C ) ) $=
-      ( vx cv wcel wb wal wceq dfcleq sylib 19.21bi bibi1d albidv 3bitr4g ) AFG
-      ZBHZRDHZIZFJRCHZTIZFJBDKCDKAUAUCFASUBTASUBIZFABCKUDFJEFBCLMNOPFBDLFCDLQ
-      $.
+      ( vx wscel wb wal wceq df-cleq sylib 19.21bi bibi1d albidv 3bitr4g ) AFBG
+      ZFDGZHZFIFCGZRHZFIBDJCDJASUAFAQTRAQTHZFABCJUBFIEFBCKLMNOFBDKFCDKP $.
   $}
 
   $( Equality implies equivalence of equalities.  (Contributed by NM,
@@ -35774,6 +35762,342 @@ $)
       EBGLMPORPCFAHLMN $.
   $}
 
+
+$(
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+                  Membership predicate for classes
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+$)
+
+  $( Declare the membership predicate symbol for classes. $)
+  $c e. $.
+
+  $( Extend wff definition to include the membership connective between
+     classes.
+
+     For a general discussion of the theory of classes, see
+     ~ mmset.html#class .
+
+     (The purpose of introducing ` wff A e. B ` here is to allow us to
+     express i.e.  "prove" the ~ wel of predicate calculus in terms of the
+     ~ wcel of set theory, so that we don't "overload" the ` e. ` connective
+     with two syntax definitions.  This is done to prevent ambiguity that
+     would complicate some Metamath parsers.  The class variables ` A ` and
+     ` B ` are introduced temporarily for the purpose of this definition but
+     otherwise not used in predicate calculus.  See ~ df-clab for more
+     information on the set theory usage of ~ wcel .) $)
+  wcel $a wff A e. B $.
+
+  $( Extend wff definition to include atomic formulas with the epsilon
+     (membership) predicate.  This is read " ` x ` is an element of
+     ` y ` ," " ` x ` is a member of ` y ` ," " ` x ` belongs to ` y ` ,"
+     or " ` y ` contains ` x ` ."  Note:  The phrase " ` y ` includes
+     ` x ` " means " ` x ` is a subset of ` y ` ;" to use it also for
+     ` x e. y ` , as some authors occasionally do, is poor form and causes
+     confusion, according to George Boolos (1992 lecture at MIT).
+
+     This syntactic construction introduces a binary non-logical predicate
+     symbol ` e. ` (epsilon) into our predicate calculus.  We will eventually
+     use it for the membership predicate of set theory, but that is irrelevant
+     at this point: the predicate calculus axioms for ` e. ` apply to any
+     arbitrary binary predicate symbol.  "Non-logical" means that the predicate
+     is presumed to have additional properties beyond the realm of predicate
+     calculus, although these additional properties are not specified by
+     predicate calculus itself but rather by the axioms of a theory (in our
+     case set theory) added to predicate calculus.  "Binary" means that the
+     predicate has two arguments.
+
+     (Instead of introducing ~ wel as an axiomatic statement, as was done in an
+     older version of this database, we introduce it by "proving" a special
+     case of set theory's more general ~ wcel .  This lets us avoid overloading
+     the ` e. ` connective, thus preventing ambiguity that would complicate
+     certain Metamath parsers.  However, logically ~ wel is considered to be a
+     primitive syntax, even though here it is artificially "derived" from
+     ~ wcel .  Note:  To see the proof steps of this syntax proof, type "show
+     proof wel /all" in the Metamath program.)  (Contributed by NM,
+     24-Jan-2006.) $)
+  wel $p wff x e. y $=
+    ( cv wcel ) ACBCD $.
+
+  ${
+    $d x A $.  $d x B $.
+    $( Define the membership connective between classes.  Theorem 6.3 of
+       [Quine] p. 41, or Proposition 4.6 of [TakeutiZaring] p. 13, which we
+       adopt as a definition.  See these references for its metalogical
+       justification.  Note that like ~ df-cleq it extends or "overloads" the
+       use of the existing membership symbol, but unlike ~ df-cleq it does not
+       strengthen the set of valid wffs of logic when the class variables are
+       replaced with setvar variables (see ~ cleljust ), so we don't include
+       any set theory axiom as a hypothesis.  See also comments about the
+       syntax under ~ df-clab .  Alternate definitions of ` A e. B ` (but that
+       require either ` A ` or ` B ` to be a set) are shown by ~ clel2 ,
+       ~ clel3 , and ~ clel4 .
+
+       This is called the "axiom of membership" by [Levy] p. 338, who treats
+       the theory of classes as an extralogical extension to our logic and set
+       theory axioms.
+
+       While the three class definitions ~ df-clab , ~ df-cleq , and ~ df-clel
+       are eliminable and conservative and thus meet the requirements for sound
+       definitions, they are technically axioms in that they do not satisfy the
+       requirements for the current definition checker.  The proofs of
+       conservativity require external justification that is beyond the scope
+       of the definition checker.
+
+       For a general discussion of the theory of classes, see
+       ~ mmset.html#class .  (Contributed by NM, 26-May-1993.) $)
+    df-clel $a |- ( A e. B <-> E. x ( x = A /\ x e.c B ) ) $.
+  $}
+
+  ${
+    $d ph z $.  $d x z $.  $d y z $.
+    $( Relate class membership with set-class membership $)
+    scelelab $p |- ( x e. { y | ph } <-> x e.c { y | ph } ) $=
+      ( vz wsb cv wceq cab wscel wex wcel wequ nfv sb10f seqeq df-sclab anbi12i
+      wa bicomi exbii bitr4i df-clel 3bitr4ri ) ACBEZDFBFZGZDACHZIZRZDJZBUGIUEU
+      GKUDDBLZACDEZRZDJUJADBCADMNUIUMDUFUKUHULUKUFDBOSADCPQTUAABCPDUEUGUBUC $.
+  $}
+
+  ${
+    $d x A $.  $d A z $.  $d A y $.  $d x y $.  $d x z $.  $d y z $.
+    $( Relate set class membership with class membership $)
+    celel $p |- ( x e. A <-> x e.c A ) $=
+      ( vz vy cv wcel wceq wscel wa wex wsb df-clel wequ nfv sb10f seqeq anbi12i
+     sclabsb3 exbii bitr2i 3bitri ) AEZBFCEUBGZCBHZIZCJZDBHZDAKZABHCUBBLUHCAMZU
+     GDCKZIZCJUFUGCADUGCNOUKUECUIUCUJUDCAPCDBRQSTADBRUA $.
+  $}
+  
+  ${
+    $d x y $.
+    $( Relate class membership with membership for sets $)
+    selel $p |- ( x e. y <-> x e.s y ) $=
+      ( cv wcel wscel wsel celel ax-sclabsel bitri ) ACBCZDAJEABFAJGABHI $.
+  $}
+
+$(
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+                  Reformulate previous theorems using class predicates
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+$)
+
+
+  ${
+    cbval.1 $e |- F/ y ph $.
+    cbval.2 $e |- F/ x ps $.
+    cbval.3 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    $( Rule used to change bound variables, using implicit substitution.
+       (Contributed by NM, 13-May-1993.)  (Revised by Mario Carneiro,
+       3-Oct-2016.) $)
+    cbval $p |- ( A. x ph <-> A. y ps ) $=
+      ( wequ cv wceq wb seqeq sylbi cbvals ) ABCDEFCDHCIDIJABKCDLGMN $.
+
+    $( Rule used to change bound variables, using implicit substitution.
+       (Contributed by NM, 21-Jun-1993.) $)
+    cbvex $p |- ( E. x ph <-> E. y ps ) $=
+      ( wequ cv wceq wb seqeq sylbi cbvexs ) ABCDEFCDHCIDIJABKCDLGMN $.
+  $}
+
+  ${
+    $d y ph $.  $d x ps $.
+    cbvalv.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    $( Rule used to change bound variables, using implicit substitution.
+       (Contributed by NM, 5-Aug-1993.)  Remove dependency on ~ ax-10 .
+       (Revised by Wolf Lammen, 17-Jul-2021.) $)
+    cbvalv $p |- ( A. x ph <-> A. y ps ) $=
+      ( wequ cv wceq wb seqeq sylbi cbvalvs ) ABCDCDFCGDGHABICDJEKL $.
+
+    $( Rule used to change bound variables, using implicit substitution.
+       (Contributed by NM, 21-Jun-1993.)  Remove dependency on ~ ax-10 .
+       (Revised by Wolf Lammen, 17-Jul-2021.) $)
+    cbvexv $p |- ( E. x ph <-> E. y ps ) $=
+      ( wn wal wex weq notbid cbvalv notbii df-ex 3bitr4i ) AFZCGZFBFZDGZFACHBD
+      HPROQCDCDIABEJKLACMBDMN $.
+  $}
+
+  ${
+    $d x y $.
+    cbvalv1.nf1 $e |- F/ y ph $.
+    cbvalv1.nf2 $e |- F/ x ps $.
+    cbvalv1.1 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    $( Version of ~ cbval with a dv condition, which does not require ~ ax-13 .
+       See ~ cbvalvw for a version with two dv conditions, requiring fewer
+       axioms, and ~ cbvalv for another variant.  (Contributed by BJ,
+       31-May-2019.) $)
+    cbvalv1 $p |- ( A. x ph <-> A. y ps ) $=
+      ( wequ cv wceq wb seqeq sylbi cbvalv1s ) ABCDEFCDHCIDIJABKCDLGMN $.
+
+    $( Version of ~ cbvex with a dv condition, which does not require ~ ax-13 .
+       See ~ cbvexvw for a version with two dv conditions, requiring fewer
+       axioms, and ~ cbvexv for another variant.  (Contributed by BJ,
+       31-May-2019.) $)
+    cbvexv1 $p |- ( E. x ph <-> E. y ps ) $=
+      ( wequ cv wceq wb seqeq sylbi cbvexv1s ) ABCDEFCDHCIDIJABKCDLGMN $.
+  $}
+
+  ${
+    sbie.1 $e |- F/ x ps $.
+    sbie.2 $e |- ( x = y -> ( ph <-> ps ) ) $.
+    $( Conversion of implicit substitution to explicit substitution.
+       (Contributed by NM, 30-Jun-1994.)  (Revised by Mario Carneiro,
+       4-Oct-2016.)  (Proof shortened by Wolf Lammen, 13-Jul-2019.) $)
+    sbie $p |- ( [ y / x ] ph <-> ps ) $=
+      ( wequ cv wceq wb seqeq sylbi sbies ) ABCDECDGCHDHIABJCDKFLM $.
+  $}
+
+  ${
+    sbied.1 $e |- F/ x ph $.
+    sbied.2 $e |- ( ph -> F/ x ch ) $.
+    sbied.3 $e |- ( ph -> ( x = y -> ( ps <-> ch ) ) ) $.
+    $( Conversion of implicit substitution to explicit substitution (deduction
+       version of ~ sbie ).  (Contributed by NM, 30-Jun-1994.)  (Revised by
+       Mario Carneiro, 4-Oct-2016.)  (Proof shortened by Wolf Lammen,
+       24-Jun-2018.) $)
+    sbied $p |- ( ph -> ( [ y / x ] ps <-> ch ) ) $=
+      ( wequ cv wceq wb seqeq syl5bi sbiesd ) ABCDEFGDEIDJEJKABCLDEMHNO $.
+  $}
+
+  ${
+    $d x ph $.  $d x ch $.
+    sbiedv.1 $e |- ( ( ph /\ x = y ) -> ( ps <-> ch ) ) $.
+    $( Conversion of implicit substitution to explicit substitution (deduction
+       version of ~ sbie ).  (Contributed by NM, 7-Jan-2017.) $)
+    sbiedv $p |- ( ph -> ( [ y / x ] ps <-> ch ) ) $=
+      ( nfv nfvd cv wceq wb ex sbied ) ABCDEADGACDHADIEIJBCKFLM $.
+  $}
+
+  $( An equality theorem for substitution.  (Contributed by NM,
+     16-May-1993.) $)
+  sbeq1 $p |- ( x = y -> ( ph -> [ y / x ] ph ) ) $=
+    ( cv wceq wequ wsb wi seqeq sbequ1 sylbir ) BDCDEBCFAABCGHBCIABCJK $.
+
+  $( An equality theorem for substitution.  (Contributed by NM,
+     16-May-1993.) $)
+  sbeq2 $p |- ( x = y -> ( [ y / x ] ph -> ph ) ) $=
+    ( cv wceq wequ wsb wi seqeq sbequ2 sylbir ) BDCDEBCFABCGAHBCIABCJK $.
+
+  $( An equality theorem for substitution.  (Contributed by NM,
+     14-May-1993.) $)
+  sbeq12 $p |- ( x = y -> ( ph <-> [ y / x ] ph ) ) $=
+    ( weq wsb sbeq1 sbeq2 impbid ) BCDAABCEABCFABCGH $.
+
+
+$(
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+                  Membership predicate for classes - continued
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+$)
+
+  ${
+    $d A x $. $d B x $.
+    $( Restate ~df-cleq uniquely in terms of class membership.  (Contributed by
+       Thierry Arnoux, 30-Oct-2021.) $)
+    dfcleq $p |- ( A = B <-> A. x ( x e. A <-> x e. B ) ) $=
+      ( wceq wscel wb wal cv wcel df-cleq celel bibi12i albii bitr4i ) BCDABEZA
+      CEZFZAGAHZBIZRCIZFZAGABCJUAQASOTPABKACKLMN $.
+
+    $( Restate ~df-clel uniquely in terms of class membership.  (Contributed by
+       Thierry Arnoux, 30-Oct-2021.) $)
+    dfclel $p |- ( A e. B <-> E. x ( x = A /\ x e. B ) ) $=
+      ( wcel cv wceq wscel wa wex df-clel celel anbi2i exbii bitr4i ) BCDAEZBFZ
+      ACGZHZAIPOCDZHZAIABCJTRASQPACKLMN $.
+  $}
+
+  $( Register class-to-set promotion and class equality and membership as
+     primitive expressions. Although these are actually definitions, the above
+     ambiguity prevention necessitates our taking class equality as the
+     primitive, instead of set equality. $)
+  $( $j primitive 'weq' 'wel'; $)
+
+  $( Restate the definition of membership to a class abstraction, in terms of
+     class membership.  (Contributed by Thierry Arnoux, 30-Oct-2021.) $)
+  df-clab $p |- ( x e. { y | ph } <-> [ x / y ] ph ) $=
+    ( cv cab wcel wscel wsb scelelab df-sclab bitri ) BDACEZFBLGACBHABCIABCJK
+    $.
+
+  $( Simplification of class abstraction notation when the free and bound
+     variables are identical.  (Contributed by NM, 26-May-1993.) $)
+  abid $p |- ( x e. { x | ph } <-> ph ) $=
+    ( cv cab wcel wsb df-clab sbid bitri ) BCABDEABBFAABBGABHI $.
+
+  ${
+    $d x y $.
+    $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
+       by NM, 26-May-1993.) $)
+    hbab1 $p |- ( y e. { x | ph } -> A. x y e. { x | ph } ) $=
+      ( cv cab wcel wsb df-clab hbs1 hbxfrbi ) CDABEFABCGBACBHABCIJ $.
+
+    $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
+       by Mario Carneiro, 11-Aug-2016.) $)
+    nfsab1 $p |- F/ x y e. { x | ph } $=
+      ( cv cab wcel hbab1 nf5i ) CDABEFBABCGH $.
+  $}
+
+  ${
+    $d x z $.
+    hbab.1 $e |- ( ph -> A. x ph ) $.
+    $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
+       by NM, 1-Mar-1995.) $)
+    hbab $p |- ( z e. { y | ph } -> A. x z e. { y | ph } ) $=
+      ( cv cab wcel wsb df-clab hbsb hbxfrbi ) DFACGHACDIBADCJACDBEKL $.
+  $}
+
+  ${
+    $d x z $.
+    nfsab.1 $e |- F/ x ph $.
+    $( Bound-variable hypothesis builder for a class abstraction.  (Contributed
+       by Mario Carneiro, 11-Aug-2016.) $)
+    nfsab $p |- F/ x z e. { y | ph } $=
+      ( cv cab wcel nf5ri hbab nf5i ) DFACGHBABCDABEIJK $.
+  $}
+
+  ${
+    $d x A $.  $d x B $.
+    eqriv.1 $e |- ( x e. A <-> x e. B ) $.
+    $( Infer equality of classes from equivalence of membership.  (Contributed
+       by NM, 21-Jun-1993.) $)
+    eqriv $p |- A = B $=
+      ( wceq cv wcel wb dfcleq mpgbir ) BCEAFZBGKCGHAABCIDJ $.
+  $}
+
+  ${
+    $d x A $.  $d x B $.  $d x ph $.
+    eqrdv.1 $e |- ( ph -> ( x e. A <-> x e. B ) ) $.
+    $( Deduce equality of classes from equivalence of membership.  (Contributed
+       by NM, 17-Mar-1996.) $)
+    eqrdv $p |- ( ph -> A = B ) $=
+      ( cv wcel wb wal wceq alrimiv dfcleq sylibr ) ABFZCGNDGHZBICDJAOBEKBCDLM
+      $.
+  $}
+
+  ${
+    $d x A $.  $d x B $.  $d x ph $.
+    eqrdav.1 $e |- ( ( ph /\ x e. A ) -> x e. C ) $.
+    eqrdav.2 $e |- ( ( ph /\ x e. B ) -> x e. C ) $.
+    eqrdav.3 $e |- ( ( ph /\ x e. C ) -> ( x e. A <-> x e. B ) ) $.
+    $( Deduce equality of classes from an equivalence of membership that
+       depends on the membership variable.  (Contributed by NM, 7-Nov-2008.)
+       (Proof shortened by Wolf Lammen, 19-Nov-2019.) $)
+    eqrdav $p |- ( ph -> A = B ) $=
+      ( cv wcel wa biimpd impancom mpd biimprd impbida eqrdv ) ABCDABIZCJZRDJZA
+      SKREJZTFAUASTAUAKZSTHLMNATKUASGAUATSUBSTHOMNPQ $.
+  $}
+
+$(
+  @{
+    @d x A @.
+    @( Law of identity (reflexivity of class equality).  Theorem 6.4 of [Quine]
+       p. 41.
+
+       This is part of Frege's eighth axiom per Proposition 54 of [Frege1879]
+       p. 50; see also ~ biid .  An early mention of this law can be found in
+       Aristotle, _Metaphysics_, Z.17, 1041a10-20.  (Thanks to Stefan Allan and
+       BJ for this information.)  (Contributed by NM, 21-Jun-1993.)  (Revised
+       by BJ, 14-Oct-2017.) @)
+    eqid @p |- A = A @=
+      ( vx cv wcel biid eqriv ) BAABCADEF @.
+  @}
+$)
+
   ${
     $d x A $.  $d x B $.  $d x C $.  $d x ph $.
     eleq1d.1 $e |- ( ph -> A = B ) $.
@@ -35781,33 +36105,33 @@ $)
        NM, 21-Jun-1993.)  Allow shortening of ~ eleq1 .  (Revised by Wolf
        Lammen, 20-Nov-2019.) $)
     eleq1d $p |- ( ph -> ( A e. C <-> B e. C ) ) $=
-      ( vx cv wceq wcel wa wex eqeq2d anbi1d exbidv df-clel 3bitr4g ) AFGZBHZQD
+      ( vx cv wceq wcel wa wex eqeq2d anbi1d exbidv dfclel 3bitr4g ) AFGZBHZQD
       IZJZFKQCHZSJZFKBDICDIATUBFARUASABCQELMNFBDOFCDOP $.
 
     $( Deduction from equality to equivalence of membership.  (Contributed by
        NM, 27-Dec-1993.)  Reduce dependencies on axioms.  (Revised by Wolf
        Lammen, 5-Dec-2019.) $)
     eleq2d $p |- ( ph -> ( C e. A <-> C e. B ) ) $=
-      ( vx cv wceq wa wex wb wal dfcleq sylib anbi2 alexbii syl df-clel 3bitr4g
-      wcel ) AFGZDHZUABTZIZFJZUBUACTZIZFJZDBTDCTAUCUFKZFLZUEUHKABCHUJEFBCMNUIUD
-      UGFUCUFUBOPQFDBRFDCRS $.
+      ( vx cv wceq wcel wa wex wb wal dfcleq sylib anbi2 alexbii dfclel 3bitr4g
+      syl ) AFGZDHZUABIZJZFKZUBUACIZJZFKZDBIDCIAUCUFLZFMZUEUHLABCHUJEFBCNOUIUDU
+      GFUCUFUBPQTFDBRFDCRS $.
 
     $( Obsolete proof of ~ eleq2d as of 16-Nov-2020.  (Contributed by NM,
        27-Dec-1993.)  Reduce dependencies on axioms.  (Revised by Wolf Lammen,
        5-Dec-2019.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
     eleq2dOLD $p |- ( ph -> ( C e. A <-> C e. B ) ) $=
-      ( vx cv wceq wcel wa wex wb wal dfcleq sylib biimp anim2d aleximi df-clel
-      biimpr impbid syl 3bitr4g ) AFGZDHZUDBIZJZFKZUEUDCIZJZFKZDBIDCIAUFUILZFMZ
-      UHUKLABCHUMEFBCNOUMUHUKULUGUJFULUFUIUEUFUIPQRULUJUGFULUIUFUEUFUITQRUAUBFD
-      BSFDCSUC $.
+      ( vx cv wceq wcel wa wex wb wal dfcleq sylib anim2d aleximi biimpr dfclel
+      biimp impbid syl 3bitr4g ) AFGZDHZUDBIZJZFKZUEUDCIZJZFKZDBIDCIAUFUILZFMZU
+      HUKLABCHUMEFBCNOUMUHUKULUGUJFULUFUIUEUFUITPQULUJUGFULUIUFUEUFUIRPQUAUBFDB
+      SFDCSUC $.
 
     $( Alternate proof of ~ eleq2d , shorter at the expense of using more
        axioms.  (Contributed by NM, 27-Dec-1993.)  (Revised by Wolf Lammen,
        20-Nov-2019.)  (Proof modification is discouraged.)
        (New usage is discouraged.) $)
     eleq2dALT $p |- ( ph -> ( C e. A <-> C e. B ) ) $=
-      ( vx cv wceq wcel wa wex wal dfcleq 19.21bi anbi2d exbidv df-clel 3bitr4g
+      ( vx cv wceq wcel wa wex wal dfcleq 19.21bi anbi2d exbidv dfclel 3bitr4g
       wb sylib ) AFGZDHZUABIZJZFKUBUACIZJZFKDBIDCIAUDUFFAUCUEUBAUCUESZFABCHUGFL
       EFBCMTNOPFDBQFDCQR $.
   $}
@@ -36016,7 +36340,7 @@ $)
     $( Substitution of equal classes into membership relation.  (Contributed by
        Mario Carneiro, 6-Jan-2017.) $)
     3eltr3i $p |- C e. D $=
-      ( eleqtri eqeltrri ) ACDFABDEGHI $.
+      ( eqeltrri eleqtri ) CBDACBFEHGI $.
   $}
 
   ${
@@ -36130,9 +36454,9 @@ $)
        14-Nov-2019.)  Remove dependency on ~ ax-13 .  (Revised by BJ,
        30-Nov-2020.) $)
     cleqh $p |- ( A = B <-> A. x ( x e. A <-> x e. B ) ) $=
-      ( wceq cv wcel wal dfcleq nfv nf5i nfbi weq eleq1 bibi12d cbvalv1 bitr4i
-      wb ) CDGBHZCIZUADIZTZBJAHZCIZUEDIZTZAJBCDKUHUDABUHBLUBUCAUBAEMUCAFMNABOUF
-      UBUGUCUEUACPUEUADPQRS $.
+      ( wceq cv wcel wb wal dfcleq nfv nf5i nfbi eleq1 bibi12d cbvalv1 bitr4i )
+      CDGBHZCIZTDIZJZBKAHZCIZUDDIZJZAKBCDLUGUCABUGBMUAUBAUAAENUBAFNOUDTGUEUAUFU
+      BUDTCPUDTDPQRS $.
   $}
 
   $( A way of showing two classes are not equal.  (Contributed by NM,
@@ -36170,6 +36494,24 @@ $)
     clelsb3 $p |- ( [ x / y ] y e. A <-> x e. A ) $=
       ( vw cv wcel wsb nfv sbco2 eleq1 sbie sbbii 3bitr3i ) DEZCFZDBGZBAGODAGBE
       ZCFZBAGAEZCFZODABOBHIPRBAORDBRDHNQCJKLOTDATDHNSCJKM $.
+  $}
+
+  ${
+    $d x y z $.
+    $( Every set is a class.  Proposition 4.9 of [TakeutiZaring] p. 13.  This
+       theorem shows that a setvar variable can be expressed as a class
+       abstraction.  This provides a motivation for the class syntax
+       construction ~ cv , which allows us to substitute a setvar variable for
+       a class variable.  See also ~ cab and ~ df-clab .  Note that this is not
+       a rigorous justification, because ~ cv is used as part of the proof of
+       this theorem, but a careful argument can be made outside of the
+       formalism of Metamath, for example as is done in Chapter 4 of Takeuti
+       and Zaring.  See also the discussion under the definition of class in
+       [Jech] p. 4 showing that "Every set can be considered to be a class."
+       (Contributed by NM, 7-Nov-2006.) $)
+    cvjust $p |- x = { y | y e. x } $=
+      ( vz cv wcel cab wceq wb dfcleq wsb df-clab clelsb3 bitr2i mpgbir ) ADZBD
+      OEZBFZGCDZOEZRQEZHCCOQITPBCJSPCBKCBOLMN $.
   $}
 
   ${
@@ -36405,9 +36747,9 @@ $)
     $( Membership of a class variable in a class abstraction.  (Contributed by
        NM, 23-Dec-1993.)  (Proof shortened by Wolf Lammen, 16-Nov-2019.) $)
     clelab $p |- ( A e. { x | ph } <-> E. x ( x = A /\ ph ) ) $=
-      ( vy cab wcel cv wceq wa wex df-clel nfv nfsab1 weq eqeq1 sbequ12 df-clab
-      nfan wsb syl6bbr anbi12d cbvex bitr4i ) CABEZFDGZCHZUEUDFZIZDJBGZCHZAIZBJ
-      DCUDKUKUHBDUKDLUFUGBUFBLABDMRBDNZUJUFAUGUIUECOULAABDSUGABDPADBQTUAUBUC $.
+      ( vy cab wcel cv wceq wex dfclel nfv nfsab1 nfan eqeq1 wsb sbeq12 df-clab
+      wa syl6bbr anbi12d cbvex bitr4i ) CABEZFDGZCHZUDUCFZRZDIBGZCHZARZBIDCUCJU
+      JUGBDUJDKUEUFBUEBKABDLMUHUDHZUIUEAUFUHUDCNUKAABDOUFABDPADBQSTUAUB $.
   $}
 
   ${
@@ -36416,8 +36758,8 @@ $)
        17-Jan-2006.) $)
     clabel $p |- ( { x | ph } e. A <->
                  E. y ( y e. A /\ A. x ( x e. y <-> ph ) ) ) $=
-      ( cab wcel cv wceq wa wex wb wal df-clel abeq2 anbi2ci exbii bitri ) ABEZ
-      DFCGZRHZSDFZIZCJUABGSFAKBLZIZCJCRDMUBUDCTUCUAABSNOPQ $.
+      ( cab wcel cv wceq wa wex wb wal dfclel abeq2 anbi2ci exbii bitri ) ABEZD
+      FCGZRHZSDFZIZCJUABGSFAKBLZIZCJCRDMUBUDCTUCUAABSNOPQ $.
   $}
 
   ${
@@ -36426,7 +36768,6 @@ $)
        proper substitution of ` y ` for ` x ` into a class variable.
        (Contributed by NM, 14-Sep-2003.) $)
     sbab $p |- ( x = y -> A = { z | [ y / x ] z e. A } ) $=
-      ( weq cv wcel wsb sbequ12 abbi2dv ) ABECFDGZABHCDKABIJ $.
+      ( cv wceq wcel wsb sbeq12 abbi2dv ) AEBEFCEDGZABHCDKABIJ $.
   $}
-
 
