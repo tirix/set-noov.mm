@@ -35187,8 +35187,8 @@ $)
   $}
 
   ${
-    $( An axiom to extend set-class membership to set membership.  $)
-    ax-abidc $a |- A = { x | x e.c A } $.
+    $( Axiom of Left Equality for set-class membership predicate.  $)
+    ax-8c $a |- ( x =s y -> ( x e.c A <-> y e.c A ) ) $.
   $}
 
   ${
@@ -35196,8 +35196,15 @@ $)
     $( Substitution applied to a set-class membership wff.  (Contributed by
        Thierry Arnoux, 1 Nov 2021 .) $)
     sclabsb3 $p |- ( [ x / y ] y e.c A <-> x e.c A ) $=
-      ( wscel cab wsb wb wceq wal ax-abidc df-cleq mpbi spi df-sclab bitr2i ) A
-      CDZABCDZBEZDZQBAFPSGZACRHTAIBCJACRKLMQABNO $.
+      ( wscel nfv ax-8c sbies ) BCDACDZBAHBEBACFG $.
+  $}
+
+  ${
+    $d A x y $.
+    $( An axiom to extend set-class membership to set membership.  $)
+    abidc $p |- A = { x | x e.c A } $=
+      ( vy wscel cab wceq wal wsb df-sclab sclabsb3 bitr2i ax-gen df-cleq mpbir
+      wb ) BABDZAEZFCBDZCQDZOZCGTCSPACHRPCAICABJKLCBQMN $.
   $}
 
   ${
@@ -35215,46 +35222,34 @@ $)
   $}
 
   ${
-    $d x A $.
-    $( A justification for ax-abidc. $)
-    abidc $p |- A = { x | x e.c A } $=
-      ( wscel cab wceq wb wal biid ax-gen abeq2c mpbir ) BABCZADELLFZAGMALHILAB
-      JK $.
+    $( Define ` cv y ` . This shows how a set can be viewed as a class. $)
+    df-sab $a |- y = { x | x e.s y } $.
   $}
 
   ${
+    $d x y z $.
     $( An axiom to extend set-class membership to set membership.  $)
-    ax-sclabsel $a |- ( x e.c y <-> x e.s y ) $.
+    sclabsel $p |- ( x e.c y <-> x e.s y ) $=
+      ( vz cv wscel wsel cab wceq wal df-sab df-cleq mpbi spi sclabselid bitri
+      wb ) ABDZEZACBFCGZEZABFRTPZAQSHUAAICBJAQSKLMABCNO $.
   $}
 
   ${
-    $d y z $.
+    $d x z $.  $d y z $.
     $( Substitution applied to a set-class membership wff.  (Contributed by
        Thierry Arnoux, 1 Nov 2021 .) $)
     celsb3 $p |- ( [ x / y ] y e.c z <-> x e.c z ) $=
-      ( wsel wsb cv wscel elsb3 ax-sclabsel sbbii 3bitr4i ) BCDZBAEACDBCFZGZBAE
-      AMGABCHNLBABCIJACIK $.
-  $}
-
-  ${
-    $d x y $.
-    $( A set variable is a class abstraction. $)
-    cvjust3 $p |- x = { y | y e.c x } $=
-      ( cv ax-abidc ) BACD $.
-
-    $( A set variable is a class abstraction. $)
-    cvjust2 $p |- x = { y | y e.s x } $=
-      ( cv wsel cab wceq wscel wb wal ax-sclabsel ax-gen abeq2c mpbir ) ACZBADZ
-      BEFBNGOHZBIPBBAJKOBNLM $.
+      ( wsel wsb cv wscel elsb3 sclabsel sbbii 3bitr4i ) BCDZBAEACDBCFZGZBAEAMG
+      ABCHNLBABCIJACIK $.
   $}
 
   ${
     $d x z $.  $d y z $.
     $( Set equality is equivalent to class equality $)
     seqeq $p |- ( x =s y <-> x = y ) $=
-      ( vz cv wscel wal wsel wceq wequ ax-sclabsel bibi12i albii df-cleq axext4
-      wb 3bitr4ri ) CADZEZCBDZEZOZCFCAGZCBGZOZCFQSHABIUAUDCRUBTUCCAJCBJKLCQSMAB
-      CNP $.
+      ( vz cv wscel wal wsel wceq wequ sclabsel bibi12i albii df-cleq axext4 wb
+      3bitr4ri ) CADZEZCBDZEZOZCFCAGZCBGZOZCFQSHABIUAUDCRUBTUCCAJCBJKLCQSMABCNP
+      $.
 
     $( Equality for sets in terms of set membership. $)
     dfseq $p |- ( x = y <-> A. z ( z e.s x <-> z e.s y ) ) $=
@@ -35871,7 +35866,7 @@ $)
     $d x y $.
     $( Relate class membership with membership for sets $)
     selel $p |- ( x e. y <-> x e.s y ) $=
-      ( cv wcel wscel wsel celel ax-sclabsel bitri ) ACBCZDAJEABFAJGABHI $.
+      ( cv wcel wscel wsel celel sclabsel bitri ) ACBCZDAJEABFAJGABHI $.
   $}
 
 $(
